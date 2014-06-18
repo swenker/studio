@@ -23,19 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="log_parser.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="log_parser.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/log_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="281" column="28" selection-start="7247" selection-end="7247" vertical-scroll-proportion="0.3727648" vertical-offset="5049" max-vertical-offset="5852">
+            <state line="297" column="27" selection-start="7796" selection-end="7796" vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="5852">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_log_parser.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="test_log_parser.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_log_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="30" selection-start="1682" selection-end="1682" vertical-scroll-proportion="0.0" vertical-offset="1097" max-vertical-offset="1824">
+            <state line="65" column="30" selection-start="1682" selection-end="1682" vertical-scroll-proportion="0.16368638" vertical-offset="1097" max-vertical-offset="1824">
               <folding />
             </state>
           </provider>
@@ -92,16 +92,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="3mlog" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="3mlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="3mlog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -375,16 +365,16 @@
         <state line="191" column="4" selection-start="3945" selection-end="3945" vertical-scroll-proportion="0.0" vertical-offset="3387" max-vertical-offset="6726" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_log_parser.py">
+    <entry file="file://$PROJECT_DIR$/log_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="30" selection-start="1682" selection-end="1682" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1824">
+        <state line="297" column="27" selection-start="7796" selection-end="7796" vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="5852">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/log_parser.py">
+    <entry file="file://$PROJECT_DIR$/test_log_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="281" column="28" selection-start="7247" selection-end="7247" vertical-scroll-proportion="0.3727648" vertical-offset="5049" max-vertical-offset="5852">
+        <state line="65" column="30" selection-start="1682" selection-end="1682" vertical-scroll-proportion="0.16368638" vertical-offset="1097" max-vertical-offset="1824">
           <folding />
         </state>
       </provider>

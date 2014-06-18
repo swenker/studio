@@ -1,0 +1,56 @@
+ganglia
+
+1.install:
+gmond --data collection and it will report data to gmetad.
+#sudo yum install ganglia-gmond
+
+gmetad (the Ganglia Meta Daemon) is the service that collects metric data from other
+gmetad and gmond sources and stores their state to disk in RRD format.
+#sudo yum install ganglia-gmetad
+
+
+ganglia-gmetad will be always installed on the same server with web.
+ 
+
+ganglia web 
+
+sudo yum -y install ganglia-gmond ganglia-gmetad [ganglia] ganglia-web
+
+
+
+cluster:
+grid:
+
+
+with hadoop:
+
+
+cloud env:
+unicast:
+config
+/etc/ganglia 
+conf.php has some path.
+$gmetad_root = "/var/lib/ganglia";
+$rrds = "$gmetad_root/rrds";
+installed: /usr/share/ganglia
+
+
+
+
+http://sourceforge.net/apps/trac/ganglia/wiki/ganglia_quick_start
+
+
+namenode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8661
+datanode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
+resourcemanager.sink.ganglia.servers=lab01.qasvc.mscc.cn:8664
+nodemanager.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
+historyserver.sink.ganglia.servers=lab01.qasvc.mscc.cn:8666
+maptask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
+reducetask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
+
+
+ganglia web 3.6 has tools to fetch fdata from nagios?
+
+
+
+

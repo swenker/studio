@@ -1,0 +1,11 @@
+shell
+curl -sI $url | grep Content-Length | awk '{print $2}'
+
+x=5
+y=6
+$(($x -$y)) 
+这样的做法没有问题，但是为何当x=`cmd`这样的形式时，就无法成功呢？
+
+
+sed 's;\([0-9]*\);\1;'
+

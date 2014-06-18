@@ -1,0 +1,105 @@
+flume
+
+Avro provides functionality similar to systems such as Thrift, Protocol Buffers, etc. 
+
+run server
+bin/flume-ng agent --conf conf --conf-file ../flume-examples/example.conf --name a1 -Dflume.root.logger=INFO,console
+
+a agent/client sample:
+start server: bin/flume-ng agent --conf conf/ --conf-file ../flume-examples/example.conf  -n agent1
+              bin/flume-ng agent --conf ./conf/ -f ../flume-examples/example.conf -Dflume.root.logger=DEBUG,console -n agent1
+Run an Avro client that sends either a file or data from stdin to a specified host and port where a Flume NG Avro Source is listening.
+The Avro client treats each line (terminated by \n, \r, or \r\n) as an event. Think of the avro-client command as cat for Flume. 
+For instance, the following creates one event per Linux user and sends it to Flume's avro source on localhost:44444.
+
+$ bin/flume-ng avro-client --conf conf -H localhost -p 44444 -F /home/sunwj/nrpe.cfg -Dflume.root.logger=DEBUG,console
+client 需要什么内容的配置文件？
+
+
+
+
+0.672
+[Agent]  is a unit contains source,channel,and sink.
+[Source] The purpose of a Source is to receive data from an external client and store it into the Channel. 
+[Channels] are the repositories where the events are staged on a agent. Source adds the events and Sink removes it.
+[Sink]   The purpose of a Sink to extract Events from the Channel and forward them to the next Flume Agent in the flow or store them in an external repository. A Sink is associated with exactly one Channels, as configured in the Flume properties file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+---
+my questions:
+1.how to designate folder for every Avro client?
+2.how to keep original filename?
+3.What kinds of conf is needed for Avro client? 
+
+
+
+Client:
+App:
+Flume log4j appender.
+# Define the flume appender
+log4j.appender.flume = org.apache.flume.clients.log4jappender.Log4jAppender
+log4j.appender.flume.Hostname = localhost
+log4j.appender.flume.Port = 41414
+log4j.appender.flume.UnsafeMode = false
+log4j.appender.flume.layout=org.apache.log4j.PatternLayout
+log4j.appender.flume.layout.ConversionPattern=%m%n
+
+agent:
+# Tell agent1 which ones we want to activate.
+agent1.channels = ch1
+agent1.sources = avro-source1
+agent1.sinks = hdfs-sink1
+
+# Define a memory channel called ch1 on agent1
+agent1.channels.ch1.type = memory
+
+# Define an Avro source called avro-source1 on agent1 and tell it
+# to bind to 0.0.0.0:41414. Connect it to channel ch1.
+agent1.sources.avro-source1.type = avro
+agent1.sources.avro-source1.bind = 0.0.0.0
+agent1.sources.avro-source1.port = 41414
+
+# Define a logger sink that simply logs all events it receives
+# and connect it to the other end of the same channel.
+agent1.sinks.hdfs-sink1.type = hdfs
+agent1.sinks.hdfs-sink1.hdfs.path = hdfs://localhost:9000/flume/events/
+
+agent1.sinks.hdfs-sink1.channel = ch1
+agent1.sources.avro-source1.channels = ch1
+ 
+
+bin/flume-ng agent -n a01 --conf conf/ -f conf/agent01.properties -Dflume.root.logger=DEBUG,console
+
+bin/flume-ng agent -n a1 --conf conf/ -f conf/ck.properties -Dflume.root.logger=DEBUG,console
+
+
+HDFS sink 只需在env中设置HADOOP_HOME即可。
+
+ mv  lib/protobuf-java-2.4.1.jar . && cp /data/hadoop/hadoop-2.2.0/share/hadoop/common/lib/protobuf-java-2.5.0.jar lib/
+ mv  lib/guava-10.0.1.jar . && cp /data/hadoop/hadoop-2.2.0/share/hadoop/common/lib/guava-11.0.2.jar lib/
+
+
+a02.sources = r02
+a02.sinks = k02
+a02.channels = c02
+
+a02.sources.r02.type = spooldir
+a02.sources.r02.spoolDir = /data/mcilog/test
+a02.sources.r02.channels = c02
+
+a02.sinks.k02.type = hdfs
+a02.sinks.k02.hdfs.path = hdfs://nn-svc2.hadoop.mscc.cn/data/valuepack/logs
+a02.sinks.k02.hdfs.filePrefix  = %y-%m-%d
+a02.sinks.k02.channel = c02
+
+a02.channels.c02.type = memory
+a02.channels.c02.capacity = 1000000
+a02.channels.c02.byteCapacity = 800000
+
+
+spooldir: 源文件编码格式。
+flume java.nio.charset.MalformedInputException: Input length = 1
+
+Caused by: java.lang.NullPointerException: Expected timestamp in the Flume event headers, but it was null
+
+bin/flume-ng agent -n a02 --conf conf/ -f conf/agent01.properties -Dflume.root.logger=DEBUG,console
+
+

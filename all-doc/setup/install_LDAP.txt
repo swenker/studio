@@ -1,0 +1,324 @@
+install LDAP on Centos 6.X
+
+reference
+http://www.server-world.info/en/note?os=CentOS_6&p=ldap&f=1 389
+http://blog.chinaunix.net/uid-197233-id-209556.html
+http://www.openldap.org/doc/admin24/quickstart.html
+
+phpldapadmin  need to yum -y install php-ldap 
+
+slapd  is an LDAP directory server that runs on many different platforms. 
+
+steps:
+1.server installation and configuration
+2.add users
+3.client installation 
+  pam setup and integration 
+
+issues:
+How to setup server
+how to add groups
+how to add users and to groups
+how to setup client
+
+mod_dnssd.c: No services found to register
+Server:
+>>==============================================================================
+1.yum -y install  openldap-servers openldap-devel  
+2. vi /etc/sysconfig/ldap 
+make sure SLAPD_LDAPI=yes is right.
+
+3. slapd.conf
+cp /usr/share/openldap-servers/slapd.conf.obsolete /etc/openldap/slapd.conf
+vi /etc/openldap/slapd.conf 
+
+make sure the following lines exists:
+pidfile     /var/run/openldap/slapd.pid
+argsfile    /var/run/openldap/slapd.args
+
+suffix  "dc=mscc,dc=samsung,dc=com,dc=cn"
+rootdn  "cn=root,dc=mscc,dc=samsung,dc=com,dc=cn"
+rootpw  mscc135
+
+TBD
+chown -R ldap. /etc/openldap/slapd.d 
+chmod -R 700 /etc/openldap/slapd.d 
+chown -R ldap:ldap /var/lib/ldap
+
+
+4.rm -rf /etc/openldap/slapd.d/*
+
+
+5.test config:
+slaptest -f /etc/openldap/slapd.conf -F /etc/openldap/slapd.d
+[invalid config directory /etc/openldap/slapd.d, error 2]
+
+iptables -A INPUT -p tcp --dport 389 -j ACCEPT  [TBD]
+cp /usr/share/openldap-servers/DB_CONFIG.example  /var/lib/ldap/DB_CONFIG
+chown ldap. /var/lib/ldap/DB_CONFIG 
+
+enable log output :
+echo "local4.* -/var/log/slapd.log" >> /etc/rsyslog.conf
+service rsyslog restart
+
+
+ service ldap restart 
+OpenLDAP资料存放的位置： /var/lib/ldap/
+
+test server status:
+ldapsearch -x -b '' -s base '(objectclass=*)' namingContexts
+
+
+
+server端数据初始化：
+slapd.conf中包含的schema变更，不用删除/var/lib/ldap，重启slapd会有更新。
+
+添加用户，组
+------
+先添加schema
+
+
+slappasswd  
+
+Create the Initial Directory Information Tree
+
+The default database has no structure, so you will have to create it yourself.
+
+backend.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f backend.ldif 
+
+
+<<==============================================================================
+
+Client :
+<<==============================================================================
+ldap 方式。
+yum -y install openldap-clients nss-pam-ldapd 
+vi /etc/openldap/ldap.conf  
+vi /etc/nslcd.conf go to the end: change uri and base
+vi /etc/pam_ldap.conf 
+vi /etc/pam.d/system-auth 
+vi /etc/nsswitch.conf   ?
+vi /etc/sysconfig/authconfig USELDAP=yes
+
+service  nscd  restart
+
+chkconfig  --level 3 5 nscd on
+getent passwd, getent group 
+
+
+------>
+sssd
+<<==============================================================================
+1;yum -y install sssd
+2;authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
+
+3;vi /etc/sssd/sssd.conf
+..
+4;Change the passwd, shadow, and group sections of /etc/nsswitch.conf to be "files sss". Do not use "files ldap". 
+5.service sssd restart
+6.After that, you should be able to type "id $user" and get something back from LDAP. You can make sure it's using the right LDAP servers by checking netstat (netstat -anp | grep sssd_be).
+ 
+/var/log/sssd/*
+
+
+貌似集成成功了，但是验证还是有问题，为何没找到还用本地的呢？
+onn=1009 op=2 SRCH attr=objectClass uid userPassword uidNumber gidNumber gecos homeDirectory loginShell krbPrincipalName cn memberOf nsUniqueId modifyTimestamp modifyTimestamp shadowLastChange shadowMin shadowMax shadowWarning shadowInactive shadowExpire shadowFlag krbLastPwdChange krbPasswordExpiration pwdAttribute authorizedService accountExpires userAccountControl nsAccountLock host loginDisabled loginExpirationTime loginAllowedTimeMap
+Aug 26 18:23:31 dev001 slapd[27263]: conn=1009 op=2 SEARCH RESULT tag=101 err=32 nentries=0 text=
+
+
+
+
+reference:
+>>==============================================================================
+
+
+LDAP:
+http://www.server-world.info/en/note?os=CentOS_6&p=ldap&f=1 389
+LDAP连接服务器的连接字串格式为：ldap://servername/DN   
+
+entries
+
+    DC     (Domain     Component)                                
+    CN     (Common     Name)       
+    OU     (Organizational     Unit)    
+    DN  Distinguished Name [example: uid=babs,ou=People,dc=example,dc=com.] entry在整个树中唯一标识
+    RDN  relative DN. 在父节点下的DN,在一个OU中是唯一的，类似DN 是包含目录在内的full path，RDN是文件名。
+    objectClass:entry 通过objectClass实现分类，每个entry可以有多个objectClass属性。
+                      每种objectClass会对应一些必须的attribute，比如person 对象类型要求cn（common name）和sn（surname）   
+
+    Top：是一个顶级的objectClass
+    Schema:data model.
+    
+    
+An entry is referenced by its distinguished name, which is constructed by taking the name of the entry itself (called the Relative Distinguished Name or RDN)
+
+entry:<--DN
+
+
+ldapadd  to add entries to your LDAP directory. ldapadd expects input in LDIF form. We'll do it in two steps:
+create an LDIF file 
+run ldapadd
+
+dc=mscc,dc=samsung,dc=com,dc=cn
+
+如果遇到
+[root@swj01 openldap]# service slapd start
+ln: accessing `/var/run/openldap/slapd.pid': No such file or directory
+就执行：
+touch /var/run/openldap/slapd.pid
+
+dev.ldif 
+dn: dc=mscc,dc=samsung,dc=com,dc=cn
+objectclass: dcObject
+objectclass: organization
+o: MSCC
+dc: Mscc
+
+dn: cn=Manager,dc=mscc,dc=samsung,dc=com,dc=cn
+objectclass: organizationalRole
+cn: Manager
+
+dn: dc=dev,dc=mscc,dc=samsung,dc=com,dc=cn
+objectclass: dcObject
+objectclass: organization
+o: MSC
+dc: dev 必须和上面的一致
+
+# sunwj, dev.mscc.samsung.com.cn
+dn: uid=sunwj,dc=dev,dc=mscc,dc=samsung,dc=com,dc=cn
+objectClass: account
+objectClass: top
+uid: sunwj
+
+ 
+ldapadd -x -D "cn=Manager,dc=mscc,dc=samsung,dc=com,dc=cn" -W -f example.ldif
+adding new entry "dc=mscc,dc=samsung,dc=com,dc=cn"
+adding new entry "cn=Manager,dc=mscc,dc=samsung,dc=com,dc=cn"
+
+ldapsearch -x -b 'dc=mscc,dc=samsung,dc=com,dc=cn' '(objectclass=*)'
+
+adding new entry "dc=dev,dc=mscc,dc=samsung,dc=com,dc=cn"
+ldap_add: Naming violation (64)
+	additional info: value of single-valued naming attribute 'dc' conflicts with value present in entry
+  
+ldap_add: Invalid syntax (21)  格式问题，比如每行记录尾部不能有空格。  
+
+olc" (OpenLDAP Configuration
+
+user：adding new entry "uid=debian,ou=people,dc=server,dc=world"
+
+group
+adding new entry "cn=ubuntu,ou=groups,dc=server,dc=world"
+
+-----------
+vim /etc/openldap/schema/base.ldif
+dn: dc=mscc,dc=samsung,dc=com,dc=cn
+dc: mscc,
+inobjectClass: top
+objectClass: domain 
+
+dn: ou=Users,dc=mscc,dc=samsung,dc=com,dc=cn
+ou: Users
+objectClass: top
+objectClass: organizationalUnit 
+
+dn: ou=Groups,dc=mscc,dc=samsung,dc=com,dc=cn
+ou: Groups
+objectClass: top
+objectClass: organizationalUnit
+
+
+vim /etc/openldap/schema/group.ldif
+dn: cn=admin,ou=Groups,dc=mscc,dc=samsung,dc=com,dc=cn
+objectClass: posixGroup
+objectClass: top
+cn: admin
+gidNumber: 999
+
+vim /etc/openldap/schema/users.ldif
+dn: uid=admin,ou=Users,dc=mscc,dc=samsung,dc=com,dc=cn
+uid: admincn: admin
+objectClass: account
+objectClass: posixAccount
+objectClass: topobjectClass: shadowAccount
+userPassword: passwordshadow
+LastChange: 15140
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 999
+gidNumber: 999
+homeDirectory: /home/ldap
+
+
+ldapadd -x -W -D "cn=Manager,dc=your-domain,dc=com" -f /etc/openldap/schema/base.ldif
+ldapadd -x -W -D "cn=Manager,dc=your-domain,dc=com" -f /etc/openldap/schema/group.ldif
+ldapadd -x -W -D "cn=Manager,dc=your-domain,dc=com" -f /etc/openldap/schema/users.ldif
+
+ http://www.6tech.org/2013/01/ldap-server-and-centos-6-3/
+
+
+
+ Userpassword: {crypt}3x1231v76T89N   
+
+uidnumber: 1234   
+
+gidnumber: 1200   
+
+gecos: Frances Smith   
+
+homedirectory: /home/fsmith   
+
+loginshell: /usr/local/bin/bash   
+
+
+
+dn: uid=sunwj,ou=user,ou=stl,dc=mscc,dc=samsung,dc=com,dc=cn
+uid: sunwj
+cn: Sun Wenju
+sn: Sun
+mail: wangxu@cg.com.cn# mailAlternateAddress:## This attribute is optional, and can be used multiple times, it contains## the aliases, full email address aliases, just like the mail attribute,## make sure that the domains you use are listed in the system-leave.
+accountStatus: active
+mailMessageStore: /var/mail/sunwj/
+seeAlso: cn=winter,dc=mscc,dc=samsung,dc=com,dc=cn
+uidNumber: 1101
+gidNumber: 1101
+homeDirectory: /home/sunwj
+userpassword: mscc123
+loginShell: /bin/bash
+objectClass: organizationalPerson
+objectclass: person
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: qmailUser
+objectClass: top
+
+
+
+
+
+
+
+
+dn: dc=abc,dc=com
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: abc com
+dc: abc
+
+dn: cn=root,dc=abc,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: root
+userPassword: {SSHA}xxxxxxxxxxxxxxxxxxxxxxxx
+
+dn: ou=people,dc=abc,dc=com
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=abc,dc=com
+objectClass: organizationalUnit
+ou: groups 

@@ -1,0 +1,32 @@
+hadoop
+
+terms:
+================================================================================
+=JournalNodes
+=Quorum-based Storage
+=Shared Storage Using NFS
+=HDFS Federation configuration
+=HA configuration 
+
+
+High Availability Mode:
+
+Node: 
+  0NameNode 2 (Master/Slave:active/standby)
+
+
+/home/hadoop/hadoop-2.2.0/bin/hadoop --config /etc/hadoop/conf fs -ls /
+
+[hdfs@dn-svc1 ~]$ /home/hadoop/hadoop-2.2.0/bin/hadoop fs -ls hdfs://nn-svc1.hadoop.mscc.cn/
+ls: Operation category READ is not supported in state standby
+why svc1 is standby?
+
+/home/hadoop/hadoop-2.2.0/bin/hadoop fs -ls hdfs://nn-svc2.hadoop.mscc.cn/data/valuepack
+
+
+
+Resource Manager
+Node Manager
+
+
+

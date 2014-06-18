@@ -1,0 +1,84 @@
+Mysql配置master-slave模式
+
+环境：Mysql版本5.1.61，Ubuntu 11.04（64bit）
+       Master：20.160.14.124
+       Slave：20.160.14.125
+
+1. Master配置
+
+在主服务器上为从服务器建立一个用户：
+
+grant replication slave on *.* to 'cpp'@'slave ip' identified by 'Backup.025';
+最好 是这样：%.mydomain.com
+
+mysql -ucpp -pB -h20.160.14.124 
+
+
+以下在master上操作，直到遇到=====
+编辑服务器的配置文件：/etc/mysql/my.cnf (不同linux版本可能位置不一样)
+[mysqld]
+server-id=1
+log-bin=master-bin
+binlog-do-db=testdb (testdb是需要复制的数据库名，如果复制多个数据库，重复设置这个选项即可)
+binlog-ignore-db=（不需要复制的数据库名，如果复制多个数据库，重复设置这个选项即可）
+
+#bind-address=127.0.0.1  （这行需要注销，否则不允许主机外的机器连接本机器的mysql）
+
+
+
+创建数据库
+
+Create database if not exists ·testdb·;
+Create table tbl_user (id integer not null , name tinyblob not null);
+
+Mysql> show master status\G;
+
+*************************** 1. row ***************************
+
+File: master-bin.000024
+
+Position: 106    (记住 file与 position的值，后面要用到)
+Binlog_Do_DB: testdb
+Binlog_Ignore_DB: 
+1 row in set (0.00 sec)
+ERROR: 
+No query specified
+ 
+
+导出数据库，用以在 slave server中使用（当然你也可以再 slave server中创建同样的数据库及表）
+
+Root# mysqldump -u root -pRepo5.533rpm --databases cpp checkin smagazinedb>/root/backup.sql
+
+=============================================== 
+
+2 Slave配置 以下在slave上操作，直到遇到=====
+
+编辑服务器的配置文件：/etc/mysql/my.cnf
+[mysqld]
+server-id=2 （不要与master重复）
+replicate-do-db=test （需要复制的数据库名，如果复制多个数据库，重复设置这个选项即可）
+replicate-ignore-db= （需要复制的数据库名，如果复制多个数据库，重复设置这个选项即可）
+
+Copy 并 create数据库
+
+Mysql> create database testdb;
+
+Mysql>exit;
+
+Root#
+Root#scp root@192.168.0.63:/root/testdb.sql  /root/
+Root#mysqldump –u root –p testdb<test.sql
+ 
+
+(在slave服务器上设置相关的二进制日志信息：)
+
+CHANGE MASTER TO MASTER_HOST='10.160.14.124',MASTER_USER='cppbackup',MASTER_PASSWORD='Backup.025',MASTER_LOG_FILE='master-bin.000002',MASTER_LOG_POS=106;
+mysql> start slave;
+
+mysql> show slave status\G
+
+会得到类似下面的列表：如果为yes表示成功。不行的的话，重启master及 slave mysql 数据库试试并检查配置文件的正确性
+
+ 
+ ……..
+

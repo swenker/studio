@@ -1,0 +1,45 @@
+
+
+installation
+================================================================================
+download
+http://www.bugzilla.org/docs/4.4/en/html/installation.html
+
+unzip and cd folder:
+1.install all modules:
+/usr/bin/perl install-module.pl --all
+/usr/bin/perl perl install-module.pl Apache2::SizeLimit
+
+most of the modules will be installed after this command.
+
+./checksetup.pl --check-modules
+
+if mod_perl not found,use 2 to install it.
+
+1
+2.install mod_perl
+yum -y install mod_perl mod_perl-devel
+ 
+
+setup mysql:
+my.cnf
+
+CREATE DATABASE bugzilla;
+GRANT SELECT, INSERT,UPDATE, DELETE, INDEX, ALTER, CREATE, LOCK TABLES,CREATE TEMPORARY TABLES, DROP, REFERENCES ON bugzilla.* TO bugs@localhost IDENTIFIED BY 'bugsmscc';
+FLUSH PRIVILEGES;
+
+ALTER TABLE attachments  AVG_ROW_LENGTH=1000000, MAX_ROWS=20000;
+
+config apache:
+ /etc/httpd/conf/httpd.conf
+start httpd
+
+couldn't find mod_perl. selinux的问题。
+setenforce 0 临时关闭几个。
+永久关闭 
+/usr/bin/setenforce 
+
+./checksetup.pl
+this time it will create tables itself.
+
+chcon -R -t httpd_sys_content_t /var/www/html/bugzilla/mod_perl.pl

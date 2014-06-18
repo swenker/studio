@@ -1,0 +1,66 @@
+
+
+####install_redis
+using mscc to install
+wget http://download.redis.io/releases/redis-2.8.5.tar.gz
+wget https://github.com/antirez/redis/archive/2.8.8.tar.gz
+tar -xzf redis-2.8.5.tar.gz && cd redis-2.8.5 && make
+
+src/redis-server
+
+src/redis-server redis.conf  
+
+####command line tools:
+src/redis-cli get keyname
+
+./redis-benchmark  -h cache02.stsvc.mscc.cn
+
+port 6379
+-A INPUT -i eth0 -p tcp -m tcp --dport 6379 -j ACCEPT
+
+####Client
+
+python:
+redis-py :https://github.com/andymccurdy/redis-py
+
+import redis
+r = redis.StrictRedis(host='cache01.stsvc.mscc.cn', port=6379, db=0)
+r.set('akey','avalue')
+
+java:
+jedis https://github.com/xetorthio/jedis
+
+
+
+多台redis server
+connection pool
+persitence
+常用命令
+put object into redis.
+
+
+
+jedis sharding
+
+ https://github.com/xetorthio/jedis/wiki/Getting-started
+
+ 1.how to empty the items
+ src/redis-cli flushdb  :current db
+ src/redis-cli flushall :all db
+ 
+ 2.how to list items
+ src/redis-cli keys '*'
+  
+ useful commands:
+ 
+ 
+ exists
+ 
+
+master--slave.
+
+only need to let slave point to master by slave-of masterip port in redis.conf
+
+
+
+

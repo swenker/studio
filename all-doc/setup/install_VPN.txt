@@ -1,0 +1,135 @@
+install VPN on centos --Both Server and client
+
+install OpenVPN Server on Centos 6.4
+>>==============================================================================
+https://www.digitalocean.com/community/articles/how-to-setup-and-configure-an-openvpn-server-on-centos-6
+--most of the steps are ok in this article.
+
+1.install new yum repo 
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+2.install openvpn
+yum -y install openvpn
+
+3.generate server.conf from sample config
+cp /usr/share/doc/openvpn-*/sample/sample-config-files/server.conf /etc/openvpn/
+
+4.modify server.conf to satifiy your needs.
+vi /etc/openvpn/server.conf
+changes list
+>>>>>> 
+proto tcp  #udp to tcp
+dev tun 
+dh dh2048.pem
+
+server 172.18.0.0 255.255.255.0
+push "route 10.0.0.0 255.0.0.0"      【client side: will using 172.168.0.x as gateway when visit 10.*** net】
+<<<<<
+5.iptables
+iptables -t nat -A POSTROUTING -s 172.18.0.0/24 -o eth0 -j MASQUERADE
+iptables -A INPUT -i eth1 -p tcp --dport 1194 -j ACCEPT
+-A INPUT -i tun0 -p icmp -m icmp --icmp-type 8 -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i tun0 -p icmp -m icmp --icmp-type 0 -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+
+iptables -A FORWARD -i eth0 -o tun0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -s 172.18.0.1/24 -o eth0 -j ACCEPT
+iptables -A FORWARD -s 172.18.0.1/24 -o eth0 -j ACCEPT
+
+
+
+配合请求跳转：从指定source来的，都通过局域网的ethnet
+
+service iptables save
+
+vi /etc/sysctl.conf            #net.ipv4.ip_forward = 1
+sysctl -p
+
+
+以下是为了生成key
+easy-rsa 2.0   [latest is 3.0]
+wget https://github.com/OpenVPN/easy-rsa-old/archive/master.zip
+unzip master
+cp -rf easy-rsa-old-master/easy-rsa/2.0  /etc/openvpn/easy-rsa
+
+vi /etc/openvpn/easy-rsa/vars    change default fields and 1024 to 2048
+
+cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
+cd /etc/openvpn/easy-rsa
+source ./vars
+./clean-all
+./build-ca
+./build-key-server server
+
+./build-dh  [long time:several minutes]
+cd /etc/openvpn/easy-rsa/keys
+cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
+
+service openvpn start
+
+chkconfig add openvpn
+chkconfig openvpn on
+
+
+client setup
+>>==============================================================================
+
+[server host]:
+cd /etc/openvpn/easy-rsa && source ./vars && ./build-key client
+
+mkdir ~sunwj/keys/user
+cp keys/ca.crt keys/client.crt keys/client.key ~sunwj/keys/
+
+需要三个文件：
+/etc/openvpn/easy-rsa/keys/ca.crt
+/etc/openvpn/easy-rsa/keys/client.crt
+/etc/openvpn/easy-rsa/keys/client.key
+ 
+scp ca.crt  client.crt client.key    /target
+
+do the following on client side
+
+openvpn --config client.ovpn  【缺省到当前目录下找3个文件】
+
+
+client.ovpn
+
+client
+dev tun
+proto tcp
+remote 121.197.2.30 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+comp-lzo
+verb 3
+ca ca.crt
+cert client.crt
+key client.key
+
+<<==============================================================================
+
+# openvpn --config client.ovpn
+You can add nameserver 10.200.115.123 to /etc/resolv.conf to enable domain name access.
+
+
+一般来说 能正常启动 就配置正确了。但是ping不通 server可能是server端防火墙在作怪
+ssh ok
+ping doesn't work.
+
+
+CA: Certificate Authority
+
+
+script-security 2
+up ./update-resolv-conf
+down ./update-resolv-conf
+
+Tue Nov 26 17:11:36 2013 /sbin/ip route add 10.0.0.0/8 via 172.18.0.5
+Tue Nov 26 17:11:36 2013 /sbin/ip route add 172.18.0.1/32 via 172.18.0.5
+
+要打开VPN客户端到内网的访问，VPN客户端走的是tun0接口(如果只开了一个VPN服务的话)
+
+
+
+

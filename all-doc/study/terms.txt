@@ -1,0 +1,55 @@
+hadoop
+
+terms:
+================================================================================
+=JournalNodes
+=Quorum-based Storage
+=Shared Storage Using NFS
+=HDFS Federation configuration
+=HA configuration 
+Hadoop YARN: A framework for job scheduling and cluster resource management.
+
+High Availability Mode:
+
+Resource Manager
+Node Manager
+
+HDFS Federation
+--The prior HDFS architecture allows only a single namespace for the entire cluster. A single Namenode manages this namespace. 
+  HDFS Federation addresses limitation of the prior architecture by adding support multiple Namenodes/namespaces to HDFS file system.
+HDFS:Namenode/Datanode:
+NameNode:Name Service and  Block Management--Metadata 
+ 
+DataNode:Storage
+Block Pool:A Block Pool is a set of blocks that belong to a single namespace.
+ClusterID: A new identifier ClusterID is added to identify all the nodes in the cluster. When a Namenode is formatted, this identifier is provided or auto generated. 
+           [This ID should be used for formatting the other Namenodes into the cluster.]
+
+
+           http://nn-qasvc1.hadoop.mscc.cn:50070/dfshealth.jsp
+           
+HDFS High Availability Using the Quorum Journal Manager       
+
+HA: two namenode,one is active and the other is standby
+
+
+EditLog
+The NameNode uses a transaction log called the EditLog to persistently record every change that occurs to file system metadata.
+For example, creating a new file in HDFS causes the NameNode to insert a record into the EditLog indicating this. 
+
+FsImage
+
+Federation configuration
+HA configuration 
+     
+HDFS gateway
+
+
+how to submit a job.
+my owner desktop,how to config hadoop cluster address?
+
+on which node.           
+
+
+ 
+

@@ -1,0 +1,42 @@
+
+
+notes: 
+AS to os, it means centos 6.x if there's no special comments.
+The user has sudo rights to execute the given commands.
+ 
+Q1: Can the following command be executed as expected successfully?
+    
+   sudo echo 'server ntp.svc.mscc.cn' >> myfile 
+
+Q2: Please write the command to add "This is a string" to the first line of file /home/bill/abc.conf
+   
+Q3: Please list the following vi commands:
+   go to then end of file
+   delete current word(space excluded)
+   delete 5 lines (current line included)
+   
+Q4: Please describe NRPE of Nagios in one sentence.
+
+Q5: Please list the products or services you know about AWS IAAS/PAAS-like Cloud Computing solutions.
+
+Q6: As to MySql, how to check current connection sessions?  
+
+
+
+Answers:
+================================================================================
+
+Q1: NO. It doesn't work. 
+    Pipeline operator is divided into two separated parts. And 'sudo' can only take effect on the first part.
+
+Q2: sed -i '1i\This is a string' /home/bill/abc.conf
+
+Q3: go the end of file: GG or SHIFT+G        
+    delete current word(space excluded):diw
+    delete 5 lines (current line included):5dd          
+
+Q4: NRPE allows you to remotely execute Nagios plugins on other Linux/Unix machines.
+
+Q5: EC2/S3/EBS/RDS/CloudFront/DynamoDB/EMR(Elastic MapReduce)/CloudWatch 
+    
+Q6: show processlist       

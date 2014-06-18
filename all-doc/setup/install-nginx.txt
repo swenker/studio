@@ -1,0 +1,48 @@
+nginx
+
+install
+rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+
+
+configuration
+
+log rotate
+
+mkdir -p /data/applog/nginx/mas/ /data/applog/nginx/mainaccess/
+
+
+crontab -e
+0 0 * * * sh /root/rotate_log_nginx.sh
+
+-----------------
+#!/bin/bash
+daily_log_path="/data/applog/nginx/mas/"
+rt_log_path=${daily_log_path}
+
+mv ${rt_log_path}access.log ${daily_log_path}access_$(date -d "yesterday" +%Y%m%d).log
+nginx_pid=`ps aux |grep -E 'nginx: master process'|grep -v 'grep'|awk '{print $2}'`
+kill -USR1 $nginx_pid 
+
+service nginx reload
+
+--------------
+
+
+/data/applog/nginx/access/
+/data/applog/nginx/mas/mas.log
+
+     location /cpp-checkin {
+        proxy_pass http://localhost:8080/cpp-checkin;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location = /track/mscc-app-entry {
+       return 200;
+       access_log /data/applog/nginx/mas/access.log masfmt;
+    }
+    
+log_format  masfmt  '[$msec] "$request"';
+access_log  /data/applog/nginx/mainaccess/access.log  main;
+
+    

@@ -1,0 +1,51 @@
+ Question List for SA Candidates?
+ 
+ 管理过多少台机器，主要用了哪些工具？介绍一下相关工具puppet,nagios,etc.
+ 
+     
+ 介绍下nagios里nrpe的工作机制？nagios 如何监控Windows Server
+ 介绍下nagios的notification escalation 机制
+ 介绍下自己参与过的oncall以及troubleshooting
+ 如何处理一台提供http service的server响应很慢的问题？
+ 对Windows Server的管理
+
+ 说说Linux 在按下电源开机后，系统加载过程
+ 用什么命令看Linux操作系统的发行版本
+
+ 
+ 如何将一字符串插入到文本文件的第一行
+ 
+ 假设当前用户有sudo权限，这个命令能正确执行吗？ 
+ sudo echo 'server ntp.svc.mscc.cn' >> myfile 
+ 
+ 如何实现仅/home/userb/log/abc.log 可以被其他用户访问
+ centos上如何做到copy文件的时候出现或者不出现overwrite提示
+ 
+ 解释一下以下语句：
+ mystring=$(echo "$SHARED_EDITS_DIR" 
+ | sed 's,qjournal://\([^/]*\)/.*,\1,g; s/;/ /g; s/:[0-9]*//g')
+ 
+ 
+ vi: 如何删除当前开始的5行，如何删除当前字符到行尾？如何删除当前单词
+  
+ centos下，如何将本地80端口的请求转发到8080端口
+  
+ 了解openvpn的基本工作机制吗？
+ 简述TCP 三次握手的过程
+
+ 对nginx/tomcat/jetty了解吗？
+ 对postfix了解吗？如何进行安全设置？
+ 如果一条SQL执行很慢，如何进行优化？
+ 对mysql的集中存储引擎了解吗？每个的特点？
+ mysql常见的HA部署模式
+ 如何处理DDOS攻击？
+ 系统安全方面的做法
+    
+ 对python了解吗？ 
+ 对hadoop了解吗
+ 对cassandra了解吗
+ 对SCM工具了解吗，git svn
+ 
+ 对AWS或者国内的公有云服务商了解吗
+ 对CDN了解吗
+

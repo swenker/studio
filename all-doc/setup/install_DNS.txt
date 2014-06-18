@@ -1,0 +1,198 @@
+centos setup DNS service
+
+2013/8/19 17:35:40
+
+DNS Server Setup Steps
+>>==============================================================================
+主要步骤：
+（1）建立主配置文件named.conf，即其主要作用是设置DNS服务器能管理哪些区域（zone）以及对应文件名和存储路径；(/etc/named.conf)
+（2）建立区域文件，依据named.conf文件中指定的路径来建立区域文件，此文件主要记录该区域内的资料记录；(/var/named/your.com和/etc/named/named.192.168.1.rev)
+（3）重新加载配置文件或重启named服务使用配置生效。(chkconfig named on、chkconfig --add named、service named start/restart etc)
+
+详细过程：
+rpm -qa|grep ^bind* 
+#yum –y install bind* caching-nameserver*
+yum -y install bind*
+
+安装成功之后，会有/etc/named.conf产生。
+
+vi /etc/named.conf   添加正向解析zone和反向解析zone[反向解析可以不创建]
+
+zone "qasvc.mscc.cn" IN {
+        type master;
+        file "qasvc.mscc.cn.zone";
+};
+
+zone "svc.mscc.cn" IN {
+        type master;
+        file "svc.mscc.cn.zone";
+};
+
+$TTL 3600
+@   IN  SOA     admin01.svc.mscc.cn. root.admin01.svc.mscc.cn(
+        2013082718  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        3600       ;Minimum TTL
+)
+
+@           IN  NS admin01.svc.mscc.cn.
+
+admin01       IN  A   	10.200.115.123
+deploy        IN  A  	  10.200.115.117
+------------------
+
+$TTL 3600
+@   IN  SOA     admin01.svc.mscc.cn. root.admin01.svc.mscc.cn(
+        2013091316  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        3600       ;Minimum TTL
+)
+
+@           IN  NS admin01.svc.mscc.cn.
+
+3m02        IN  A   	10.132.9.210
+db01        IN  A   	10.160.45.248
+db02        IN  A   	10.132.58.104
+ck02        IN  A   	10.132.9.201
+3m          IN  A       223.6.254.179
+
+db          IN CNAME    db01
+
+verify: named-checkconf /etc/named.conf 
+
+
+创建相应的文件：
+
+
+zone files are located /var/named
+109.105.47.zone
+dev.mscc.sansung.com.cn.zone
+
+
+iptables:
+iptables -A INPUT -p udp -m state --state NEW --dport 53 -j ACCEPT
+iptables -A INPUT -p tcp -m state --state NEW --dport 53 -j ACCEPT
+
+vi /etc/sysconfig/named  to add OPTIONS="-4" to disable use of IPV6
+
+service named start
+
+chkconfig --add named 
+
+<<==============================================================================
+
+Client端
+Linux：只需vi /etc/resolve.conf中加入  nameserver 109.105.47.75 即可立即生效
+
+Windows 添加dns后，要重启系统或者网卡
+
+
+参考知识：
+BIND一览
+=====================================================================
+. 后台进程:named
+. 脚本:/etc/rc.d/init.d/named
+. 使用端口:53 (tcp,udp)
+. 所需RPM包:bind,bind-utils
+. 相关RPM包:caching-nameserver,bindconf
+. 配置文件:/etc/named.conf
+. 相关路径:/var/named  (或/var/named/chroot/var/named)
+
+
+#/etc/host.conf
+
+  order hosts,bind     #解析器查询顺序是文件/etc/hosts,然后是DNS
+  multi on         #允许主机拥有多个ip地址
+  nospoof on        #禁止ip地址欺骗
+
+Fully Qualified Domain Name (FQDN)
+
+port number 53
+
+
+type hint 这个是交给根的意思
+type master 这个表示主域名的意思
+type slave这个是从域名
+
+
+注：新版本CentOS 6.x 已将chroot所需使用的目录，透过mount --bind的功能进行目录链接了，故在CentOS 6.x中，根本无须切换到/var/named/chroot/了，只需按常规目录操作 即可！）
+请cat /etc/sysconfig/named目录，其下是不是有“ROOTDIR="/var/named/chroot” 
+
+
+资源记录类型（创建zone文件时使用
+3;）
+cat /var/named/dev.mscc.sansung.com.cn.zone 
+
+1).
+
+主机记录 (A)  
+主机记录记录了主机名和 IP 地址的映射关系
+
+2).
+起始授权机构 (SOA) SOA
+记录了此区域的主要名称服务器 负责人等，创建区域时被自动创建
+
+3).
+名称服务器记录(NS) 记录了负责该区域的部分或全部名称服务器,创建区域时自动建立
+
+4).
+指针记录(PTR)
+IP 地址与主机名的映射
+
+5).
+别名记录 (NAME) 
+在某些情况下一个主机需要多个别名,以便该主机做为多种服务器
+
+
+6).
+邮件交换器记录(MX) 
+记录了该区域的邮件交换器的IP地址,邮件服务器优先级:默认为10,数字越小越高
+
+7).
+服务器记录 (SRV) 
+记录区域内某些特殊服务器
+ 
+
+8).
+主机信息记录(HINFO)记录了某些主机的CPU操作系统类型
+
+如果该客户端是非DHCP客户端即静态指定IP地址,则该客户端会在 DNS 服务器上更新 A 记录 和 PTR 记录
+
+  
+
+若该客户端为DHCP客户端,则由客户端更新 A 记录 服务器更PTR记录
+
+$TTL 86400 ; Time To Live before remote DNS server removes stale records from cache
+@ IN SOA ns1.yourdomain.tld. useremail.yourdomain.tld. ( ; Responsible name server and responsible email address without the "@" symbol.
+
+1123161063 ; serial number
+10800 ; refresh (3 hours)
+3600 ; retry (1 hour)
+604800 ; expire (1 week)
+3600 ; minimum (1 hour)
+)
+@             IN MX  10   mail.svc.mscc.cn.
+www  IN CNAME yourdomain.tld.
+
+
+
+The new bind version 9.3.6 (Redhat 5.4) try to use IPv6 transport even if the server host does not have IPv6 connectivity, resulting in slower name resolution.
+
+ Sep 2 19:43:16 cpanel named[22767]: network unreachable resolving 'ns.isc.afilias-nst.info/A/IN': 2001:500:7::79#53 
+ To fix this you have to start the bind damon with "-4" (IPv4 only). You can add the line "OPTIONS="-4"" to /etc/sysconfig/named to do so. 
+
+
+
+Slave
+
+could not set file modification time of 'stsvc.mscc.cn.zone ：check /var/named zone files owner or so.
+slave can sync zone files from master automatically. This can be seen from /var/log/messages
+
+    error (unexpected RCODE REFUSED) resolving 'flashservice.adobe.com/A/IN': 205.251.192.180#53
+   目标服务器拒绝AAAA记录查询。
+
+ 

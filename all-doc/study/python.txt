@@ -1,0 +1,9 @@
+python
+
+
+
+================================================================================
+filename=url.split('/')[-1]
+
+Easy Install is a python module (easy_install) bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
+

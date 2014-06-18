@@ -1,0 +1,32 @@
+Security
+
+
+ssh port
+
+listening address
+
+VPN
+
+
+password
+
+
+
+tools:
+
+server ports scanner 
+nikto:web
+nmap:system  http://nmap.org/dist/nmap-6.40-1.x86_64.rpm
+nessus Remote security scanner.http://www.nessus.org/intro.html
+
+
+nmap:
+yum -y install nmap.x86_64
+
+nmap -sT 100.200.115.123  -sA, -b, -sT, -sF, -sI, -sM, -sN, -sS, -sW, and -sX
+
+how to secure windows
+how to secure Linux 
+
+schtasks /create  /SC DAILY   /TR pwoershell
+
