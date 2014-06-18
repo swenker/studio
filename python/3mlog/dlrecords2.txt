@@ -1,0 +1,265 @@
+tspib96xuz,{'57': 5, '56': 1, '50': 4, '73': 4, '72': 1, '65': 5} 
+4cy93wkwma,{'77': 1, '75': 1} 
+ltza7oxawm,{'72': 1} 
+ljnvo6b80z,{'77': 2} 
+yvwxgwjp9e,{'77': 1} 
+bjuke8i0v5,{'77': 1} 
+far0osxbli,{'77': 2} 
+5oq6sjthsr,{'77': 1} 
+dyoybvctsi,{'72': 1} 
+fnom3amzdx,{'72': 1} 
+cjy8gyphae,{'67': 1} 
+wedqtq2kfi,{'77': 1, '60': 1, '75': 1, '65': 1, '66': 1, '78': 1} 
+3lbbroirz1,{'68': 1, '77': 1, '56': 1, '43': 1, '50': 1} 
+mzlnxrb2sb,{'72': 1} 
+lshnaxggfe,{'77': 1} 
+zuq4zfaksc,{'77': 1} 
+5eppgjsc5u,{'75': 1, '64': 1} 
+rfxegh4xbd,{'73': 1} 
+wnjawg9rr6,{'77': 1, '68': 1, '43': 1, '49': 1} 
+pr1lj66ym9,{'50': 1} 
+uxiicppidp,{'60': 1, '56': 1, '73': 1, '50': 1} 
+pxo0c0hcrs,{'77': 1} 
+tv8xehbejf,{'77': 1} 
+tg61q665or,{'61': 2} 
+idy7vesiwc,{'77': 4} 
+vowbs3sgfw,{'77': 1} 
+zsewifmhys,{'77': 1, '49': 1} 
+15gc3t7xuq,{'77': 3} 
+hvwvjsze35,{'43': 1} 
+7mhpmbfvcu,{'56': 1, '50': 1, '43': 1} 
+anius1ytew,{'77': 2} 
+qhl34lylzv,{'77': 1} 
+eqjvzlbasq,{'77': 1} 
+jczkmcxxpf,{'77': 1} 
+bqiuz2jowy,{'56': 1} 
+kggkipwvi2,{'77': 1} 
+tyl5njxro8,{'60': 1} 
+uaogavwz1x,{'77': 1} 
+rdauxi65vb,{'60': 1} 
+idatua5lps,{'57': 1} 
+mkcjz4sxmw,{'77': 1} 
+1vps2mna1d,{'77': 2} 
+ebzx46sir9,{'43': 1} 
+m0iqj0juzr,{'77': 1} 
+yatykcsqnc,{'77': 1} 
+qk8canchdt,{'50': 2} 
+x6dhn9dtld,{'56': 1, '51': 1, '77': 1, '62': 2, '73': 1, '65': 1, '68': 1} 
+dqlxldxepq,{'50': 1} 
+dw3sonpoaq,{'77': 1} 
+onda0oojs6,{'50': 1} 
+zaj0szorsw,{'50': 1} 
+yzikaxgw6z,{'77': 4, '75': 2, '50': 1} 
+xyhqwsihog,{'61': 2, '65': 1, '49': 1} 
+g6jxiukuen,{'77': 1} 
+zyl1xopjju,{'77': 1} 
+p1fcc2iqs1,{'77': 1, '75': 1} 
+9m8sysowuh,{'56': 1} 
+fyxqcvetoo,{'77': 1} 
+inpjb6mn7x,{'49': 1} 
+zd7ayraxt0,{'60': 1} 
+wducnt1tsl,{'56': 1, '43': 1} 
+q9q8errntn,{'77': 2, '49': 1} 
+xys2nqzmps,{'56': 1, '50': 1} 
+dwohlb5k5u,{'77': 1, '72': 1} 
+8iujw0ophv,{'75': 1, '74': 1, '43': 1, '65': 1} 
+17qyzwf9mf,{'60': 1} 
+znaexmfaln,{'77': 1} 
+srrjhfvpzu,{'77': 1} 
+h4nwsugitu,{'61': 1, '43': 2} 
+f8ppna6tet,{'57': 1, '73': 1} 
+nazny7dely,{'77': 1} 
+n1mly0ovc1,{'49': 1} 
+4vs0ncng4i,{'77': 1} 
+lq0gwo3oez,{'77': 4} 
+cylsrdqyvw,{'77': 2} 
+zobjqglepw,{'77': 1} 
+pm2flfrl8r,{'77': 2, '61': 1, '59': 1, '43': 1} 
+qbrp3uggrm,{'77': 2} 
+nsnd0smzf2,{'69': 2} 
+1gxsrhhcwq,{'59': 8, '49': 2, '50': 5, '77': 1, '61': 4, '74': 4, '67': 4} 
+eb30bebam3,{'68': 2, '63': 1} 
+rvcgrnmxwd,{'77': 1, '66': 1} 
+gogozw126g,{'77': 1, '50': 1, '66': 1} 
+ok0b9j64io,{'61': 2, '57': 1} 
+joyo98mano,{'77': 1} 
+dcolwm8zfh,{'77': 1} 
+j0n5xm1ud2,{'56': 1} 
+t8cdktvble,{'77': 1} 
+zwcd135945,{'43': 1} 
+nh3pq8lp3n,{'54': 1} 
+jsiowiulze,{'49': 5, '54': 2, '56': 2, '51': 5, '43': 1, '50': 1, '61': 6, '75': 7, '74': 3, '72': 1, '66': 1, '67': 6, '68': 7, '69': 10, '78': 3} 
+tabi84xpan,{'59': 1, '43': 2} 
+bpgwtkoaad,{'56': 1} 
+4aofe6kmbp,{'77': 2} 
+zkbnol053j,{'77': 1} 
+ks9vkfcsow,{'77': 1, '68': 2, '56': 2, '51': 1, '52': 1} 
+turvkjq8ed,{'77': 1} 
+dvkv8suspq,{'59': 5, '49': 2, '54': 2, '56': 3, '43': 1, '77': 1, '61': 5, '75': 3, '74': 1, '72': 1, '69': 7} 
+wo80ahybnb,{'77': 1} 
+in0daqwz8j,{'56': 1, '50': 1} 
+urzvnikwjd,{'75': 1} 
+nuwopl4aqd,{'77': 1} 
+kcuptuzy29,{'75': 2, '56': 1, '50': 1} 
+uuptypeufj,{'57': 6, '50': 5, '49': 4} 
+jtrf2nconc,{'56': 1} 
+yexqz3wta6,{'77': 1} 
+x3yxhqshjq,{'75': 1, '59': 1} 
+hgnnam4zd7,{'50': 7} 
+9kxicypefs,{'77': 1} 
+wcwsii0jap,{'54': 1} 
+oeawxsgb8m,{'56': 4} 
+tbjwd336kg,{'59': 1, '66': 1, '49': 1} 
+civjb7jelp,{'77': 1, '56': 1, '50': 1, '43': 1} 
+nsvlgpiuq0,{'75': 1} 
+v9mqrsrhzk,{'77': 1} 
+fm076wlsds,{'69': 1} 
+qw537wsvbp,{'50': 1} 
+nqidmcuwhy,{'50': 1} 
+yqhzspfm5l,{'64': 1, '65': 1} 
+ijhiwhfhcf,{'68': 4, '51': 1, '73': 1} 
+lr4oj7ngpl,{'68': 1, '43': 1} 
+0stg2kifkq,{'59': 1, '43': 1} 
+k6lklkujar,{'54': 2, '73': 1} 
+7vhsoahtp3,{'50': 2} 
+u25nshiyni,{'77': 1} 
+mo5mlaco9o,{'77': 2} 
+0kuow4szei,{'60': 1, '57': 1} 
+xneojnubz8,{'73': 1} 
+m89s2e13lr,{'56': 1, '43': 1} 
+mwqawungwh,{'77': 1} 
+vwj3pjv5g7,{'75': 1} 
+s0xppusqw9,{'77': 1, '43': 1} 
+b4ecajcb92,{'65': 2} 
+pfdt4qcfs7,{'73': 1} 
+l8kn7krbuu,{'56': 1} 
+o8o38yhrv7,{'77': 1, '73': 1} 
+5haopfqupg,{'77': 1} 
+4bsl11y7uk,{'77': 1} 
+ksrd4ti2gv,{'77': 1} 
+1htb9horao,{'77': 2, '75': 1, '72': 1} 
+qnr0ikvtl7,{'77': 1} 
+cew8tmak3l,{'52': 1} 
+ern3a6okq2,{'50': 1} 
+1cmn3lonwl,{'77': 1} 
+mvur1judue,{'77': 1} 
+gkb4fsfltz,{'77': 1} 
+0b06icslwj,{'77': 1} 
+ya0ggnlckt,{'75': 6, '78': 2} 
+6twmnqikdo,{'77': 1} 
+iiu4zpyhce,{'77': 2} 
+jlws5qmlzb,{'57': 1} 
+fywm13qjnp,{'77': 1} 
+5nimfeuqpq,{'77': 1, '50': 1} 
+dd7oammcmc,{'77': 1, '50': 1, '43': 1} 
+pkcew0zd9j,{'43': 2} 
+d7yienscjw,{'59': 1} 
+muvi8ec9as,{'58': 1} 
+e81iqik7dw,{'77': 1} 
+frwgv4efef,{'77': 1} 
+lzmnyslww3,{'77': 1} 
+ke9djluhuw,{'54': 1, '75': 1, '49': 1} 
+nh84mmzn1q,{'77': 1} 
+4vyqv47bxe,{'77': 1, '68': 4} 
+pz87lsbgzb,{'50': 2} 
+yx5pe2a3hk,{'77': 1} 
+ydscnxvuco,{'57': 1} 
+nce3zgxwhc,{'57': 3} 
+qe2hi70cel,{'72': 2} 
+pelsjyryiw,{'77': 1} 
+iqrzzow2x5,{'77': 1} 
+bgdczdskpz,{'77': 3} 
+e98qxjbxfe,{'77': 2, '50': 1} 
+xj3smxh6my,{'77': 1} 
+344bhfk260,{'77': 2} 
+auz1ae4rju,{'77': 1, '75': 1, '50': 1} 
+n6xcrqa2zz,{'77': 1, '72': 1} 
+rcx78xacfj,{'43': 1} 
+ep7eqg0jxb,{'77': 1} 
+oeiiqfluyp,{'77': 1} 
+smbmsasxgu,{'77': 8, '43': 1} 
+76b3m9unvl,{'56': 1} 
+auqoy5e93g,{'77': 1, '59': 1, '50': 2} 
+lqgyvsklg5,{'57': 2} 
+yoa7c6hpfd,{'49': 2, '50': 2, '65': 1} 
+xqpdybphz6,{'56': 1} 
+vjgk185phk,{'77': 1} 
+855nuzs4xd,{'77': 1} 
+cxfcfbm7cz,{'56': 1, '50': 1} 
+u1nquba9ws,{'49': 1} 
+jufrbrqw7m,{'72': 1} 
+jhfqzrqxfz,{'56': 2} 
+mv1e0osvvn,{'43': 1} 
+ug4mnfqqfi,{'77': 1} 
+amnqsxst5s,{'77': 1} 
+ng9e7rcuzb,{'77': 1, '68': 1, '43': 1} 
+e9vilbgcyn,{'77': 1} 
+ruwivholwn,{'43': 2} 
+rmkmzvdqdw,{'78': 2} 
+4ftaxnn3xl,{'77': 1} 
+2f4txy2soe,{'77': 1, '68': 1, '56': 1, '50': 1} 
+mxaxozguty,{'75': 3, '50': 1} 
+ethev4za32,{'56': 1} 
+inlbo3h9qz,{'68': 1, '61': 1, '56': 1} 
+opqcqasrcg,{'50': 1} 
+hzy2lhlkm4,{'77': 1, '49': 1} 
+4ugog14l9e,{'68': 1} 
+hwajc9wnkw,{'57': 1} 
+ukviny8wug,{'77': 2} 
+th9gexsugz,{'49': 1} 
+mpl15uhcmg,{'77': 1} 
+nsimmwbueb,{'77': 1} 
+cgwzo8qlmx,{'73': 1} 
+nwn7rjdqud,{'68': 1, '56': 1, '50': 1} 
+hvmfasimhe,{'60': 1, '77': 1} 
+6h7ovss5ig,{'56': 1, '50': 1} 
+yfhinocxje,{'67': 1} 
+neyiqlhsbo,{'77': 1} 
+elvm6vnuo7,{'43': 1} 
+av31dvyizm,{'77': 1, '57': 2, '56': 1, '73': 1} 
+idkzt9qaap,{'65': 1} 
+cdtr5kwvzc,{'62': 1, '56': 1, '73': 1, '72': 1} 
+o1jhk0enar,{'58': 4} 
+qsug0ho9qg,{'77': 1} 
+urlyxs6nao,{'59': 1, '75': 5, '56': 6, '73': 5, '72': 2} 
+jjp7lq5t6n,{'77': 1} 
+jippyl0kgi,{'77': 1} 
+rmzn6popgi,{'77': 1, '73': 1} 
+stakvtbfm1,{'75': 4, '49': 2} 
+l4stofofsf,{'77': 3} 
+ztrpbfgdem,{'77': 1} 
+ogry1cvdrd,{'77': 1} 
+bcty8j9dho,{'77': 1} 
+dw53wrdoz0,{'43': 1} 
+x4luakv1tt,{'61': 4, '65': 4, '67': 1} 
+0wqanhwxwv,{'77': 1} 
+taq00ys8o5,{'77': 1} 
+sukj6wiyj0,{'77': 2} 
+svzphywn8h,{'56': 1} 
+lny90onpys,{'54': 1} 
+dsqurlqad1,{'60': 1} 
+vcx8ry0fbw,{'43': 1, '66': 1, '72': 1} 
+dlwa5hfrb9,{'43': 1} 
+jp7u1vuala,{'77': 1} 
+nd6yghnrxb,{'56': 1} 
+mra0foxtqc,{'62': 1, '78': 2, '75': 7, '49': 1} 
+ykpfhjh2o7,{'77': 1, '56': 1} 
+dys7oiul5v,{'77': 1, '56': 1} 
+wnon6q6xdp,{'54': 1, '78': 2} 
+qfdv7mn3xv,{'65': 1, '50': 2} 
+5gxoefgjrn,{'56': 1} 
+nir7bnzsmf,{'77': 1} 
+bbkymjuie3,{'56': 1} 
+yg41qvkjal,{'50': 1} 
+b0lxlsghnq,{'77': 1} 
+1vtqxvomqd,{'77': 1} 
+cf0rcwqawc,{'56': 1} 
+sb7s6hbtlw,{'50': 1} 
+anmqxgc98n,{'77': 1} 
+mwp2dgz1c4,{'68': 2, '56': 1} 
+ipsypjsedn,{'77': 1} 
+5ovzcfd6cd,{'73': 1} 
+ediy0irasc,{'50': 1, '49': 1} 
+os3ukgxwti,{'77': 1, '49': 1} 
+vcr43qewx4,{'77': 1} 
+xvpzb332a2,{'77': 2} 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hadoop.iml" filepath="$PROJECT_DIR$/hadoop.iml" />
+      <module fileurl="file://D:/opensources/hadoop-2.2.0-src/hadoop-2.2.0-src.iml" filepath="D:/opensources/hadoop-2.2.0-src/hadoop-2.2.0-src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/poc/poc.iml" filepath="$PROJECT_DIR$/poc/poc.iml" />
+    </modules>
+  </component>
+</project>
+

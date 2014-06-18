@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.samsung.service.audit</groupId>
+  <artifactId>checkin</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>checkin Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+    <properties>
+        <maven.build.timestamp.format>yyyyMMddHHmmssS</maven.build.timestamp.format>
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+   </properties>
+  <build>
+      <finalName>checkin</finalName>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-war-plugin</artifactId>
+                  <version>2.4</version>
+                  <configuration>
+                      <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+
+                      <webResources>
+                          <resource>
+                              <directory>src/main/webapp</directory>
+                              <filtering>true</filtering>
+                              <includes>
+                                  <include>**/build.html</include>
+                              </includes>
+                          </resource>
+                      </webResources>
+
+
+                  </configuration>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+
+<!--
+      <resources>
+          <resource>
+              <filtering>true</filtering>
+              <includes>
+                  <include>src/main/webapp/build.html</include>
+              </includes>
+              <directory>src/main/webapp</directory>
+          </resource>
+      </resources>
+-->
+
+  </build>
+
+
+</project>
