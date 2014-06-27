@@ -1,0 +1,26 @@
+$def with(configlist)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>server list</title>
+</head>
+<body>
+<div >
+    $if(configlist):
+        <table border="1">
+
+            <thead>
+                <td>lip</td><td>wip</td><td>cpu</td><td>total mem(kB)</td>
+            </thead>
+            $for conf in configlist:
+                <tr>
+                    <td>$conf.lip</td><td>$conf.wip</td><td>$conf.cpu</td><td>$conf.totalmem</td>
+                </tr>
+        </table>
+    $else:
+        Nothing.
+</div>
+</body>
+</html>

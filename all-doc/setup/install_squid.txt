@@ -1,0 +1,28 @@
+
+yum install -y squid
+
+vim /etc/squid/squid.conf
+
+http://xiaozhang0205.blog.163.com/blog/static/1170578592012411611534/
+
+简单起见就allow all
+
+#[auth]
+auth_param basic program /usr/lib64/squid/ncsa_auth /etc/squid/passwd
+auth_param basic children 5
+auth_param basic credentialsttl 5 hours
+auth_param basic realm Squid proxy-caching
+acl auth_user proxy_auth REQUIRED
+http_access allow auth_user
+
+
+auth_param basic realm Example.com's Squid proxy-caching
+acl auth_user proxy_auth REQUIRED
+http_access allow noauth_user
+http_access allow auth_user
+
+ 
+
+htpasswd -c /etc/squid/passwd 
+
+  

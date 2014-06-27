@@ -1,0 +1,57 @@
+现有dl-3m.stsvc.mcitech.cn，如何将之前绑定此域名的CDN服务指向OSS的bucket？
+
+1.OSS bucket进行域名绑定：
+  OSS console: 添加域名，下载验证文件放至源服务器根目录，验证。
+  如果不进行绑定，即使通过CDN也无法 使用域名对服务进行访问。
+  
+2.通过CDN console 修改域名的源站地址。
+
+无法添加已经绑定过的域名，所以这里需要新建域名或者删除旧域名。
+而且已经创建的域名绑定无法修改其指向bucket，只能通过新建。
+  
+为何不能直接指向OSS域名呢？完全可以。
+CDN无法连通OSS internal的域名。
+
+
+
+
+杭州节点外网地址： oss-cn-hangzhou.aliyuncs.com
+杭州节点内网地址： oss-cn-hangzhou-internal.aliyuncs.com
+                                
+smagazine-st.oss-cn-hangzhou-internal.aliyuncs.com
+smagazine-st.oss-cn-hangzhou-internal.aliyuncs.com
+223.6.254.243
+223.6.252.156
+
+curl -v -I http://dl-3m.stsvc.mcitech.cn/IE-01.png
+http://smagazine-st.oss-cn-hangzhou.aliyuncs.com/IE-01.png
+items/82/219/3121b280-8f0b-429d-a5e0-c7fbdb4aaaf2.zip
+curl -v -I http://dl-3m.stsvc.mcitech.cn/apk/20131203175507_2901.apk
+curl -v -I http://dl-3m.stsvc.mcitech.cn/items/82/219/3121b280-8f0b-429d-a5e0-c7fbdb4aaaf2.zip
+curl -v -I http://dl-3m.stsvc.mcitech.cn/items/83/220/A8ACD80E66134CB6404EE07E772FB9D1.zip
+
+
+需要进行的配置：
+1.通过CDN控制台统一设置过期时间为6个月？
+2.
+curl -v -I http://dl-3m.stsvc.mcitech.cn/pic/attached/66/20140115/20140115214911_3969.jpg
+
+curl -I http://valuepack.oss-cn-hangzhou.aliyuncs.com/media/mas/banner/4g/b1/A8eaRchR4xOOLBaC_N7cyQ.png
+http://valuepack.oss-cn-hangzhou.aliyuncs.com/media/mas/banner/4g/b1/A8eaRchR4xOOLBaC_N7cyQ.png
+http://smagazine-st.oss-cn-hangzhou.aliyuncs.com/pic/attached/88/20140517/20140517215927_1305.png
+
+
+curl -I -v http://dl-3m.stsvc.mcitech.cn/items/81/218/4886C35B0FADEE6C7A38348EE6DD9729.zip
+
+http://databack.oss-cn-hangzhou.aliyuncs.com/dl-3m-stsmagazine-st2014-06-20-16-00-00-0001?Expires=1403257233&OSSAccessKeyId=C4ewu1YvSkrDgrSg&Signature=VOL7zGfF2xHvP6C2yicWys6SKLc%3D
+
+
+必须绑定域名才能访问。
+
+svc-----域名已经绑定完成。
+
+
+
+
+
+
