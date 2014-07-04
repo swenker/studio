@@ -1,0 +1,398 @@
+nagios &cacti:
+according to :
+C:\Users\samsung\Downloads\nagios-coredocs\3x\en\quickstart-fedora.html
+execute the following steps using root 
+
+
+cacti: deprecated.
+http://www.cacti.net/download_cacti.php
+http://docs.cacti.net/
+
+server:
+---------------------
+nagios core
+sudo su -
+#yum -y install httpd openssl openssl-devel ssl make install php gcc glibc glibc-common gd gd-devel net-snmp
+[verified in ali]#yum -y install httpd php
+if php is not installed httpd will complain permission issue.
+
+libssl-dev 
+  
+#useradd -d /data/nagios -m nagios
+#passwd nagios [nagios]
+#groupadd nagcmd
+[root@dev001 ~]# usermod -a -G nagcmd nagios
+[root@dev001 ~]# usermod -a -G nagcmd apache
+
+nagios:wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.5.0.tar.gz
+nagios plugin: wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz
+
+NDOUtils http://exchange.nagios.org/directory/Addons/Database-Backends/NDOUtils/details
+wget http://prdownloads.sourceforge.net/sourceforge/nagios/ndoutils-1.5.2.tar.gz
+
+    
+#cd nagios
+#./configure --with-command-group=nagcmd
+
+make all
+make install
+make install-init
+make install-config
+make install-commandmode
+make install-webconf
+
+cp -R contrib/eventhandlers/ /usr/local/nagios/libexec/
+chown -R nagios:nagios /usr/local/nagios/libexec/eventhandlers
+
+vi /usr/local/nagios/etc/objects/contacts.cfg email有多个，可以用,隔开
+
+htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin   
+
+service httpd restart
+
+====plugin:
+
+cd nagios-plugins-1.4.16
+./configure --with-nagios-user=nagios --with-nagios-group=nagios with-mysql
+          
+wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz && 
+chkconfig --add nrpe && chkconfig nrpe on && /bin/cp nrpe.cfg /etc/nagios/ && tar -xzf nagios-plugins-1.5.tar.gz && cd nagios-plugins-1.5 && ./configure --with-nagios-user=nagios --with-nagios-group=nagios && make && make install && service nrpe restart
+scp nrpe.cfg nagios-plugins-1.5.tar.gz root@
+
+[if mysql-devel wasn't installed, check_mysql* will not be generated]
+
+chkconfig --add nagios && chkconfig nagios on
+
+verify configuration file: 
+# /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+if no error,then
+service nagios start
+
+check SELinux
+getenforce
+
+chcon -R -t httpd_sys_content_t /usr/local/nagios/sbin/
+chcon -R -t httpd_sys_content_t /usr/local/nagios/share/
+
+
+----------------------------
+install nagiosgraph:
+check README
+Redhat/Fedora/CentOS:
+   yum -y install rrdtool, perl, perl-rrdtool, perl-GD,rrdtool-perl
+    
+./install.pl --check-prereq
+./install.pl --layout overlay --prefix /usr/local/nagios
+
+add Immediate Processing to nagios.cfg and command.
+rrd 目录必须让apache可读，+x权限（父目录也需要）
+Configuring Graphing and Display:add action_url for service.
+
+
+1.where to get the guide:
+
+
+--done.
+
+extra:
+install NDO 
+================================================================================
+get it and unzip
+yum -y install mysql-devel  perl-DBI perl-DBD-MySQL
+configure
+make
+
+mysqladmin --user=root create nagios #create database nagios;
+
+GRANT ALL ON nagios.* TO nagiosuser@10.200.115.123 IDENTIFIED BY 'moni!321';
+ flush privileges;  
+ 
+cat README
+
+cp src/ndo2db-3x /usr/local/nagios/bin/ndo2db
+cp config/ndo2db.cfg-sample /usr/local/nagios/etc/ndo2db.cfg [change dbuser/passwd/]
+
+./installdb -u nagiosuser -p nagiosuser -h deploy.svc.samsung.cn -d nagios
+
+/usr/local/nagios/bin/ndo2db -c /usr/local/nagios/etc/ndo2db.cfg [done.]
+
+after kill -9, to delete /var/local/nagios/var/ndo*.*ock  
+
+table created by npc are not compatible with NDO's 需要手工修改！
+
+
+整合完以后，NPC显示的nagios状态一直是off的原因是ndo和npc各用一套表。解决办法：更改ndo2db.cfg中表的prefix
+the nagios status of on or off simply comes from reading the database. If ndo2db were not running and the nagios process record was not updated for some certain amount of time nagios would display as off. So really in order to get it to show as on you need nagios and ndo2db running. 
+
+cp -a daemon-init /etc/init.d/ndo2db
+
+Check your npc_programstatus table: 
+http://forums.cacti.net/post-173329.html
+
+--------------------------------------------------------------------------------
+
+client(hosts to be monitored):
+--------------------------------------------------------------------------------
+deprecated #yum --enablerepo=epel -y install nrpe  【do this on remote host】
+
+do this on nagios host:
+wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz/download
+
+vi  /etc/nagios/nrpe.cfg
+     allowed_hosts=127.0.0.1, 192.168.1.110
+
+chkconfig --add nrpe
+chkconfig nrpe on
+
+ 
+
+install check_NSclient ++ on windows:
+http://files.nsclient.org/stable/
+http://files.nsclient.org/stable/NSCP-0.4.1.101-x64.msi
+
+nscp client -q check_cdn_req2
+
+install check_logfiles
+
+http://labs.consol.de/lang/en/nagios/check_logfiles/check_logfiles-beispielecheck_logfiles-examples/
+http://labs.consol.de/download/shinken-nagios-plugins/check_logfiles-3.5.3.2.tar.gz
+http://labs.consol.de/download/shinken-nagios-plugins/check_logfiles-3.5.3.2(2).zip
+
+------------------
+check log.
+wget http://labs.consol.de/download/shinken-nagios-plugins/check_logfiles-3.5.3.2.tar.gz
+./configure
+make && make install  
+messages-yyyyMMdd
+
+/usr/local/nagios/libexec/check_logfiles -logfile=/var/log/mysql/mysql.log -tag=mysqld -rotation=linux -criticalpattern='marked as crashed and should be repaired' -warningpattern='Incorrect key file for table'
+/usr/local/nagios/libexec/check_logfiles -logfile=/var/log/messages -tag=named -rotation=HPUX -criticalpattern=error -warningpattern=warn
+/usr/local/nagios/libexec/check_logfiles -logfile=/var/log/messages -tag=named -rotation=message-* -criticalpattern=error -warningpattern=warn
+
+nagios server: add new service and command
+host server: add new command to /nrpe.
+
+
+add to /etc/nrpe.cfg command[check_logfiles]=/usr/local/nagios/libexec/check_logfiles $ARG1$
+
+
+./configure
+make install
+
+iptables -A INPUT -p tcp --dport 5666 -j ACCEPT
+
+
+install NPC 太不成熟了，表结构都有问题，
+[download npc-2.0.4.tar.gz from csdn]
+   tar -xzf npc-2.0.4.tar.gz
+   sudo mv npc /usr/share/cacti/site/plugins/
+   
+install it via admin site   
+Configure NDOUtils:[see nagios part]
+
+
+---------------------------------------------------------------------------------
+
+Reference:
+================================================================================
+install NRPE wget http://prdownloads.sourceforge.net/sourceforge/nagios/nrpe-2.14.tar.gz
+http://www.nagios.org/download/addons/
+http://nagiosplugins.org/man
+
+wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.4.1.tar.gz
+
+
+
+Creating sample config files in sample-config/ ...
+
+chown nagios.nagios /usr/local/nagios 
+chown -R nagios.nagios /usr/local/nagios/libexec 
+
+
+how to check remote server manually to verify it's ok?
+如何加入app的监控？add commands to commands.cfg?
+如何控制发alert的interval
+如何给nagios web app添加用户
+nagios client端的plugin有安装的必要吗？
+ 
+
+------------------
+   
+
+对象定义：
+
+host
+hostgroup
+
+service
+servicegroup
+
+contact
+contactgroup
+
+timeperiod
+
+
+对象的定义可以继承
+
+ 
+
+基本的对象定义在文件templates.cfg文件中，如：linux-server，这个可以被其他的对象定义继承
+
+ 
+ 
+ddefine command {
+     command_name          check_nrpe
+     command_line          $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+   }
+           
+
+define command {
+     command_name          check_ntlogfile
+     command_line          $USER1$/check_nt -H $HOSTADDRESS$ 
+   }
+
+        
+command[check_logfiles]=/usr/local/nagios/libexec/check_logfiles -logfile=/data/mscc/logs/cpp-payment/payment.log -tag=Payment -rotation=HPUX -criticalpattern=ERROR -warningpattern=WARN
+
+---------------------------------------------------------------------------------
+# y = c * p / 100
+# y: nagios value
+# c: number of cores
+# p: wanted load procent per core.
+
+# 4 cores
+# time        5 minutes    10 minutes     15 minutes
+# warning:    90%          70%            50%
+# critical:   100%         80%            60%
+command[check_load]=/usr/local/nagios/libexec/check_load -w 3.6,2.8,2.0 -c 4.0,3.2,
+
+5 min load avg:
+w: <ncpu> * 8
+c: <ncpu> * 10
+
+10 min load avg:
+w: <ncpu> * 5
+c: <ncpu> * 8
+
+15 min load avg:
+w: <ncpu> * 2
+c: <ncpu> * 3
+Load Average 就是一段时间（1分钟、5分钟、15分钟）内平均Load
+
+check_load -w 15.0,10.0,5.0 -c 30.0,25.0,20.0 这个命令的意义如下
+check_load [-r] -w WLOAD1,WLOAD5,WLOAD15 -c CLOAD1,CLOAD5,CLOAD15
+/usr/local/nagios/libexec/check_nrpe -H 10.200.114.59 -c cpu
+
+plugin:
+https://github.com/willixix/WL-NagiosPlugins
+http://exchange.nagios.org/directory/Plugins/Network-Protocols/SNMP/Advanced-Network-Interface-Check--2D-check_netint--2F-check_snmp_netint/details
+
+check_win_net_usage (Windows Network Usage:http://www.claudiokuenzler.com/nagios-plugins/check_win_net_usage.php
+
+# Service Type: check_win_net_usage
+# Regex by Claudio Kuenzler
+# Nagios Output: Network OK - 9 KBytes received/sec, 0 KBytes sent/sec
+# Perfdata: bytes_in=9988;bytes_out=367
+/perfdata:bytes_in=(\d+);bytes_out=(\d+)/
+and push @s, [nt_net,
+['in_Bps', GAUGE, $1 ],
+['out_Bps', GAUGE, $2 ] ];
+
+
+Error: Request contained command arguments, but argument option is not enabled!
+need :./configure --enable-command-args
+
+CHECK_NRPE: Error - Could not complete SSL handshake. 一般是由于client端nrpe的配置等导致，可以查看/var/log/messages中的内容
+ 
+  define contact{
+	contact_name			bob
+	...
+	host_notification_period	bob-oncall
+	service_notification_period	bob-oncall
+	}
+
+
+  plugin output:
+  TEXT OUTPUT | OPTIONAL PERFDATA
+
+'TC'=22;100;350;1;450
+PERFDATA  'label'=value[UOM];[warn];[crit];[min];[max]
+
+只要有 abc |'TC'=22 这样的格式就能画图，图中无数据往往是因为时间间隔设置的太大（需要比较notification period等）。
+return code 
+0: OK
+ 1: WARNING
+ 2: CRITICAL
+ 3: UNKNOWN
+ 
+
+define serviceescalation{
+	hostgroup_name		all-servers
+	first_notification	3
+	last_notification	5
+	notification_interval	30
+	contact_groups		admins,qa,dev
+}
+
+
+http://nagios.sourceforge.net/docs/3_0/pluginapi.html
+https://www.nagios-plugins.org/doc/guidelines.html
+http://nagios.sourceforge.net/docs/nagioscore/4/en/escalations.html
+
+/usr/local/nagios/libexec/check_nrpe -H 3mdl01.svc.mscc.cn -c check_cdn_reqs -t 20
+ 
+ echo $?
+ 
+ rrdtool dump CDNzipRequest___zipreq.rrd CDNzipRequest___zipreq.xml
+ 
+  2014-01-26 14:50:00 CST / 1390719000 --> <row><v> NaN </v><v> NaN </v><v> NaN </v><v> NaN </v></row>
+  
+                        <!-- 2014-01-26 14:45:00 CST / 1390718700 --> <row><v> 3.7701250000e+03 </v><v> 3.0000000000e+03 </v><v> 5.0000000000e+03 </v><v> 0.0000000000e+00 </v></row>
+                        <!-- 2014-01-26 14:50:00 CST / 1390719000 --> <row><v> NaN </v><v> NaN </v><v> NaN </v><v> NaN </v></row>
+                        
+                          
+ 
+ 
+rrd文件创建之后，如果手动修改了nagios service的更新频率，rrd 文件自己依然不会有变化。所以一开始就要慎重。 
+if you tell rrdtool to expect updates every 2000 seconds and you enter updates every 3600 seconds,
+then it will certainly render all your updates to NaN
+
+Four possibilities:
+
+1: all your updates are before the last update.  In this case I wouldn't
+   expect "OK" from the pipe though.  I mean: you are trying to update
+   a file that already exists and thus rejects your updates because they
+   are too old.
+
+2: all your updates are further apart than your step size. In that
+   case all are ignored, replaced by NaN and written to the RRA
+
+3: one of your updates falls outside the maximum allowed range.
+   This results in NaN, and you use grep -v to discard the entire line.
+
+4: all your updates have occured, and you are trying to find
+   data that isn't there anymore.  Try rrdtool fetch --end 1162357348 AVERAGE
+   or something similar.
+http://www.vandenbogaerdt.nl/rrdtool/
+
+cfaa3f93efef6ddc139a05be0e1ef8a1 /usr/local/cms/config/token.cfg
+
+sed -i 's/AGENT_TOKEN = anonymous/AGENT_TOKEN = cfaa3f93efef6ddc139a05be0e1ef8a1/'  /usr/local/cms/config/token.cfg
+cmsd start
+http://oss.aliyuncs.com/aliyun_portal_storage/jiankongagent.x86_64.rpm?spm=0.0.0.0.1ljIur&file=jiankongagent.x86_64.rpm
+
+
+
+/usr/local/nagios/libexec/check_win_net_usage.sh -H 3mdl01.svc.mscc.cn
+
+C:\Program Files\NSClient++>\nscp client -q check_cdn_reqs2
+
+/usr/local/nagios/libexec/check_nrpe -H 3mdl01.svc.mscc.cn -c check_cdn_reqs -t 20
+
+; POWERSHELL WRAPPING -
+ps1 = cmd /c echo scripts\\%SCRIPT% %ARGS%; exit($lastexitcode) | powershell.exe -command -
+
+cmd /c echo scripts\check_log_requests2.ps1; exit(1)|powershell.exe -command -
+
