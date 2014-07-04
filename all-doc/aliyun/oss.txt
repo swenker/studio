@@ -19,9 +19,12 @@ CDN无法连通OSS internal的域名。
 杭州节点内网地址： oss-cn-hangzhou-internal.aliyuncs.com
                                 
 smagazine-st.oss-cn-hangzhou-internal.aliyuncs.com
-smagazine-st.oss-cn-hangzhou-internal.aliyuncs.com
-223.6.254.243
-223.6.252.156
+staging: 223.6.254.243
+smagazine-st.oss-cn-hangzhou.aliyuncs.com
+http://dl-3m.stsvc.mcitech.cn/crossdomain.xml
+
+配置切换需要一定的时间才能生效。
+
 
 curl -v -I http://dl-3m.stsvc.mcitech.cn/IE-01.png
 http://smagazine-st.oss-cn-hangzhou.aliyuncs.com/IE-01.png
@@ -48,7 +51,7 @@ http://databack.oss-cn-hangzhou.aliyuncs.com/dl-3m-stsmagazine-st2014-06-20-16-0
 
 必须绑定域名才能访问。
 
-svc-----域名已经绑定完成。
+2014/6/30 17:34:19 svc-----域名已经绑定完成。
 
 
 

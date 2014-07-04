@@ -1,0 +1,678 @@
+linux 
+
+http://109.105.47.75/nagios/
+http://109.105.47.75/vshell
+
+http://exchange.nagios.org/
+
+管理对象：
+CPU
+cat /proc/cpuinfo
+Memory
+IO
+Network
+
+/etc/sysconfig
+
+
+Linux 分区
+===============================================================================
+硬盘分区的知识：
+通常三个分区：
+root分区【用户主目录，用户程序等，越大越好】,
+boot 分区【系统内核和启动文件 不用太大，2G?】，
+swap 分区【无需挂载点，内存两倍大】
+
+在没有分区和格式化数据盘之前，使用 “df –h”命令，是无法看到数据盘的，可以使用“fdisk -l”命令查看。如下图：
+执行“fdisk -S 56 /dev/xvdb”命令，对数据盘进行分区；
+使用“mkfs.ext3 /dev/xvdb1”命令对新分区进行格式化
+
+echo '/dev/xvdb1  /data ext3    defaults    0  0' >> /etc/fstab
+
+mount -a 挂载设备
+http://help.aliyun.com/manual?spm=5176.383377.0.0.xQitU0&helpId=271
+
+硬盘有部分在系统安装时，没有创建分区：
+
+
+创建交换分区
+===============================================================================
+使用fdisk工具将硬盘分为大小分别为39G和512M的两个主分区；
+$fdisk /dev/sda
+
+使用mke2fs将两个分区格式为ext3的格式(带系统日志管理功能)；
+$mke2fs -j /dev/sda1 $mke2fs -j /dev/sda2
+
+格式化交换分区 :-c代表检查分区物理损坏的区域,标记后绕过坏道，Sync确保格式化信息被写入物理文件swap1里。
+# mkswap -c swap1
+# sync
+
+激活交换分区
+# swapon swap1
+
+修改配置文件使开机自动启用交换分区：/etc/fstab
+#device             mountpoint  type    options     dump fsck
+/dev/hda2               swap    swap    defaults        0 0
+/swap1                    none    swap    rw                  0 1
+
+
+dd if=/dev/zero of=/swap bs=1024 count=2097152
+mkswap /swap && chown root. /swap && chmod 0600 /swap && swapon /swap
+echo /swap swap swap defaults 0 0 >> /etc/fstab
+echo vm.swappiness = 0 >> /etc/sysctl.conf && sysctl -p
+
+
+# umount /dev/hda5
+# umount /mnt/hda5
+# umount /dev/hda5 /mnt/hda5
+
+install apache:
+===============================================================================
+yum install httpd
+yum -y install httpd
+chkconfig --levels 235 httpd on
+service httpd start
+Apache的默认文档根目录是在CentOS上的/var/www/html 目录 ，配置文件是/etc/httpd/conf/httpd.conf。配置存储在的/etc/httpd/conf.d/目录。
+
+
+Network
+===============================================================================
+linux port number <1024 needs root ,so we can map 80 to 8080
+cat /etc/sysconfig/iptables
+
+
+开始网络service不可用是因为onboot=no
+vi /etc/sysconfig/network-script/ifcfg-eth0 
+设置为：ONBOOT=yes 
+
+service network restart
+setup network ip address:
+
+rpm --erase --allmatches jiankongagent
+
+如何查看本机开了哪些端口？
+
+
+iptables
+================================================================================
+/etc/sysconfig/iptables
+filter
+NAT
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
+注意，这是在到达filter之前进行的，所以要确保filter的input里，从当前interface能通过8080端口 
+
+iptables -D INPUT 策略序号
+
+iptables里：
+172.15.100.0/24 最后这个 24即是 255.255.255.0的另一种写法,一个255表示8位，3个就是24
+要表示172.15.的网段如何写! 172.15.0.0/16
+
+打开端口：
+iptables -A INPUT -p tcp --dport 8140 -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+service iptables save 
+
+
+文件权限：
+===============================================================================
+chown userid filename
+chown .group filename
+当文件或者文件夹只使用了selinux context的属性，那么这个在ls -l时后面会是一个点。
+只要设置了acl，就是那个setacl设置的，后面将是一个加(+)号
+
+一般来说 user home 目录都只允许自己访问，所以其下的文件也无法为外界访问。
+
+
+Performance Test:
+===============================================================================
+embedded tools:
+vmstat/uptime/top/free/iostat/mpstat/sar/lsof
+cat /proc/meminfo
+/proc/pid/maps  显示当前进程所占用的虚拟地址。
+/proc/pid/statm 进程所占用的内存
+[root@dev001 ~]# hdparm -t /dev/mapper/vg_dev001mscc-lv_home
+
+
+/dev/mapper/vg_dev001mscc-lv_home:
+ Timing buffered disk reads:  608 MB in  3.00 seconds = 202.39 MB/sec
+
+Third Parties:
+Lmbench[make results/make see]
+smartmontools [smartctl,smatd]
+configure: error: C++ compiler cannot create executables
+
+netperf 
+
+
+iostat -d -k 5 
+top
+vmstat
+
+
+
+performance optimization
+===============================================================================
+通过以下方法可以修改进程的最大连接数到60000
+sudo vi /etc/security/limits.conf
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080 
+
+Monitor tools
+
+
+Misc:
+===============================================================================
+文件属于哪个包 rpm -qif /filename
+Linux的七个运行级别 cat /etc/inittab chkconfig命令可以用来检查、设置系统的各种服务
+ 查看运行级别用：runlevel  
+  init 5 进入xwindows 界面？
+ 
+
+nagios/cacti server can only be deployed on Linux
+
+
+user
+===============================================================================
+useradd -d /data/guojie -g dev -m guojie
+w/who  :查看当前已登录用户
+usermod -a -G nagcmd nagios
+
+删除用户会话：skill -KILL -v pts/4
+删除正在登录的用户要首先kill掉其进程然后userdel -rf username
+
+linux 如何列出所有用户？
+cat /etc/passwd | cut -d: -f1 | sort 
+awk -F: '{print $1}' /etc/passwd
+
+
+mail:
+===============================================================================
+使用postfix，默认是安装的。
+修改/etc/mail.rc)
+set from=fromUser@domain.com smtp=smtp.domain.com
+set smtp-auth-user=username smtp-auth-password=passwordset smtp-auth=login
+ 
+ /etc/postfix/mail.cf protocols=ipv4
+
+
+mail -s "test" msgates@126.com <content.txt 其中-s后面的是邮件标题，user@sohu.com是收件人地址，content.txt里面是邮件正文
+mail -s "test" swenker@126.com <content.txt
+如果不配置则需要service postfix start,发件人则是当前用户。
+
+sendmail "test send mail" swenker@126.com <README
+
+用自带服务：
+
+当postfix启动以后，发邮件都能成功，不需要做额外的配置。
+
+遇到这种问题，手工创建 /var/log/sa目录。
+ Cannot open /var/log/sa/sa02: No such file or directory
+
+ 如果没有mail命令，则yum -y install mailx
+
+mysql
+===============================================================================
+mysql_secure_installation:更改mysql的设置
+[client]
+default-character-set=utf8
+
+[mysqld]
+default-character-set=utf8
+
+
+install jetty service:
+1.ln -s jetty-distribution-8.1.11.v20130520 current
+2.set in jetty_home/bin/jetty.sh
+JETTY_HOME=/home/jetty/current
+JETTY_USER=jetty
+JAVA_HOME=/usr/share/java/jdk1.7.0_25
+JAVA=$JAVA_HOME/bin/java
+JETTY_LOGS=/home/jetty/current/logs
+
+3.cp ~jetty/current/bin/jetty.sh /etc/init.d/jetty
+
+service jetty start
+
+ <Get name="securityHandler">
+     <Set name="loginService">
+       <New class="org.eclipse.jetty.security.HashLoginService">
+             <Set name="name">Test Realm</Set>
+       </New>
+     </Set>
+ 
+     <!-- or if you defined a LoginService called "Test Realm" in jetty.xml : -->
+     <Set name="realmName">Test Realm</Set>
+ 
+   </Get>
+
+
+Linux 更改机器名字？
+================================================================================
+vi /etc/sysconfig/network
+service network restart
+reboot
+
+/etc/hosts
+1.puppet cert clean<agent-hostname> -
+2. rm -rf $(puppet agent --configprint ssldir)
+
+    
+yum -y install openldap  openldap-clients  nss_ldap
+/etc/openldap/slapd.conf 
+
+yum -y install  openldap-servers 
+
+cp /usr/share/openldap-servers/slapd.conf.obsolete /etc/openldap/slapd.conf
+
+
+slappasswd
+
+
+loglevel 296 
+
+DN的意思你可以理解为路径，
+而RDN就是目标了。
+
+server启动成功以后，
+1.如何添加用户？
+2.如何登陆？
+
+dc=dev,dc=mscc,dc=samsung,dc=com,dc=cn
+
+
+
+
+DNS server
+----------------------------------
+http://linux.vbird.org/linux_server/0350dns.php#DNS_resolver
+dig?
+
+cat /etc/services
+
+ 
+ 
+/etc/
+  
+zone "." IN {
+type hint;
+file "named.ca";
+};
+ 
+ 
+resolv.conf的关键字主要有四个，分别是：
+nameserver    //定义DNS服务器的IP地址 ，
+    比如nameserver 109.105.47.75
+        nameserver 109.105.47.75
+                 
+domain       //定义本地域名  ？
+search        //定义域名的搜索列表，比如 ping dev001，自动加入 这里的域名后缀进行搜索？
+sortlist        //对返回的域名进行排序 
+
+
+用sysctl可以读取设置超过五百个系统变量。基于这点 
+Sysctl是一个允许您改变正在运行中的Linux系统的接口。它包含一些 TCP/IP 堆栈和虚拟内存系统的高级选项，这可以让有经验的管理员提高引人注目的系统性能。
+
+SSSD:System Security Services Daemon
+SSSD是红帽企业版Linux6中新加入的一个守护进程，该进程可以用来访问多种验证服务器，如LDAP，Kerberos等，并提供授权。SSSD是介于本地用户和数据存储之间的进程，本地客户端首先连接SSSD，再由SSSD联系外部资源提供者(一台远程服务器)。
+
+
+    管理SSSD进程
+    service  sssd  start 开启
+    service  sssd  stop 关闭
+ 
+    使用authconfig命令开启SSSD： # authconfig  --enablesssd  --update
+    使用systemctl命令开启SSSD：  # systemctl  enable  sssd
+
+http://www.couyon.net/1/post/2012/04/enabling-ldap-usergroup-support-and-authentication-in-centos-6.html
+
+
+
+how to configurate php:
+
+
+http://help.aliyun.com/manual?spm=5176.383377.0.0.xQitU0&helpId=271
+  
+ fdisk -S 56 /dev/xvdb
+    根据提示，依次输入“n”，“p”“1”，两次回车，“wq”，分区就开始了，很快就会完成。
+
+ mkfs.ext3 /dev/xvdb1    [several minutes]
+ mkdir /data
+ echo '/dev/xvdb1  /data ext3    defaults    0  0' >> /etc/fstab
+ mount -a
+ 
+ rpm -qa|grep ^bind*
+ 
+rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+
+
+-----------------
+What is EPEL
+EPEL (Extra Packages for Enterprise Linux) is open source and free community based repository project from Fedora team which provides 100% high quality add-on software packages for Linux distribution including RHEL (Red Hat Enterprise Linux), CentOS, and Scientific Linux. Epel project is not a part of RHEL/Cent OS but it is designed for major Linux distributions by providing lots of open source packages like networking, sys admin, programming, monitoring and so on. Most of the epel packages are maintained by Fedora repo.
+
+Why we use EPEL repository?
+◦Provides lots of open source packages to install via Yum.
+◦Epel repo is 100% open source and free to use.
+◦It does not provide any core duplicate packages and no compatibility issues.
+◦All epel packages are maintained by Fedora repo.
+
+
+ WMI (Windows Management Instrumentation) for Remote ...
+
+ 目录不给x权限，则无法cd到目录。
+ 
+
+用户登录用户名口令错误超过一定次数就锁住账号的方法：
+ ，用锁定账号的方式来防暴力破解不是最佳的方式，真遇到暴力破解时容易造成用户全部锁死，影响系统的正常使用，最佳的方式是限制登录来源。
+ pam_tally2 -u username
+ pam_tally2 -u username –reset 
+  
+ 
+如何查看linux进程总数 
+ 
+
+使用chmod和数字改变文件或目录的访问权限
+
+文件和目录的权限表示，是用rwx这三个字符来代表所有者、用户组和其他用户的权限。有时候，字符似乎过于麻烦，因此还有另外一种方法是以数字来表示权限，而且仅需三个数字。
+r: 对应数值4
+w: 对应数值2
+x：对应数值1
+-：对应数值0
+
+数字设定的关键是mode的取值，一开始许多初学者会被搞糊涂，其实很简单，我们将rwx看成二进制数，如果有则有1表示，没有则有0表示，那么rwx r-x r- -则可以表示成为：
+
+111 101 100
+
+再将其每三位转换成为一个十进制数，就是754。
+
+例如，我们想让a.txt这个文件的权限为：
+
+自己 同组用户 其他用户
+可读 是 是 是
+可写 是 是
+可执行
+
+那么，我们先根据上表得到权限串为：rw-rw-r--，那么转换成二进制数就是110 110 100，再每三位转换成为一个十进制数，就得到664，因此我 们执行命令：
+[root@localhost ~]# chmod 664 a.txt
+
+以下操作使得 logs目录可以被其他用户读取，文件夹的x权限使得 目录能够进入
+sudo chmod 771 /data/mscc
+sudo chmod -R 775 /data/mscc/logs 
+ 
+ 
+git config core.sharedRepository
+git config core.sharedRepository group
+/home/mscc
+error: could not lock config file .git/config: No such file or directory
+touch .git/config 
+
+chgrp -R git .
+http://www.thoughts-of.me/entry.php?id=389
+
+
+pssh -h /data/deploy-farm/hosts/qa-checkin.txt -P 'sudo groupadd qa'
+pssh -h /data/deploy-farm/hosts/qa-checkin.txt -P 'sudo useradd -e 2013-12-13 -g qa -m -d /data/wangjing wangjing'
+
+Tomcat Web服务器安全配置
+apache-tomcat-7.0.42
+
+iptables:
+================================================================================
+如果iptables无法启动，请检查是否存在 /etc/sysconfig/iptables
+也可以iptables先添加一条，然后 save，再start
+
+iptables -A INPUT -p -i eth0 tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p  tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p  tcp --dport 80 -j ACCEPT
+
+
+iptables -A INPUT -p tcp -s 0/0 --dport 8080 -j ACCEPT  
+5666
+iptables -A INPUT -p tcp -s 0/0 --dport 9080 -j ACCEPT
+
+iptables -A INPUT -i eth0 -p tcp -s 10.132.9.201 --dport 3306 -j ACCEPT
+
+predefined:  
+iptables -P -i eth1 INPUT DROP
+iptables -P -i eth1 OUTPUT DROP
+iptables -P -i eth1 FORWAED DROP  
+
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWAED DROP  
+
+:INPUT DROP
+:OUTPUT DROP
+:FORWAED DROP  
+  
+  
+iptables -A INPUT -s 116.2.24.127 -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -s 116.2.24.127 -p tcp --dport 22 -j ACCEPT
+
+
+*filter
+:INPUT ACCEPT [1:76]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [107:16933]
+-A INPUT -p udp -i eth0 -m state --state NEW -m udp --dport 53 -j ACCEPT
+-A INPUT -p tcp -i eth0 -m state --state NEW -m tcp --dport 53 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -i eth0  -m tcp --dport 5666 -j ACCEPT
+COMMIT
+ 
+
+nikto:web
+nmap:system  http://nmap.org/dist/nmap-6.40-1.x86_64.rpm
+nessus Remote security scanner.http://www.nessus.org/intro.html
+
+db server can not connect to internet. 
+ 
+iptables -A INPUT -i eth0 -p tcp --dport 3306 -j ACCEPT 
+
+:INPUT DROP
+iptables -A INPUT  -i eth0 -p tcp -m tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT 
+iptables -A INPUT -p tcp --dport 9080 -j ACCEPT
+
+touch /etc/sysconfig/iptables
+               
+
+mysqladmin flush-hosts -uroot -pRepo5.533rpm
+
+export http_proxy="http://10.1.9.206:3128"
+rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+
+sed -i '1i\nameserver 10.1.115.123' /etc/resolv.conf
+
+sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=admin.svc.mscc.cn/g"  /etc/nagios/nrpe.cfg
+
+echo "proxy=http://10.1.9.206:3128" >>/etc/yum.conf
+
+
+postfix：failed to start: /var/log/maillogno local interface found for ::1
+/etc/post/
+
+
+useradd -g wheel -m -d /data/feiyun feiyun 
+
+yum install perl-CPAN
+perl -MCPAN -eshell
+
+
+mail 
+d message No.
+
+
+yum -y install bind-utils 
+dig will be installed
+
+
+ssh-copy-id 免密码登录对镜像是有效的。
+
+
+linux svn update 中文文件名乱码：
+LANG="zh_CN.UTF8"  
+LANGUAGE="zh_CN.UTF8:zh_CN"  
+SUPPORTED="zh_CN.UTF8:zh_CN:zh:en_US.UTF-8:en_US:en"  
+SYSFONT="latarcyrheb-sun16"  
+  
+12.source /etc/sysconfig/i18n
+
+ Linux date  +%D   
+            
+get yesterday 
+date --date='yesterday' '+%Y%m%d'
+date --date='1 days ago' '+%Y%m%d'
+date --date='+3 days' '+%Y%m%d'
+date --date="next day"
+
+建议把 访问控制规则写到filter表中
+
+nat表只做地址转换
+nat表的缺省策略为 ACCEPT
+
+而filter表的缺省策略为
+INPUT DROP
+FORWARD DROP
+
+然后再慢慢做访问控制，对于那些有DNAT的情况，在forward链中做规则处理，而不需要在INPUT链中进行处理
+
+linux:删除eclipse  ：yum remove eclipse*
+
+
+curl -I host
+curl -I -H
+
+crontab   基本格式 :
+*　　*　　*　　*　　*　　command
+分　时　日　月　周　命令 
+
+第1列表示分钟1～59 每分钟用*或者 */1表示
+第2列表示小时1～23（0表示0点）
+第3列表示日期1～31
+第4列表示月份1～12
+第5列标识号星期0～6（0表示星期天）
+第6列要运行的命令 
+
+crontab文件的一些例子： 
+
+10 02 * * * /home/clog/uploadToHdfs.sh 
+curl -v -H "appkey:f93f6bed4y21da73cadebe83c623b4s" -H "DeviceType:1" http://3m.qasvc.kl.cn/api/magazine/list/1/10/0
+
+
+SW_DVD5_Visio_Premium_2010w_SP1_W32_English_Std_Pro_Prem_MLF_X17-75851.ISO
+
+       foldername       link name
+ln -s /data/mscc/tomcat /home/mscc/tomcat
+
+--------------------
+linux web server configuration rules:
+1.create user mscc: [replicated with image]
+mkdir -p /data/mscc
+2.tomcat is under /home/mscc/tomcat ln -s /data/mscc/tomcat /home/mscc/tomcat 
+
+
+
+cat /proc/version
+lsb_release -a
+ cat /etc/issue
+ 
+ 
+http://109.105.47.77:8080/report-portal-1.0/;jsessionid=0CBDD4FBF9725737A931B5F976A32D6C?0 
+http://pay.qasvc.kl.cn/cpp-payment/sina/share
+
+
+
+nginx acesss log rotate
+
+crontab:f1 f2 f3 f4 f5 program  
+
+last|awk -F ' ' '{print $1}'|sort -u
+
+
+必须把下面两行注释放在/etc/init.d/redis文件靠前的注释中： 否则会报错
+# chkconfig:   2345 90 10
+# description:  Redis is a persistent key-value database
+
+上面的注释的意思是，redis服务必须在运行级2，3，4，5下被启动或关闭，启动的优先级是90，关闭的优先级是10。
+
+
+因为新版本ls把多acl和selinux属性加进去了，与系统无关，新版本的ls代码使用12个字节长的char类型的字符数组modebuf来记录文件属生，
+前面10个和老版本一样，第一表示类型，后9个表示权限，第11个表示selinux和acl的设置，最后一个当然是c的结尾符\0了。
+
+当文件或者文件夹只使用了selinux context的属性，那么这个在ls -l时后面会是一个点。
+
+只要设置了acl，就是那个setacl设置的，后面将是一个加(+)号
+
+useradd -p $(perl -e'print crypt("Msccbj", "ccsm")')  username
+
+
+vsftpd http://slacksite.com/other/ftp.html
+
+iptables-config
+IPTABLES_MODULES="ip_conntrack_ftp" 
+IPTABLES_MODULES="ip_nat_ftp" 
+
+Basically, ip_conntack_ftp enables your firewall to identify packets relating to ftp, and ip_nat_ftp modifies ftp packets for computers behind a firewall running nat.    
+ip_nat_ftp requires ip_conntrack_ftp to be loaded, so it loads that module automatically for you.  Thats why loading either of them works for you.   It looks as if you should be
+able to just load ip_conntrack_ftp to get everything to work, and ignore ip_nat_ftp.
+
+
+git tag:
+git checkout tag_name
+git tag 1.0.0 1b2e1d63ff
+
+-A INPUT -s 106.120.65.62 -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -s 10.0.0.0/8 -p tcp -m tcp --dport 80 -j ACCEPT
+
+2>/dev/null是如果你的命令出错的话，错误报告直接就删除了。不会显示在屏幕上，
+
+在Vim中可以直接查看文件编码
+
+　　:set fileencoding [=utf-8]    
+file filename
+
+/etc/ssh/ssh_config 
+StrictHostKeyChecking default is ask，if it's set to no, it will not ask for confirmation.
+
+
+vipw -s
+
+
+echo "cat /root/example.txt | gzip > /root/example.gz" | sudo bash
+sudo bash -c 'cat /root/example.txt | gzip > /root/example.gz'
+
+sudo bash -c "chpasswd </home/sunwj/apw"
+
+sudo bash -c "echo 'ptest:abc'|chpasswd"
+
+pssh -e error -h /data/deploy-farm/hosts/all-linux -P "sudo bash -c 'echo pssh:Opster_13617|chpasswd'" 
+
+
+specify config for user to sudo in visudo:
+mscc    ALL = NOPASSWD: /sbin/service tomcat7 start,/sbin/service tomcat7 stop
+mscc    ALL = NOPASSWD: /sbin/service redis start , /sbin/service redis stop 
+
+
+
+yum groupinstall "X Window System"
+yum  groupinstall "Desktop"
+startx
+
+yum groupremove "GNOME Desktop Environment" 
+
+
+install vnc
+ 
+yum install tigervnc-server
+
+#vncserver
+
+vncserver -kill :1 
+
+ip:1 
