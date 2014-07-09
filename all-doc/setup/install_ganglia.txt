@@ -1,45 +1,62 @@
 ganglia
+should use unicast
 
-1.install:
+1.install && basics:
+if download the package and install,some extra dependent should be installed.
+apr apr-devel,lconfuse,libconfuse-devel expat expat-devel pcre pcre-devel 
+./configure will complains this.
+if configure is ok,you will get the feedback .
+
 gmond --data collection and it will report data to gmetad.
 #sudo yum install ganglia-gmond
+some of the networks forbid broadcast,so unicast can be used.
+it use multicase by default.
+
+on ubuntu it's ganglia-monitor.
+
+open /etc/ganglia/gmond.conf and add host=your central collector and comment out other m-cast line.
+gmond -d 10 
 
 gmetad (the Ganglia Meta Daemon) is the service that collects metric data from other
 gmetad and gmond sources and stores their state to disk in RRD format.
 #sudo yum install ganglia-gmetad
 
-
 ganglia-gmetad will be always installed on the same server with web.
- 
 
 ganglia web 
+sudo yum -y install ganglia-gmond ganglia-gmetad  ganglia-web
 
-sudo yum -y install ganglia-gmond ganglia-gmetad [ganglia] ganglia-web
-
-
-
-cluster:
-grid:
+restart httpd
 
 
-with hadoop:
+cluster: consists of hosts[cluster peers have the save multicast address] 
+grid: consists of cluster
 
+normally,it gmond should work after install.
+iptables may prevent gmond works correct. So if nothing is report,please stop iptables and re-check.
 
-cloud env:
-unicast:
-config
-/etc/ganglia 
-conf.php has some path.
-$gmetad_root = "/var/lib/ganglia";
-$rrds = "$gmetad_root/rrds";
-installed: /usr/share/ganglia
+try default config and then telnet localhost 8649,if ok. then try it again.
 
-
-
+if a host is dead and always on the list, then service gmetad restart will resolve this. 
 
 http://sourceforge.net/apps/trac/ganglia/wiki/ganglia_quick_start
+check gmetad
+telnet 127.0.0.1 8652
+telnet 127.0.0.1 8649
+
+/
+/cluster-name
+
+deaf node
+mute node
 
 
+07.Graphite:
+  a tool to display data.
+  gmetad can send data to this.
+
+09.with hadoop:
+add configurations to metrics2.properties in hadoop
 namenode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8661
 datanode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
 resourcemanager.sink.ganglia.servers=lab01.qasvc.mscc.cn:8664
@@ -49,8 +66,18 @@ maptask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
 reducetask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
 
 
-ganglia web 3.6 has tools to fetch fdata from nagios?
+cloud env:
+unicast:
+config
+/etc/ganglia 
+conf.php has same path.
+$gmetad_root = "/var/lib/ganglia";
+$rrds = "$gmetad_root/rrds";
+installed: /usr/share/ganglia
 
+
+
+ganglia web 3.6 has tools to fetch fdata from nagios?
 
 
 
