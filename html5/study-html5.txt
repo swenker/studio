@@ -1,0 +1,41 @@
+
+------book
+  -- pro html5 programming: focused on html5 new features. not much css3 involved.
+
+------html5
+
+
+--viewport
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+
+--media query
+<link rel="stylesheet" media="screen and(min-width:600px) and(max-width:900px)" href="small.css"/>
+content of small.css:
+@media screen and (min-width:600px) and(max-width:900px){
+    .demo{
+        background-color:#CCC;
+    }
+}
+
+--geolocation
+
+--WebSocket
+
+--html form
+  new type of input element: tel/date/email/
+
+--drag and drop
+
+
+--web worker
+
+--web storage
+  localStorage
+  sessionStorage
+
+--application cache
+
+
+
+---CSS3 
+

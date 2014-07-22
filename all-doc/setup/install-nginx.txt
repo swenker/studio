@@ -46,3 +46,10 @@ log_format  masfmt  '[$msec] "$request"';
 access_log  /data/applog/nginx/mainaccess/access.log  main;
 
     
+rewite:
+http://wiki.nginx.org/HttpRewriteModule#rewrite
+
+if the target url is start outside of current location, it will complains not
+found or it will returns 302 and redirect to it.
+
+

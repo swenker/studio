@@ -1,9 +1,12 @@
 ganglia
 should use unicast
 
+if gmond is installed from source,the config path is in :/usr/local/etc
+/usr/local/sbin/gmond
+
 1.install && basics:
 if download the package and install,some extra dependent should be installed.
-apr apr-devel,lconfuse,libconfuse-devel expat expat-devel pcre pcre-devel 
+apr apr-devel lconfuse libconfuse-devel expat expat-devel pcre pcre-devel zlib zlib-devel
 ./configure will complains this.
 if configure is ok,you will get the feedback .
 
@@ -56,14 +59,18 @@ mute node
   gmetad can send data to this.
 
 09.with hadoop:
-add configurations to metrics2.properties in hadoop
-namenode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8661
-datanode.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
-resourcemanager.sink.ganglia.servers=lab01.qasvc.mscc.cn:8664
-nodemanager.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
-historyserver.sink.ganglia.servers=lab01.qasvc.mscc.cn:8666
-maptask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
-reducetask.sink.ganglia.servers=lab01.qasvc.mscc.cn:8660
+
+*.sink.ganglia.class=org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31
+*.sink.ganglia.period=10
+
+namenode.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+datanode.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+jobtracker.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+tasktracker.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+maptask.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+reducetask.sink.ganglia.servers=nn-qasvc1.hadoop.mscc.cn:8649
+
+sbin/stop-dfs.sh --config /etc/hadoop/conf
 
 
 cloud env:
@@ -78,6 +85,117 @@ installed: /usr/share/ganglia
 
 
 ganglia web 3.6 has tools to fetch fdata from nagios?
+
+#######steps on how to configure a new server to be monitored:
+1.yum install -y ganglia-gmond
+2.iptables:
+  -A INPUT -i eth0 -p tcp -m tcp --dport 8649 -j ACCEPT
+  and restart
+
+3.vim /etc/ganglia/gmond.conf
+  add host point to your collector
+
+4.service gmond start
+
+Done.
+
+########Windows support
+http://host-sflow.sourceforge.net
+
+
+https://github.com/ganglia
+
+ganglia install:
+download the core file and unzip it. check README.
+it contains gmond and gmetad and gexec?
+gmond -t ?gmond.conf
+gmetad is not installed by default:
+http://ganglia.info/
+http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/
+default=`/usr/local/etc/gmetad.conf')
+https://github.com/ganglia
+
+thereis a setuid =nobody ,this should the same the owner of /var/lib/ganglia/rrds
+
+web 3.6 just copy file but can not be opened?
+1.ganglia-web config:
+  conf_default.php
+  we can put conf.php with customized values to override the default ones.
+  change dwoo as 775
+
+--------------------
+[root@lab01 etc]# cat /etc/httpd/conf.d/ganglia.conf
+  #
+  # Ganglia monitoring system php web frontend
+  #
+  
+  #Alias /ganglia /usr/share/ganglia
+  Alias /ganglia /var/lib/ganglia-web
+
+  <Location /ganglia>
+    Order deny,allow
+    Deny from all
+    Allow from 106.120.65.62
+    Allow from ::1
+    # Allow from .example.com
+  </Location>
+----------------------
+
+###############slfow
+integrete with slfow: just install on windows and then let gmond collect it.
+?6343?
+
+http://sourceforge.net/projects/host-sflow/files/Latest/
+wget rmp file :http://downloads.sourceforge.net/project/host-sflow/Latest/hsflowd-1.24.1-1.x86_64.rpm?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fhost-sflow%2Ffiles%2FLatest%2F&ts=1404960758&use_mirror=jaist
+
+ 
+# vim /etc/hsflowd.conf  report to lab01.qasvc
+# hsflowd -d 
+
+pssh -e error -h /data/deploy-farm/hosts/hadoop.qasvc -P "sudo service hsflowd restart"
+
+The Host sFlow agent is an open source implementation of the sFlow standard for server monitoring. 
+http://host-sflow.sourceforge.net/documentation.php
+
+######Host sFlow instead of gmond to monitor servers
+Metrics:The standard set of sFlow metrics includes the core Ganglia metrics as well as additional disk I/O, swap, interrupt and virtual machine statistics. 
+
+example:
+/usr/bin/gmetric --name Current_Users --value `who |wc -l` --type int32 --unit
+current_users
+
+Running the command periodically using crontab allows Ganglia to track the metric. 
+
+host sflow ,sub agent
+
+host sflow can get the client name and show it to ganglia
+
+if ganglia frong UI show ip instead of hostname while the client agent is hsflowd,just stop gmond for a while,then start it and  restart gmetad.
+
+##########
+http://www.inmon.com/technology/sflowVersion5.php
+
+tomcat/
+<Valve className="com.sflow.catalina.SFlowValve" />
+
+
+JVM :java -javaagent myagent.jar -jar mymainjar.jar
+
+java -javaagent:sflowagent.jar\
+     -Dsflow.hostname=vm.test\
+     -Dsflow.uuid=564dd23c-453d-acd2-fa64-85da86713620\
+     -Dsflow.dsindex=80001\
+     MyApp
+
+Arguments can be passed to the sFlow module as system properties:
+
+sflow.hostname: optionally assign a "hostname" to identify the virtual machine. Choose a naming strategy that is helpful in identifying virtual machine instances, for example: "hadoop.node1" etc. The hostname is exported in the sFlow host_descr structure. 
+sflow.uuid: optionally assign a UUID to the virtual machine so that it can be uniquely identified. The UUID is exported in the sFlow host_descr structure.
+sflow.dsindex: uniquely identifies the data source associated with this virtual machine on this server. The dsindex number only needs to be set if more than one virtual machine is running on the server. For virtual machines offering network services, use TCP/UDP port number associated with the service as the dsindex, otherwise, use numbers in the range 65536-99999 to avoid clashes with other sFlow agents on the server.
+
+
+how to?
+
 
 
 
