@@ -1,0 +1,138 @@
+
+start bundled web server:
+python -m SimpleHTTPServer  -m 参数会使得python 到/usr/lib64下面去找对应的name.pyc之类的文件加载。
+python -m CGIHTTPServer，程序放在cgi-bin下就好
+
+nginx+fastcgi+python
+
+flup is just like tomcat.
+
+CGI:
+CGI (Common Gateway Interface) refers to a basic standardization to the input and output of a process that serves a HTTP request, mostly used by web servers to run an external programs (CGI and request headers variables in environment, request body (if any) in stdin, response headers and body on stdout)
+It is now somewhat dated, but still arguably useful for minimal implementations, such as embedded devices.
+
+
+WSGI:
+WSGI is the Web Server Gateway Interface. It is a specification for web servers and application servers to communicate with web applications (though it can also be used for more than that). It is a Python standard, described in detail in PEP 333. 
+
+
+SCGI:
+The SCGI protocol is a replacement for the Common Gateway Interface (CGI) protocol. It is a standard for applications to interface with HTTP servers. It is similar to FastCGI but is designed to be easier to implement. [区别: FastCGI的是Python开发的]
+
+
+sample code:
+
+web setup:
+python web
+================================================================================
+web.py
+tonordo
+
+1.web.py 
+wget http://webpy.org/static/web.py-0.37.tar.gz
+wget http://www.saddi.com/software/flup/dist/flup-1.0.2.tar.gz
+
+unzip and  sudo python setup.py install
+
+
+web evolution strategy 
+web.py is not so popular as Django and web2py
+--------------------------------------------------------------------------------
+1.web.py as a server itself
+  write a dispatcher: register url with corresponding class handlers.
+  template?
+   
+2.nginx + web.py +uwsgi
+
+sudo yum install python-devel 
+uwsgi:
+可以ip方式也可以socket方式执行。
+
+https://uwsgi-docs.readthedocs.org/en/latest/ThingsToKnow.html
+https://www.digitalocean.com/community/articles/how-to-deploy-python-wsgi-applications-using-uwsgi-web-server-with-nginx
+get uwsgi http://projects.unbit.it/downloads/uwsgi-2.0.3.tar.gz  
+Issue the following command to create a dedicated system user to run the uwsgi processes:
+useradd -M -r --shell /bin/sh --home-dir /opt/uwsgi uwsgi
+running uwsgi only.
+web.ini: this should be under yourwebapp
+
+[uwsgi]
+#socket = 127.0.0.1:3031
+pythonpath = /home/sunwj/python/studio/yourwebapp
+processes = 2
+threads = 2
+module = greeting #[This should be your web entry :greeting.py]
+master = true
+http = :8080  [used while uwsgi is running standalone]
+cd /home/sunwj/python/studio/yourwebapp && uwsgi web.ini 
+uwsgi web.ini & # will run background 
+Then uwsgi is running standalone
+
+nginx:
+
+simple:
+
+
+location /bm {
+    include uwsgi_params;
+    uwsgi_pass 127.0.0.1:3031;
+}
+
+
+more complicated:
+
+# You can use virtual directory like '/apps/' here, but remember that  
+
+   # this should match 'urls' defined in your web.py application file  
+
+   location /p {  
+     include uwsgi_params;  
+     # This should match the 'socket' entry in your uwsgi configuration  
+
+     uwsgi_pass unix:///tmp/uwsgi_vhosts.sock;  
+     #uwsgi_pass 127.0.0.1:3031;  
+
+     # This is the absolute path to the folder containing your application  
+     uwsgi_param UWSGI_CHDIR /var/www/apps;  
+
+     # This is actually not necessary for our simple application,  
+     # but you may need this in future  
+     uwsgi_param UWSGI_PYHOME /var/www/apps;  
+
+     # This is the name of your application file, minus the '.py' extension  
+     uwsgi_param UWSGI_SCRIPT index;  
+
+   }  
+
+We are almost done, but there is one last and very important step: uWSGI requires a wsgi application to be defined in the application file (index.py in our case). Just add this line to the end of index.py:
+application = app.wsgifunc()
+
+running uwsgi with nginx:
+ 
+uwsgi web.ini &   
+service nginx reload
+http://121.197.3.120:8080/bm
+http://121.197.3.120:8080/bm/book/list/
+
+uwsgi [option] [option 2] .. -w [wsgi file with app. callable]
+uwsgi -s 0.0.0.0:8080 -w hello
+invalid request block size: 21573 (max 4096)...skip ：协议不对。
+uwsgi -s 0.0.0.0:8080 --protocol=http --file hello.py
+uwsgi -s 0.0.0.0:8080 --protocol=http -w hello.py
+
+# Base application directory
+# chdir = /full/path
+chdir  = /my_app
+
+# WSGI module and callable
+# module = [wsgi_module_name]:[application_callable_name]
+module = app:application
+
+if uwsgi is not started from webapp/
+AttributeError: 'module' object has no attribute 'application'::
+
+
+
+
+
+

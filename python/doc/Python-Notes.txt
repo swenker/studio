@@ -1,0 +1,347 @@
+1.单引号，双引号，三引号的区别
+三引号可以包括多行
+
+2.缩进：必须有缩进，
+
+3.数组可以动态初始化吗，可以先定义指定长度的数组吗？
+
+4.定义空function
+
+如何判断一个key是否包含在dict中？
+umap.has_key(key)
+如果没有，umap[key]会报错
+
+集合：
+
+ar=[1,2,4,6,1,5,2]
+sar=set(ar)
+
+tset=set(ummap[key])
+tlist=list(tset)
+tlist.sort()
+
+    
+时间戳：
+
+int(round(time.time() * 1000))
+
+5.货币处理
+
+from decimal import *
+TWOPLACES = Decimal(10) ** -2 # same as Decimal('0.01')
+Decimal(0.5).quantize(TWOPLACES) = 0.50
+
+
+
+list[:None]有什么含义？为何输出整个字符串呢？
+ 
+方法大小写等规范：
+python库中是getresponse这样的形式，也有个别HTTPConnection，很少出现中间有下划线的情况。
+
+ 
+for 循环的else只会在for没有遇到break时执行。
+
+ 常用代码片段：
+        self.diskinfo={}
+        self.cpuinfo={}
+        self.meminfo=None
+ 
+dict操作：
+        cpubrief['cpu cores'] = 3
+ 
+ 
+文件操作：
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    tmp=line[9:].strip()
+                    totalMem=tmp[:-3]
+                    break
+ 
+
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    tmp=line[9:].strip()
+                    totalMem=tmp[:-3]
+                    break
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    tmp=line[9:].strip()
+                    totalMem=tmp[:-3]
+                    break
+ 
+ 
+================================================================================
+python2 和python3的区别：
+3更加面向对象了，去掉了一些关键字而改为函数
+raw_input在3中的
+import sys
+sys.stdout.write("please input:")
+name=sys.stdin.readline()
+
+一、字符串
+单引号''，双引号""，三引号""" """
+函数，module，等block的第一行如果是字符串，则其作为变量__doc__的值
+
+字符串对象有很多方法，可以仔细研究一下。
+
+二、运算符
+运算符通常由左向右结合，即具有相同优先级的运算符按照从左向右的顺序计算。例如，2 + 3 + 4被计算成(2 + 3) + 4。一些如赋值运算符那样的运算符是由右向左结合的，即a = b = c被处理为a = (b = c)。
+
+
+三、对象和函数等
+只有在形参表末尾的那些参数可以有默认参数值，因为有默认参数值的参数可以被忽略
+例如，def func(a, b=5)是有效的，但是def func(a=5, b)是 无效 的。 
+关键参数
+def func(a,b,c):
+    ...
+
+func(c=50, a=100) 
+
+DocStrings
+
+func._doc_
+
+如果让函数返回多个值，可以用元组，而且还可以如此获取返回值：var1,var2=myfun()
+
+支持嵌套的函数定义。
+
+闭包是什么？
+
+装饰器：
+@trace
+
+生成器：yield
+
+四、控制结构--循环和异常
+循环：
+for x,y,z in s: #s 的每一个元素必须是 三元组
+    statements  
+for i,x in enumerate(s): # i 是索引，x是元素
+    i,x.  
+
+for x,y in zip(list1,list2):
+    statements.
+
+with open("file","r") as f:  #不需要自己主动close
+   ...
+with只对支持上下文管理协议的对象有效(__enter()__ 和__exit()__)。用户定义的类可以实现这些方法，从而定义他们自己的自定义上下文管理。
+     
+new to me:
+while ..... else
+for i in rance(a,b) .... else
+如果你从for或while循环中 终止 ，任何对应的循环else块将不执行。即： If the loop exits as the result of a break, the else will not be executed.
+":" tell python the following is a block,换句话说， 循环的else只会在for没有遇到break时执行。
+使用global语句可以清楚地表明变量是在外面的块定义的。
+异常：
+try:
+    statements
+except  ERROR as e:
+    #handle or pass
+
+class MyError(Exception):pass
+raise MyError
+
+assert 和 __debug__ 在最优模式中，会被忽略
+
+shoplist[:-1]会返回除了最后一个项目外包含所有项目的序列切片。
+[start:end:stride]
+print my_list[::2]
+backwards=my_list[::-1]
+
+字典，元组（是什么东西？）
+
+mylist = shoplist # mylist is just another name pointing to the same object!
+mylist = shoplist[:] # make a copy by doing a full slice
+
+list comprehension: evens_to_50 = [i for i in range(51) if i % 2 == 0]
+
+print dict_s.items()
+
+mylist.remove(mylist[2])
+def myFun(*args) is the convention for allowing an arbitrary number of arguments. *args is an argument tuple that can be called the same way you would a list. 
+
+  lambda x: x % 3 == 0  Is the same as 
+   def by_three(x):    
+      return x % 3 == 0
+Only we don't need to actually give the function a name; it does its work and returns a value without one. That's why the function the lambda creates is an anonymous function.
+
+print x, 不换行。
+二进制：0b11
+The bitwise not operator (~) just flips all of the bits in a single number. What this actually means to the computer is actually very complicated, so we're not going to get into it. Just know that mathematically, this is equivalent to adding one to the number and making it negative.
+
+class NewClass(object):
+
+
+文件读写：
+读：
+----sample1:
+f=open("r.txt","r")
+line=f.readline()
+while line:
+    print line
+    line=f.readline()
+f.close()
+
+----sample2:
+for line in open("records.txt):
+    print line
+
+
+写：
+sample1: --only supported by python2
+f=open("out","w")
+print >>f, "content:%s","hello"
+f.close()
+
+
+sample2:
+f=open("out","w")
+print("content:%s" %("hello"),f)
+f.close()
+
+函数：
+yield 是的函数返回一个对象，对象有next方法。
+协程：
+ 
+
+
+
+
+
+
+Lambda 
+>>> def make_incrementor(n):
+...     return lambda x: x + n
+...
+>>> f = make_incrementor(42)
+>>> f(0)
+
+
+编码问题：
+===============================================================================
+# coding=utf8 仅是决定了页面内容的编码格式
+总括：unicode，gbk和big5就是编码的值，而utf-8,uft-16之类就是这个值的表现形式．同一个汉字，那三个码值是完全不一样的．
+如”汉”的unicode值与gbk就是不一样的，utf-8码完全只针对uncode来组织的，如果GBK要转UTF-8，必须先转uncode码，再转utf-8。
+
+
+在UCS编码中有一个叫做"ZERO WIDTH NO-BREAK SPACE"的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。
+UCS规范建议我们在传输字节流前，先传输字符"ZERO WIDTH NO-BREAK SPACE"。
+这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。
+因此字符"ZERO WIDTH NO-BREAK SPACE"又被称作BOM。
+
+UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符"ZERO WIDTH NO-BREAK SPACE"的UTF-8编码是EF BB BF
+（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB BF开头的字节流，就知道这是UTF-8编码了。
+Windows就是使用BOM来标记文本文件的编码方式的。
+
+Windows使用代码页(code page)来适应各个国家和地区。code page可以被理解为前面提到的内码。GBK对应的code page是CP936。
+
+# 对unicode进行解码是错误的
+# s2 = u.decode('UTF-8')
+# 同样，对str进行编码也是错误的
+# u2 = s.encode('UTF-8')
+
+>>> ss='中文'
+>>> type(ss)
+<type 'str'>
+>>> ss.decode('gbk')
+u'\u4e2d\u6587'
+>>> ss.decode('utf8')
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd6 in position 0: invalid continuation byte
+
+>>> gbks=ss.decode('gbk')
+>>> type(gbks)
+<type 'unicode'>
+>>> gbks.encode('gbk')
+'\xd6\xd0\xce\xc4'
+>>> gbks.encode('utf8')
+'\xe4\xb8\xad\xe6\x96\x87'
+>>> gbks
+u'\u4e2d\u6587'
+
+
+Django
+installation:
+python setup.py install.
+
+
+
+================================================================================
+connect to mysql
+
+1.download MySQLdb for python from
+http://sourceforge.net/projects/mysql-python/files/mysql-python/1.2.3/
+
+sudo yum install mysql-devel python-devel
+http://pypi.python.org/pypi/setuptools
+
+wget http://downloads.sourceforge.net/project/mysql-python/mysql-python/1.2.3/MySQL-python-1.2.3.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmysql-python%2Ffiles%2Fmysql-python%2F1.2.3%2F&ts=1394096715&use_mirror=jaist
+
+2.install:
+tar xfz MySQL-python-1.2.1.tar.gz && cd MySQL-python-1.2.1 
+$ # edit site.cfg if necessary 
+$ python setup.py build 
+$ sudo python setup.py install # or su first
+
+3.usage:
+
+
+import MySQLdb
+conn=MySQLdb.connect(host,user,pwd,db,charset)
+cursor=conn.cursor()
+cursor.execute(sql)
+data=cursor.fetchone()
+print data
+
+conn.close()
+
+数据库编程：
+===============================================================================
+MySQLdb
+connection=MySQLdb.connect(user='bmlist',passwd='bmlist1',db='bmlist',host='127.0.0.1',charset='utf8')
+
+两种写法
+sqls="INSERT INTO mytest(name,uptime,mcount)values(%s,%s,%s)"  
+dbcur.execute(sqls,('中文字符？',datetime.now().strftime(f),126))
+
+sqls="INSERT INTO mytest(name,uptime,mcount)values(%s,%s,%d)" %('中文字符？','datetime.now().strftime(f)',126)  
+dbcur.execute(sqls)
+
+
+1.datetime的处理 按字符串传入
+2.cursor 是每次操作完了再关闭？
+3.datetime类型的数据在结果集中自动成为datetime类型
+4.结果集 column index start from 0
+5.items in resultset are tuples
+datetime的主要用法
+to string:datetime.datetime.now().strftime('%Y-%m-%d %H%M%S')
+from string:dt=datetime.strptime('2013-07-09 10:45:19','%Y-%m-%d %H:%M:%S')
+
+
+mysql中
+select LAST_INSERT_ID() 只在同一连接范围中有效，所以有效避免了并发问题。
+
+string.index :找不到会抛出一场信息
+string.find 
+string.count
+str.is[alpha/alnum/digit/lower/upper/]
+string.join(list)
+
+len
+  a="你好"    len(a)=6
+  a=u"你好"  len(a=2
+   
+str.ljust (width,fillchar)--左对齐
+
+
+
+
+        words=['Hello','WorlD']
+        return [w.lower() for w in words]
+
+
+
+
+
