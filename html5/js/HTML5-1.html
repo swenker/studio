@@ -2,26 +2,59 @@
 
 <html>
 <head>
-    <title>Page Title</title>
-</head>
+    <title>Request Counter Samples</title>
+    <script language="javascript" src="mscc-common.js">   </script>
+    <!--<script language="javascript" src="http://valuepack.oss-cn-hangzhou.aliyuncs.com/mini/common/js/mscc-common.js">   </script>-->
+ </head>
 
 
 <body>
 
-<!-- page visiting -->
-<img id="img-pv1" src="http://ck01.qasvc.mscc.cn/3mini/apk/download/build2.html" style="display: none" >
+<!-- Request counter placeholder -->
+<img id="img-cph" src="" style="display: none" >
 
-<input type="button" id="bt-download" value="download" onclick="return log_download()" >
+<input type="button" id="bt-download" value="download" onclick="return click_download('landing')" >
+<input type="button" id="bt-trial" value="trial" onclick="return click_trial('landing')" >
+<input type="button" id="bt-video" value="video" onclick="return click_video('landing')" >
+    
+<input type="button" id="bt-setcookie" value="cookie" onclick="return setcookie('landing')" >
+<input type="button" id="bt-show-obj" value="show-obj" onclick="return myBook.similar()" >
+<input type="button" id="bt-show-host" value="show-host" onclick="return showHostName()" >            
 
-
-    <script language="javascript">
-       var log_download = function(){
-
-            //window.location.assign("http://baidu.com");
-            document.getElementById("img-pv1").src="http://ck01.qasvc.mscc.cn/3mini/apk/download/build1.html"
+    <script language="javascript">        
+       //checkin("landing","pv");
+       var setcookie=function(keys){
+           document.cookie=keys;
+           alert(keys);
+           alert(document.cookie);
+           return true;
+       }
+       
+       var myBook={
+          isbn:"9780000",
+          pages:138,
+          similar:function(){
+            listbooks= new Array("bq","b2");
+            alert(listbooks);
+          }
+        
+       }
+       
+       function showHostName(){
+/* 
+           var checkinService="http://vpck.svc.mcitech.cn/3mini/wx";
+            var currentDomain=window.location.hostname;
             
-            window.location="http://smagazine-st.oss-cn-hangzhou.aliyuncs.com/apk/20131203175507_2901.apk"
-        }
+            if (currentDomain!="dl-mas-oss.svc.mcitech.cn") {
+                checkinService="http://checkin.qasvc.mcitech.cn/3mini/wx";
+            }            
+            
+  */
+           alert(currentDomain+","+checkinService);
+
+       }
+       
+       
     </script>
 </body>
 
