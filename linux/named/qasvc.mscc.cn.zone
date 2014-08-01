@@ -1,0 +1,33 @@
+$TTL 3600
+@   IN  SOA     admin01.svc.mscc.cn. root.admin01.svc.mscc.cn(
+        2014060411  ;Serial
+        600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        3600       ;Minimum TTL
+)
+
+@           IN  NS admin01.svc.mscc.cn.
+
+3mdl01    IN  A        10.200.115.138
+3mdl02    IN  A        10.160.63.122
+3m01      IN  A        10.200.115.128
+3m02      IN  A        10.200.115.135
+ck01      IN  A        10.200.115.131
+ck02      IN  A        10.160.63.12
+db01      IN  A        10.160.63.114
+db02      IN  A        10.200.115.139
+deploy    IN  A        10.200.114.59
+
+3m-local  IN  A        10.242.174.77     
+pay01     IN  CNAME    ck02
+db        IN  CNAME    db01
+
+demo01    IN  A        10.160.63.104
+demodb01  IN  A        10.160.62.98
+lab01     IN  A        10.200.114.67
+push01    IN  A        10.132.3.184 
+
+hive      IN  A        10.160.63.1
+
+push      IN  CNAME    push01

@@ -1,0 +1,88 @@
+
+
+massive hosts management tools
+ClusterSSH
+dsh
+pgrep 
+Capistrano
+puppet
+pssh http://code.google.com/p/parallel-ssh/
+Cluster Command & Control :http://www.csm.ornl.gov/torc/C3/C3softwarepage.shtml
+pdsh [yum install ]
+
+pssh>dsh
+
+
+
+
+tentakel [太古老了]
+
+purpose: execute multi commands on remote servers at the same time.
+download http://sourceforge.net/projects/tentakel/files/tentakel/tentakel-2.2/
+reference:http://www.cyberciti.biz/tips/execute-commands-on-multiple-linux-or-unix-servers-part-ii.html
+make
+make install
+
+cp tentakel.conf.example /etc/tentakel.conf
+cp -rf py/lekatnet/ /usr/lib/python2.6/site-packages/
+tentakel -g test 'mkdir -p /root/test'
+
+[root@dev001 tentakel-2.2]# tentakel
+Traceback (most recent call last):
+  File "/usr/local/bin/tentakel", line 42, in <module>
+    import lekatnet.error as error
+ImportError: No module named lekatnet.error
+[status:give up and resort to pssh]
+
+pdsh
+================================================================================
+yum -y install pdsh  2.26
+http://code.google.com/p/pdsh/wiki/UsingPDSH
+
+pdsh -w 109.105.47.7[5-8] 'date'
+pdsh -lsunwj -w 109.105.47.7[5-8] -x 109.105.47.77 'date'
+
+how to add more modules?
+
+
+pssh 
+================================================================================
+If you don't already have setuptools installed:
+  # wget 'http://peak.telecommunity.com/dist/ez_setup.py'
+  # sudo python ez_setup.py
+Then:
+  # sudo python setup.py install
+
+http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
+
+免登陆配置
+#ssh-keygen     
+ ....一系列回车
+
+from deploy to other servers.  
+#ssh-copy-id -i /root/.ssh/id_rsa.pub root@109.105.47.77
+ 
+ 
+pssh 在多个主机上并行地运行命令。
+pscp:  copying files in parallel to a number of hosts
+prsync 通过 rsync 协议把文件高效地并行复制到多个主机上。
+pslurp  grabs a file or directory off all the remote machines and copies it to the local machine. 
+pnuke 并行地在多个远程主机上杀死进程。
+
+pscp -h ips.txt -lirb2 -r  /etc/hosts /tmp/hosts
+pslurp -h hosts-file -L /tmp/outdir -l ben -r /tmp/example-tree example-tree
+
+[1] 14:33:00 [FAILURE] ck01.qasvc.samsung.cn Exited with error code 1 :stderr can give more info.
+
+sudo -u pssh pssh -H ck01.qasvc.samsung.cn -P 'ls -al'
+sudo -u pssh pscp -e /data/deploy-farm/error -H ck01.qasvc.samsung.cn /data/deploy-farm/aa.txt  /home/pssh/aba.txt
+sudo -u pssh pssh -h /data/deploy-farm/hosts/qa-checkin -P 'pwd'
+ 
+sudo -u pssh pssh -e /data/deploy-farm/error -h /data/deploy-farm/hosts/qa-checkin.txt -P 'sudo service iptables status'
+
+sudo: sorry, you must have a tty to run sudo 
+visudo comment out tty line.   
+  
+
+  useradd pssh
+  

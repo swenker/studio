@@ -1,0 +1,78 @@
+$TTL 3600
+@   IN  SOA     admin01.svc.mscc.cn. root.admin01.svc.mscc.cn(
+        2014060401  ;Serial
+        600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        3600       ;Minimum TTL
+)
+
+@             IN  NS admin01.svc.mscc.cn.
+@             IN MX  10   mail.svc.mscc.cn.  
+
+admin01       IN  A   	10.200.115.123
+admin02       IN  A     10.200.114.64
+mail          IN  A     10.200.114.64
+deploy        IN  A  	10.200.115.117
+ck01          IN  A  	10.160.63.109
+ck02          IN  A  	10.160.63.110
+pay01         IN  A	10.160.63.111
+pay02         IN  A	10.200.115.106
+3mdl01        IN  A     10.200.115.148
+3mdl02        IN  A     10.200.115.132
+3m01          IN  A	10.160.63.127
+3m02          IN  A	10.200.115.133
+db01          IN  A	10.200.115.149
+db02          IN  A	10.160.63.117
+
+fyproxy01     IN  A     10.200.115.129
+fyproxy02     IN  A     10.160.63.119
+fydl01        IN  A     10.160.63.124
+fydl02        IN  A     10.200.115.143
+
+3m-local      IN  A     10.242.175.110
+das           IN  A     10.200.115.118
+dp            IN  A     10.200.114.65
+dpp	      IN  A     10.132.82.29
+dba01         IN  A     10.200.115.146
+dba02         IN  A     10.160.63.120
+report        IN  A     10.160.63.10
+auth          IN  A     10.160.62.90 
+
+vpcms01       IN  A     10.200.114.7
+vpcms02       IN  A     10.160.62.99
+vpweb01       IN  A     10.160.63.101
+vpweb02       IN  A     10.160.62.91
+vpdb01        IN  A     10.200.115.126
+vpdb02        IN  A     10.160.63.125
+vpck01        IN  A     10.160.22.133
+vpck02        IN  A     10.160.22.176
+vpdba01       IN  A     10.200.114.66
+vpdba02       IN  A     10.200.114.69
+
+
+wdeploy       IN  A     10.200.114.59
+
+cache01       IN  A     10.122.69.218
+cache02       IN  A     10.122.69.219
+cms           IN  A     10.242.174.139
+vpdp          IN  A     10.161.144.200
+push01        IN  A     10.132.38.13
+push02        IN  A     10.132.3.200
+push          IN  A     10.242.174.74
+rmadmin       IN  A     10.162.54.33
+rmws01        IN  A     10.162.54.34
+rmws02        IN  A     10.162.54.35
+hive          IN  A     10.200.115.114
+db            IN CNAME    db01
+admin         IN CNAME    admin01
+ntp           IN CNAME    admin01
+ntp2          IN CNAME    admin02
+
+ns1           IN CNAME    admin01
+ns2           IN CNAME    admin02
+
+dba           IN CNAME    dba01
+vpdb          IN CNAME    vpdb01 
+vpdba         IN CNAME    vpdba01
+
