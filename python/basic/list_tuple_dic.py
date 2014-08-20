@@ -11,14 +11,28 @@ def convert(digits):
  
     return '-'.join(alpha_num)
 
-connum=convert(89)
-print connum
+def test_convert():
+    connum=convert(89)
+    print connum
 
-connum=convert(8)
-print connum
+    connum=convert(8)
+    print connum
 
 def convert2(digits):
     digits_str=str(digits)
     dlen=len(digits_str)
     
-    
+
+
+def test_generator():
+    for i in xrange(0,10):
+        yield i
+
+
+def test_generator_main():
+    #print test_generator().next()
+    for i in test_generator():
+        print(i)
+
+
+test_generator_main()

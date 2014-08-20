@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Page Title</title>
+</head>
+
+<body>
+
+<script>
+function sum (x) {
+    function sumIt(y) {
+        alert(x+";"+y);
+        return x + y;
+    };
+    return sumIt;
+}
+// Usage
+var sumA = sum(4);
+var sumB = sumA(3);
+console.log(sumB);
+var sumC = sumA(5);
+
+function sayHello2(name) {
+  var text = 'Hello ' + name; // local variable
+  var sayAlert = function() { alert(text); }
+  return sayAlert;
+}
+var say=sayHello2();
+//say();
+//alert(say.toString());
+</script>
+
+</body>
+</html>
