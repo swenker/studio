@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Tomcat7: Start/Stop Tomcat 7
+#
+# chkconfig: - 90 10
+# description: Tomcat is a Java application Server.
+
+export CATALINA_HOME=/usr/webserver/current
+export CATALINA_BASE=/data/mscc/tomcat/webp
+export JAVA_HOME=/usr/java/current
+
+TOMCAT_USER=mscc
+LOCKFILE=/var/lock/subsys/tomcat7
+
+RETVAL=0
+start(){
+   echo "Starting Tomcat7: "
+   su - $TOMCAT_USER -c "$CATALINA_BASE/startup.sh"
+   RETVAL=$?
+   echo
+   [ $RETVAL -eq 0 ] && touch $LOCKFILE
+   return $RETVAL
+}
+
+stop(){
+   echo "Shutting down Tomcat7: "
+   $CATALINA_BASE/stop.sh
+   RETVAL=$?
+   echo
+   [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
+   return $RETVAL
+}
+
+case "$1" in
+   start)
+      start
+      ;;
+   stop)
+      stop
+      ;;
+   restart)
+      stop
+      start
+      ;;
+   status)
+      ps -ef|grep tomcat 
+      ;;
+   *)
+      echo $"Usage: $0 {start|stop|restart|status}"
+      exit 1
+      ;;
+esac
+exit $?
+

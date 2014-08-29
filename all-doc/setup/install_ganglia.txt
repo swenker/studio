@@ -148,7 +148,11 @@ integrete with slfow: just install on windows and then let gmond collect it.
 http://sourceforge.net/projects/host-sflow/files/Latest/
 wget rmp file :http://downloads.sourceforge.net/project/host-sflow/Latest/hsflowd-1.24.1-1.x86_64.rpm?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fhost-sflow%2Ffiles%2FLatest%2F&ts=1404960758&use_mirror=jaist
 
+scp hsflowd-1.24.1-1.x86_64.rpm db01:~/ && ssh db01 'sudo rpm -ivh /home/pssh/hsflowd-1.24.1-1.x86_64.rpm'
+scp hsflowd.conf db01:~/   && ssh db01 "sudo /bin/cp /home/pssh/hsflowd.conf /etc/   && sudo service hsflowd restart"
  
+there is no need to update iptables.
+
 # vim /etc/hsflowd.conf  report to lab01.qasvc
 # hsflowd -d 
 
@@ -175,11 +179,14 @@ if ganglia frong UI show ip instead of hostname while the client agent is hsflow
 ##########
 http://www.inmon.com/technology/sflowVersion5.php
 
-tomcat/
+tomcat --sflowvalve.jar should be put to tomcat/lib
 <Valve className="com.sflow.catalina.SFlowValve" />
+and after restart tomcat, it will take some time to get it from the web page
+named httpd metric.
 
 
-JVM :java -javaagent myagent.jar -jar mymainjar.jar
+JVM :java -javaagent:$CATALINA_BASE/sflowagent.jar 
+this will show up immediately after restart jvm.
 
 java -javaagent:sflowagent.jar\
      -Dsflow.hostname=vm.test\
