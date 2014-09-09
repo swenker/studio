@@ -1,5 +1,7 @@
 package encoding;
 
+import java.util.prefs.AbstractPreferences;
+
 /**
  * Created with IntelliJ IDEA.
  * User: samsung
@@ -14,10 +16,15 @@ public class StreamEncoding {
         int c = 0x8b&0xff;
         byte b = (byte) a;
 
-        System.out.println(b);
+        //System.out.println(b);
 
         int a1=1001;
 
-
+        byte bb[]=new byte['\u0080'];
+        byte bbb[]=new byte[0];
+        char c128=128;
+        System.out.println(c128);
+        System.out.println(bbb.length);
+        AbstractPreferences
     }
 }
