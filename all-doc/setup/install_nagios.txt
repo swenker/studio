@@ -12,7 +12,7 @@ server:
 ---------------------
 nagios core
 sudo su -
-#yum -y install httpd openssl openssl-devel ssl make install php gcc glibc glibc-common gd gd-devel net-snmp
+#yum -y install httpd openssl openssl-devel ssl php gcc glibc glibc-common gd gd-devel net-snmp
 [verified in ali]#yum -y install httpd php
 if php is not installed httpd will complain permission issue.
 
@@ -27,8 +27,7 @@ libssl-dev
 nagios:wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.5.0.tar.gz
 nagios plugin: wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz
 
-NDOUtils http://exchange.nagios.org/directory/Addons/Database-Backends/NDOUtils/details
-wget http://prdownloads.sourceforge.net/sourceforge/nagios/ndoutils-1.5.2.tar.gz
+NDOUtils is deprecated. use ganglia.
 
     
 #cd nagios
@@ -95,49 +94,22 @@ Configuring Graphing and Display:add action_url for service.
 
 --done.
 
-extra:
-install NDO 
-================================================================================
-get it and unzip
-yum -y install mysql-devel  perl-DBI perl-DBD-MySQL
-configure
-make
-
-mysqladmin --user=root create nagios #create database nagios;
-
-GRANT ALL ON nagios.* TO nagiosuser@10.200.115.123 IDENTIFIED BY 'moni!321';
- flush privileges;  
- 
-cat README
-
-cp src/ndo2db-3x /usr/local/nagios/bin/ndo2db
-cp config/ndo2db.cfg-sample /usr/local/nagios/etc/ndo2db.cfg [change dbuser/passwd/]
-
-./installdb -u nagiosuser -p nagiosuser -h deploy.svc.samsung.cn -d nagios
-
-/usr/local/nagios/bin/ndo2db -c /usr/local/nagios/etc/ndo2db.cfg [done.]
-
-after kill -9, to delete /var/local/nagios/var/ndo*.*ock  
-
-table created by npc are not compatible with NDO's 需要手工修改！
-
-
-整合完以后，NPC显示的nagios状态一直是off的原因是ndo和npc各用一套表。解决办法：更改ndo2db.cfg中表的prefix
-the nagios status of on or off simply comes from reading the database. If ndo2db were not running and the nagios process record was not updated for some certain amount of time nagios would display as off. So really in order to get it to show as on you need nagios and ndo2db running. 
-
-cp -a daemon-init /etc/init.d/ndo2db
-
-Check your npc_programstatus table: 
-http://forums.cacti.net/post-173329.html
-
---------------------------------------------------------------------------------
 
 client(hosts to be monitored):
 --------------------------------------------------------------------------------
-deprecated #yum --enablerepo=epel -y install nrpe  【do this on remote host】
+1.nagios plugin
+2.nrpe
 
-do this on nagios host:
-wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz/download
+#yum --enablerepo=epel -y install nrpe  【do this on remote host】
+
+#-------Deprecated
+#do this on nagios host:
+#wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz/download
+make all
+make install-plugin
+make install-daemon
+make install-daemon-config
+
 
 vi  /etc/nagios/nrpe.cfg
      allowed_hosts=127.0.0.1, 192.168.1.110
@@ -175,6 +147,8 @@ host server: add new command to /nrpe.
 
 
 add to /etc/nrpe.cfg command[check_logfiles]=/usr/local/nagios/libexec/check_logfiles $ARG1$
+
+if some lib wasn't installed, please redo configure then make.
 
 
 ./configure

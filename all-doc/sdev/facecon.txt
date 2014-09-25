@@ -1,0 +1,12 @@
+facecon
+
+todo list:
+1.add nagios monitor
+2.add ganglia: slfow   --done
+3.add pssh from deploy?  --done
+4.add dn name to dns server. --done.
+
+
+4./data is the data disk.
+
+
