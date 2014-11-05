@@ -18,6 +18,7 @@ data_source "rcms cluster" rmadmin.stsvc.mscc.cn
 gweb从gmetad获取数据。
 如果用gmond收集多个client的数据，则需要更改gmond.conf  delete gmond metrics and add the following:
 
+注意，这里用的是udp协议，对应server端的iptables要开放相应权限。
 /* Channel to receive sFlow datagrams */
 udp_recv_channel {
   port = 6343
