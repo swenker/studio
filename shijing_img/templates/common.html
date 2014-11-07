@@ -1,0 +1,23 @@
+$def with(status)
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+<div>
+<h2>$status</h2>
+<br/>
+<a href="/bm/book/create"> create book</a> <br/>
+<a href="/bm/book/list"> list book</a>
+<br/>
+<form action="/bm/book/check" method="GET">
+ISBN:<input type="text" size="20" name="isbn"/>
+<input type="submit" value="check"/>
+</form>
+
+</div>
+</body>
+</html> 

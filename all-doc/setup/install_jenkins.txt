@@ -1,0 +1,13 @@
+
+direct install:
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+sudo yum install jenkins
+
+
+using docker:
+docker pull zaiste/jenkins
+
+next, run a container using this image and map data directory from the container to the host; e.g in th example below /var/lib/jenkins from the container is mapped to jenkins/ directory from the current path on the host. Jenkins 8080 port is also exposed to the host as 49001.
+docker run -d -p 49001:8080 -v $PWD/jenkins:/var/lib/jenkins -t zaiste/jenkins
+
