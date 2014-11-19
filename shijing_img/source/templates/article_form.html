@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" >
+    <title>New Article</title>
+    <script type="text/javascript">
+    function abc(){
+    }
+    </script>
+
+</head>
+
+<body>
+<div id="artice_form_container">
+<header>New Article with images
+</header>
+<form name="form1" method="post" action="" enctype="multipart/form-data">
+  标题 <input type="text" name="title" id="title"><br/>
+  发布时间<input type="text" name="pubdate" id="pubdate"><br/>
+
+  Cover <input name="cover" type="file"><br/>
+
+  <!--<input name="img1" type="file" size="50"><br/>-->
+  内容 <textarea name="content" cols="100" rows="10" id="content"></textarea><br/><br/>
+
+  <input name="uaction" type="submit" value="save">
+  <input name="uaction" type="button" value="preview">
+  <input name="uaction" type="button" value="publish">
+</form>
+</div> 
+</body>
+</html>

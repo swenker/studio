@@ -167,8 +167,8 @@
     <property name="options.lastSelected" value="reference.idesettings.emmet" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../3mlog" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="tests" factoryName="py.test">
