@@ -25,6 +25,6 @@ public class StreamEncoding {
         char c128=128;
         System.out.println(c128);
         System.out.println(bbb.length);
-        AbstractPreferences
+
     }
 }

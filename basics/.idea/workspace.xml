@@ -10,6 +10,13 @@
     <file path="$PROJECT_DIR$/../../011-proj-MultiMedia-Magazine/cpp/common/src/main/java/com/samsung/mscc/cpp/http/HttpSender.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1403506100097" ignored="false" />
     <file path="/HttpSender.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1403506086628" ignored="false" />
     <file path="/StreamEncoding.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1409045734782" ignored="false" />
+    <file path="/Algorithm.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416467545163" ignored="false" />
+    <file path="/TreeAlgorithm.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416463105555" ignored="false" />
+    <file path="/DynamicProgramming.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416794677498" ignored="false" />
+    <file path="/BalancedTree.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416883442905" ignored="false" />
+    <file path="/FindNum.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416898508943" ignored="false" />
+    <file path="/FindDigitInNumbers.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1416992594349" ignored="false" />
+    <file path="/FindDigitInNum.java" changelist="1a177741-533c-494a-89e8-bda54fea83ae" time="1417081563935" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,46 +77,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="JavaEnv.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+      <file leaf-file-name="Algorithm.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/algorithm/Algorithm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="55" selection-start="615" selection-end="615" vertical-scroll-proportion="0.0">
+            <state line="23" column="11" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HttpComponents.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/opensource/HttpComponents.java">
+      <file leaf-file-name="FindDigitInNumbers.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/FindDigitInNumbers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="28" selection-start="518" selection-end="518" vertical-scroll-proportion="0.0">
+            <state line="33" column="26" selection-start="1053" selection-end="1067" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StreamEncoding.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/encoding/StreamEncoding.java">
+      <file leaf-file-name="FindDigitInNum.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/FindDigitInNum.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="19" selection-start="612" selection-end="612" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractPreferences.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/prefs/AbstractPreferences.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="827" column="47" selection-start="36649" selection-end="36649" vertical-scroll-proportion="0.02849003">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Preferences.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/prefs/Preferences.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="327" column="28" selection-start="13723" selection-end="13723" vertical-scroll-proportion="0.0">
+            <state line="30" column="0" selection-start="32" selection-end="811" vertical-scroll-proportion="0.86013985">
               <folding />
             </state>
           </provider>
@@ -129,12 +118,19 @@
         <option value="$PROJECT_DIR$/src/JavaEnv.java" />
         <option value="$PROJECT_DIR$/src/opensource/HttpComponents.java" />
         <option value="$PROJECT_DIR$/src/encoding/StreamEncoding.java" />
+        <option value="$PROJECT_DIR$/src/algorithm/TreeAlgorithm.java" />
+        <option value="$PROJECT_DIR$/src/algorithm/Algorithm.java" />
+        <option value="$PROJECT_DIR$/src/algorithm/DynamicProgramming.java" />
+        <option value="$PROJECT_DIR$/src/FindNum.java" />
+        <option value="$PROJECT_DIR$/src/BalancedTree.java" />
+        <option value="$PROJECT_DIR$/src/FindDigitInNumbers.java" />
+        <option value="$PROJECT_DIR$/src/FindDigitInNum.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1440" />
-    <option name="height" value="860" />
+    <option name="width" value="1920" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -210,7 +206,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="opensource" />
+              <option name="myItemId" value="encoding" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -228,7 +224,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="encoding" />
+              <option name="myItemId" value="algorithm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -237,7 +233,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -249,18 +245,18 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="FullScreen" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
-    <property name="dynamic.classpath" value="false" />
     <property name="Downloaded.Files.Path" value="D:\work\projects\113-tech-studio\basics\lib" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.StreamEncoding">
-    <configuration default="false" name="JavaEnv" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="JavaEnv" />
+  <component name="RunManager" selected="Application.FindDigitInNum">
+    <configuration default="false" name="DynamicProgramming" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="algorithm.DynamicProgramming" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -275,8 +271,56 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="StreamEncoding" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="encoding.StreamEncoding" />
+    <configuration default="false" name="BalancedTree" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="BalancedTree" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="basics" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="FindNum" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="FindNum" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="basics" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="FindDigitInNumbers" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="FindDigitInNumbers" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="basics" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="FindDigitInNum" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="FindDigitInNum" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -305,6 +349,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -330,19 +387,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -379,14 +423,20 @@
       <patterns />
       <method />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Application.JavaEnv" />
-      <item index="1" class="java.lang.String" itemvalue="Application.StreamEncoding" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Application.DynamicProgramming" />
+      <item index="1" class="java.lang.String" itemvalue="Application.BalancedTree" />
+      <item index="2" class="java.lang.String" itemvalue="Application.FindNum" />
+      <item index="3" class="java.lang.String" itemvalue="Application.FindDigitInNumbers" />
+      <item index="4" class="java.lang.String" itemvalue="Application.FindDigitInNum" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.StreamEncoding" />
-        <item index="1" class="java.lang.String" itemvalue="Application.JavaEnv" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Application.FindDigitInNum" />
+        <item index="1" class="java.lang.String" itemvalue="Application.FindDigitInNumbers" />
+        <item index="2" class="java.lang.String" itemvalue="Application.FindNum" />
+        <item index="3" class="java.lang.String" itemvalue="Application.BalancedTree" />
+        <item index="4" class="java.lang.String" itemvalue="Application.DynamicProgramming" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -404,7 +454,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="860" extended-state="0" />
+    <frame x="0" y="0" width="1920" height="1040" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -415,16 +465,16 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819384" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2247191" sideWeight="0.66346157" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33653846" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12394958" sideWeight="0.6585903" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34140968" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -494,108 +544,96 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar!/org/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager.class">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/prefs/AbstractPreferences.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="27" selection-start="1229" selection-end="1229" vertical-scroll-proportion="0.0" />
+        <state line="827" column="47" selection-start="36649" selection-end="36649" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/ArrayList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="395" column="13" selection-start="14526" selection-end="14526" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/RandomAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="21" selection-start="1953" selection-end="1953" vertical-scroll-proportion="0.77728283" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="454" column="6" selection-start="20326" selection-end="20326" vertical-scroll-proportion="0.33296213" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/algorithm/DynamicProgramming.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="47" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/Collections.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="55" selection-start="615" selection-end="615" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="154" column="17" selection-start="6780" selection-end="6780" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/Arrays.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="471" column="33" selection-start="21027" selection-end="21027" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/ComparableTimSort.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="197" column="29" selection-start="6800" selection-end="6803" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
+    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/Random.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="16" selection-start="737" selection-end="737" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="0" selection-end="424" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/JavaEnv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="55" selection-start="615" selection-end="615" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar!/org/apache/http/conn/ClientConnectionManager.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="17" selection-start="167" selection-end="167" vertical-scroll-proportion="0.14771049" />
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar!/org/apache/http/impl/conn/tsccm/ThreadSafeClientConnManager.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="27" selection-start="1229" selection-end="1229" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/opensource/HttpComponents.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="28" selection-start="518" selection-end="518" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="289" column="22" selection-start="11226" selection-end="11306" vertical-scroll-proportion="0.034965035" />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/prefs/Preferences.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="327" column="28" selection-start="13723" selection-end="13723" vertical-scroll-proportion="0.0">
+        <state line="327" column="28" selection-start="13723" selection-end="13723" vertical-scroll-proportion="0.034965035" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FindNum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="4" selection-start="29" selection-end="29" vertical-scroll-proportion="0.06802721">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/encoding/StreamEncoding.java">
+    <entry file="file://$PROJECT_DIR$/src/BalancedTree.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="19" selection-start="612" selection-end="612" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../tools/jdk1.7.0_25/src.zip!/java/util/prefs/AbstractPreferences.java">
+    <entry file="file://$PROJECT_DIR$/src/algorithm/TreeAlgorithm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="827" column="47" selection-start="36649" selection-end="36649" vertical-scroll-proportion="0.02849003">
+        <state line="59" column="40" selection-start="1618" selection-end="1618" vertical-scroll-proportion="0.45578232">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/algorithm/Algorithm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="11" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FindDigitInNumbers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="26" selection-start="1053" selection-end="1067" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FindDigitInNum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="0" selection-start="32" selection-end="811" vertical-scroll-proportion="0.86013985">
           <folding />
         </state>
       </provider>
