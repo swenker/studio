@@ -1,3 +1,5 @@
+package algorithm;
+
 public class FindDigitInNumbers {
 
     //find how many specified digits are contained in the given 0 to bound sequence

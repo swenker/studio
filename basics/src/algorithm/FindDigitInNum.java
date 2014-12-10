@@ -1,5 +1,25 @@
+package algorithm;
 
 public class FindDigitInNum {
+
+    int count2sR(int n) {
+        if (n == 0) return 0;
+        int numberWidth = String.valueOf(n).length();
+
+        int power10 = (int) Math.pow(10, numberWidth -1);
+
+        int firstDigit = n / power10;
+        int remainder = n % power10;
+
+        int nTwosFirst = 0;
+
+        if (firstDigit > 2) nTwosFirst += power10;
+        else if (firstDigit == 2) nTwosFirst += remainder + 1;
+
+        int nTwosLeft = firstDigit * count2sR(power10 - 1) + count2sR(remainder);
+        return nTwosFirst + nTwosLeft;
+    }
+
 
     int countAll2InNumbers(int n) {
         int numberWidth = String.valueOf(n).length();
@@ -29,7 +49,8 @@ public class FindDigitInNum {
     }
 
     static void printResult(FindDigitInNum finder, int bound) {
-        System.out.printf("digit %d occurs:%d times from 0..%d \n", 2, finder.countAll2InNumbers(bound), bound);
+//        System.out.printf("digit %d occurs:%d times from 0..%d \n", 2, finder.countAll2InNumbers(bound), bound);
+        System.out.printf("digit %d occurs:%d times from 0..%d \n", 2, finder.count2sR(bound), bound);
     }
 
     public static void main(String args[]) {

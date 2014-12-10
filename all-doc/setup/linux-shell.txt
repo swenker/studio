@@ -9,3 +9,35 @@ $(($x -$y))
 
 sed 's;\([0-9]*\);\1;'
 
+
+
+while [ $n -gt 0 ]
+do
+    sd=`expr $n % 10`
+    rev=`expr $rev \* 10  + $sd`
+    n=`expr $n / 10`
+done
+
+len_zero=`expr ${#original} - ${#rev}`
+
+while [[ $len_zero -gt 0 ]]
+do
+     rev="${rev}0"
+     len_zero=`expr $len_zero - 1`
+     #len_zero--
+
+done
+
+
+AWK
+--------------
+Awk特殊变量
+	
+$number  表示记录的字段。比如，$1表示第1个字段，$2表示第2个字段，如此类推。而$0比较特殊，表示整个当前行
+FS 表示字段分隔符
+NF 表示当前记录中的字段数量
+NR 表示当前记录的编号（awk将第一个记录算作记录号1）
+
+
+awk '{ if($5!='0') {print $9}}'
+

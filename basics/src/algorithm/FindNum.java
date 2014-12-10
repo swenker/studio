@@ -1,3 +1,4 @@
+package algorithm;
 
 public class FindNum {
 
