@@ -1,5 +1,6 @@
 __author__ = 'sunwj'
 
+import os
 import json
 
 import cgi
@@ -8,74 +9,49 @@ import web
 from cms import cms_model
 from cms import cms_service
 from cms import service_config
-
+import wshelper
 
 
 urls=("/p/adm/adminsvc","AdminService",
+      "/p/adm","Dashboard",
       "/p/adm/new_article","NewArticle",
+      "/p/adm/save_article","SaveArticle",
       "/p/adm/preview_article","PreviewArticle",
       "/p/adm/delete_article","DeleteArticle",
       "/p/adm/edit_article","EditArticle",
       "/p/adm/list_article","ListEditArticles",
+      "/p/adm/list_column","ListEditArticles",
+      "/p/adm/new_column","ListEditArticles",
+      "/p/adm/edit_column","ListEditArticles",
+      "/p/adm/delete_column","ListEditArticles",
+      "/p/adm/album","EditAlbum",
+      "/p/adm/list_album","ListAlbums",
+      "/p/adm/upload_img","UploadImage",
+      "/p/adm/list_imgs","ListImages",
+
       "/p/pub/get_article/(\d+)","GetArticle",
       "/p/pub/list_article","ListPubArticles",
       "/p/adm/files/(.*)","FilesHandler")
 
+t_globals = {
+    'datestr':web.datestr
+}
 
 #web.config.debug = False
 app=web.application(urls,globals())
 application = app.wsgifunc()
 
 #session = web.session.Session(app, web.session.DiskStore('sessions.bm'), initializer={'bmuser': None})
-render = web.template.render("templates")
+render = web.template.render("templates",globals=t_globals)
 config = service_config.config
 store_path = config.img_save_path
 
-cgi.maxlen = 10 * 1024 * 1024
+cgi.maxlen = 1 * 1024 * 1024
 
 cmsService = cms_service.CmsService()
-class ServiceHelper():
-    def load_config(self):
-        pass
-
-    def preview(self):
-        pass
-
-    def save(self,params):
-        pass
-
-    def publish(self):
-        pass
-
-    def saveFile(self,image,store_path):
-        #TODO write to oss
-
-        imgpath = image.cover.filename.replace('\\','\\')
-        imgname = imgpath.split('/')[-1]
-        fout = open(store_path+"/"+imgname,'w')
-        fout.write(image.cover.file.read())
-        fout.close()
-        saved_path=""
-        return saved_path
-
-    def compose_article(self,params):
-        article_meta = cms_model.ArticleMeta()
-        article_meta.id = -1
-        article_meta.title = params.title
-        article_meta.subtitle = params.subtitle
-        article_meta.author = params.author
-        article_meta.source = params.source
-        #article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
-        #todo auto generate
-        article_meta.brief = 'This is brief'
-        article_meta.status = 1
-
-        article_content = cms_model.ArticleContent(params.content)
-        article = cms_model.ArticleEntity(article_meta,article_content)
-        return article
 
 
-serviceHelper = ServiceHelper()
+serviceHelper = wshelper.ServiceHelper()
 
 class AdminService():
     def GET(self):
@@ -88,24 +64,17 @@ class AdminService():
             #TODO
             pass
 
-
-class UploadImage():
-    def POST(self):
-        imgpath=''
-        image =web.input(imgfile={})
-        if 'imgfile' in image :
-            imgpath = serviceHelper.saveFile(image,store_path)
-
-        return imgpath
+class Dashboard:
+    def GET(self):
+        return render.dashboard()
 
 class NewArticle():
     def GET(self):
-        return render.article_form()
+        return render.article_form(None)
+
+class SaveArticle():
 
     def POST(self):
-        uaction = web.input("uaction")
-
-        print "uaction:"+uaction
         #try:
         #    image = web.input(cover={})
         #    if 'cover' in image and image:
@@ -115,16 +84,12 @@ class NewArticle():
         #except ValueError:
         #    return "File Limit is 10MB."
 
-        if uaction == 'save':
+        params = web.input(subtitle=None)
+        if not params.id:
+            cmsService.new_article(serviceHelper.compose_article(params))
 
-            cmsService.new_article(serviceHelper.compose_article(web.input()))
-
-        elif uaction == 'preview':
-            serviceHelper.save(web.input())
-            serviceHelper.preview()
-
-        elif uaction == 'publish':
-            serviceHelper.publish()
+        else:
+            cmsService.update_article(serviceHelper.compose_article(params))
 
 
         return render.common("OK")
@@ -152,15 +117,17 @@ class ListEditArticles():
 
         total_pages=(total+_EVERY_PAGE-1)/_EVERY_PAGE
 
-        return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        #return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        return render.article_list_edit(rlist,total,total_pages)
 
+#TODO
 class PreviewArticle():
-    def GET(self):
-        params = web.input()
-        aid = params.aid
-
-        if aid :
-            return
+    def GET(self,id):
+        article = cmsService.get_article(id)
+        if article:
+            return to_jsonstr(article)
+        else:
+            return render.common("failed:"+str(id))
 
 class GetArticle():
     def GET(self,id):
@@ -170,10 +137,46 @@ class GetArticle():
         else:
             return render.common("failed:"+str(id))
 
-class FilesHandler():
+class DeleteArticle():
     def GET(self):
-        #web.seeother()
-        pass
+        id = web.input().id
+        article = cmsService.delete_article(id)
+
+        if article:
+            return to_jsonstr(article)
+        else:
+            return render.common("failed:"+str(id))
+
+class EditArticle():
+    def GET(self):
+        id = web.input().id
+        article = cmsService.get_article(id)
+        if article:
+            return render.article_form(article.article_meta,article.article_content)
+        else:
+            return render.common("failed:"+str(id))
+
+class UploadImage:
+    def GET(self):
+        return render.image()
+
+    def POST(self):
+        try:
+           image_data = web.input(file={})
+           if image_data and 'file' in image_data:
+               imgmeta = cms_model.Image(image_data.aid)
+               imgmeta.aid=1
+
+               #TODO title field
+
+               imgmeta.file=serviceHelper.saveFile(image_data,store_path)
+               cmsService.create_img(imgmeta)
+           return render.common("OK")
+
+        except ValueError:
+           return "File Limit is 1MB."
+
+
 
 class ListWrapper:
     def __init__(self,rlist,total_count,total_pages):

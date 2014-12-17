@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css" >
+    <title>Article List for Edit</title>
+    <script language="JavaScript" src="jquery-1.9.1.js"></script>
+    <script language="JavaScript">
+	function showList(){
+	    //rlist = $.parseJSON();
+	    data_url = "/p/adm/list_article"
+	    $.getJSON(data_url)
+		.done(
+		    function(data){ //Data is a json object
+			$.each( data,
+				function(key,item){
+				    //alert(item);                                   
+				}                                
+			    );
+			addArticlesToTable(data);
+			
+		    })
+		    .fail(
+			function(jqxhr,textStatus,error){
+			    var err = textStatus + "," + error;
+			    console.log( "Request Failed:" + err );
+			}
+		    )
+	}
+	
+	function addArticlesToTable(data){            
+	    listTable = $("#tbl_list");
+
+	    for(i=0;i<data.rlist.length;i++){
+                article_meta = data.rlist[i]; 
+                 
+                arow = $("<tr id='"+article_meta.id+"'></tr>");
+                td=$("<td></td>");
+                td.append(article_meta.title);
+                arow.append(td);
+    
+                td=$("<td></td>");            
+                td.append(article_meta.dtupdate);
+                arow.append(td);
+                
+                td=$("<td ></td>");
+                td.append(article_meta.status);            
+                arow.append(td);
+    
+                td=$("<td ></td>");
+                td.append("<a href='/p/adm/edit_article/"+article_meta.id+"'>Edit</a> &nbsp;&nbsp;");//Using Icon instead of words            
+    //            arow.append(td);
+    
+    //            td=$("<td ></td>");
+                td.append("<a href='/p/adm/delete_article/"+article_meta.id+"'>Delete</a>&nbsp;&nbsp;");
+                
+                td.append("<a href='/p/adm/preview_article/"+article_meta.id+"'>Preview</a>&nbsp;&nbsp;");
+                
+                arow.append(td);
+                
+                listTable.append(arow);
+	    }
+	    arow = $("<tr></tr>");
+	    td=$("<td colspan=4></td>");
+	    td.append("Total:"+data.total_pages+"&nbsp;");
+            td.append("<a href='?np='>Prev</a>&nbsp;");
+            td.append("<a href='?np='>Next</a>");
+	    
+            arow.append(td);
+	    listTable.append(arow);
+	}
+    window.onload = showList();    
+
+    </script>
+</head>
+
+<body>
+<div  >
+<table id="tbl_list" border="1">
+    <thead>
+	<tr><td>Title</td><td>update time</td><td>status</td><td>操作</td></tr>
+    </thead>
+    <tbody>
+    </tbody>
+    
+</table>
+
+</div>
+</body>
+</html>

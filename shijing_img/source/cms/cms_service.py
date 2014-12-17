@@ -8,6 +8,9 @@ import service_config
 TABLE_ARTICLE_META = "cms_article_meta"
 TABLE_ARTICLE_CONTENT = "cms_article_content"
 
+TABLE_ALBUM = "cms_album"
+TABLE_ALBUM_IMG = "cms_album_img"
+
 config = service_config.config
 logger = config.getlogger("CmsService")
 
@@ -18,6 +21,9 @@ db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.us
 class CmsService:
     def __init__(self):
         pass
+
+    def dbusage(self):
+        db.update()
 
     def new_article(self, article):
         if article and article.article_meta.id >0:
@@ -36,10 +42,10 @@ class CmsService:
             if result:
                 cid = result[0]['mid']
 
-            time_now = datetime.now().strftime(TIME_FORMAT)
-            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,cover,brief,cid) VALUES('%s','%s','%s','%s','%s','%s','%s','%s',%d)" \
+            time_now = get_timenow()
+            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,dtupdate,cover,brief,cid) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)" \
                   % (TABLE_ARTICLE_META, article_meta.title, article_meta.subtitle, article_meta.author, article_meta.source,
-            article_meta.dtpub, time_now, article_meta.cover, article_meta.brief, cid)
+            article_meta.dtpub, time_now,time_now, article_meta.cover, article_meta.brief, cid)
 
             logger.debug(sqls)
             db.query(sqls)
@@ -57,6 +63,31 @@ class CmsService:
             print (e)
             t.rollback()
             return -1
+
+    def update_article(self, article):
+        article_meta = article.article_meta
+
+        t = db.transaction()
+        try:
+            sqls = "UPDATE %s SET content='%s' WHERE id=%d " % (TABLE_ARTICLE_CONTENT,article.article_content.content,article.article_content.id)
+
+            db.query(sqls)
+
+            sqls = "UPDATE %s SET title='%s',subtitle='%s',author='%s',source='%s',dtupdate='%s',cover='%s',brief='%s' WHERE id=%d" \
+                  % (TABLE_ARTICLE_META, article_meta.title, article_meta.subtitle, article_meta.author, article_meta.source,
+                     get_timenow(),article_meta.cover, article_meta.brief, article_meta.id)
+
+            logger.debug(sqls)
+            db.query(sqls)
+
+
+            t.commit()
+
+            logger.info("articleId [%d] is updated" %article_meta.id)
+
+        except Exception,e:
+            logger.exception(e)
+            t.rollback()
 
 
     def delete_article(self, mid, hard=False):
@@ -97,7 +128,7 @@ class CmsService:
         result = db.query(sql_total)
         if result:
             total = result[0]['total']
-        logger.debug("total:"+str(total))
+        #logger.debug("total:"+str(total))
 
         logger.debug(sqls)
         result = db.query(sqls)
@@ -106,7 +137,7 @@ class CmsService:
         if result:
             for r in result:
                 article_meta = self.compose_article_meta(r)
-                print article_meta
+                #print article_meta
                 rlist.append(article_meta)
 
         return rlist, total
@@ -114,7 +145,7 @@ class CmsService:
     def get_article(self,id):
         sqls = "SELECT m.id AS id,m.title AS title,m.subtitle AS subtitle,m.author AS author,m.source AS source,m.dtpub AS dtpub," \
                "m.dtupdate AS dtupdate,m.dtcreate AS dtcreate,m.cover AS cover,m.brief AS brief,m.cid AS cid,m.status AS status,c.content AS content " \
-               "FROM cms_article_meta m left join cms_article_content c on m.cid=c.id and m.id="+str(id)
+               "FROM cms_article_meta m inner join cms_article_content c on m.cid=c.id where m.id="+str(id)
 
         logger.debug(sqls)
         result = db.query(sqls)
@@ -150,6 +181,7 @@ class CmsService:
             return article_content
 
     def compose_article_meta(self,r):
+
         article_meta = ArticleMeta()
         article_meta.id = r['id']
         article_meta.title = r['title']
@@ -165,6 +197,148 @@ class CmsService:
 
         return article_meta
 
+    #Album
+    def save_album(self,album):
+
+        if album.id and album.id>0:
+
+            self.update_album(album)
+
+        else:
+
+            self.create_album(album)
+
+    def create_album(self,album):
+
+        sqls = "INSERT INTO %s(title,dtcreate,remark)VALUES('%s','%s','%s') " %(TABLE_ALBUM,album.title,get_timenow(),album.remark)
+
+        db.query(sqls)
+
+        logger.info("album %s created" % album)
+
+    def update_album(self,album):
+
+        sqls = "UPDATE %s SET title='%s',remark='%s' WHERE id=%d" %(TABLE_ALBUM,album.title,album.remark,album.id)
+
+        db.query(sqls)
+
+        logger.info("album %s updated" % album)
+
+    def create_one_img(self,img):
+
+        try:
+            sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img.title,get_timenow(),img.file,img.aid)
+
+            db.query(sqls)
+        except Exception,e:
+            logger.error("failed to create image",e)
+
+    def create_img(self,img):
+
+        try:
+            sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img.title,get_timenow(),img.file,img.aid)
+
+            db.query(sqls)
+
+        except Exception, e:
+            # logger.error("failed to create images:%s" % e)
+            logger.exception("failed to create images")
+
+    #TODO update image title by id
+    def update_img(self,id,title):
+        try:
+            sqls = "UPDATE %s SET title='%s' WHERE id=%d" %(TABLE_ALBUM_IMG,title,id)
+            db.query(sqls)
+        except:
+            logger.exception("failed to update img:%d" % id)
+
+
+    # def create_img(self,imglist):
+    #
+    #     t = db.transaction()
+    #
+    #     try:
+    #         for img in imglist:
+    #
+    #             sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img.title,get_timenow(),img.file,img.aid)
+    #
+    #             db.query(sqls)
+    #
+    #         t.commit()
+    #
+    #     except Exception, e:
+    #         logger.error("failed to create images:%s" % e)
+    #         t.rollback()
+
+    def delete_album(self,id):
+
+        sqls = "DELETE FROM %s WHERE id=%d" %(TABLE_ALBUM,id)
+
+        db.query(sqls)
+
+        logger.info("album %d is deleted" % id)
+
+    def delete_imglist(self,idlist):
+
+        criteria = ",".join(idlist)
+
+        sqls = "DELETE FROM %s WHERE id in (%s)" %(TABLE_ALBUM_IMG,criteria)
+
+        db.query(sqls)
+
+        logger.info("img %s are deleted" % criteria)
+
+    def get_album_list(self):
+
+        sqls = "SELECT * FROM %s ORDER BY title" % TABLE_ALBUM
+
+        result = db.query(sqls)
+
+        rlist = []
+
+        if result:
+            for r in result:
+                album = self.compose_album(r)
+                rlist.append(album)
+
+        return rlist
+
+
+    def get_album_imglist(self,aid,start=0,nfetch=20):
+        total = 0
+
+        sql_total = "SELECT COUNT(*) as total FROM %s WHERE aid=%d " % (TABLE_ALBUM_IMG,aid)
+
+        total_query = db.query(sql_total)
+
+        if total_query:
+            total = total_query[0]['total']
+
+        sqls = "SELECT * FROM %s WHERE aid=%d ORDER BY dtcreate DESC LIMIT %d,%d " % (TABLE_ALBUM_IMG,aid,start,nfetch)
+
+        result = db.query(sqls)
+
+        rlist = []
+
+        if result:
+            for r in result:
+                img = self.compose_image(r)
+                rlist.append(img)
+
+        return rlist,total
+
+    def compose_album(self,r):
+        album = Album(r['id'],r['title'])
+        album.dtcreate = r['dtcreate']
+        album.remark = r['remark']
+        album.status = r['status']
+        return album
+
+    def compose_image(self,r):
+        image = Image(r['id'],r['title'],r['aid'])
+        image.dtcreate = r['dtcreate']
+        #TODO path
+        return image
 
     def addComment(self):
         pass
@@ -173,5 +347,6 @@ class CmsService:
     def deleteComment(self):
         pass
 
-
+def get_timenow():
+    return datetime.now().strftime(TIME_FORMAT)
 
