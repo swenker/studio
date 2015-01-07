@@ -49,6 +49,11 @@ db:refactor--using prepared statements instead of direct string assignments.
 
 put new and edit into the same form(using js to populate the form?).
 
+classified by date in a given album?
 
 jquery:
 http://learn.jquery.com/using-jquery-core/selecting-elements/
+
+
+1.for convenience ,edit pages should be put into templates
+

@@ -1,0 +1,62 @@
+$def with(article_meta,article_content)
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" >
+    <title>编辑：${article_meta.title}</title>
+    <script language="JavaScript" src="../../js/jquery/jquery-1.9.1.js"></script>
+    <script>
+
+    $if article_meta and article_meta.id:
+        $$(document).ready(function(){
+            $$("#title").val("$article_meta.title");
+            $$("#author").val("$article_meta.author");
+            $$("#source").val("$article_meta.source");
+
+            $if article_content and article_content.content:
+                $$("#content").val("$article_content.content");
+
+        });
+
+    </script>
+</head>
+
+<body>
+
+<header>Edit article</header>
+<form name="form1" method="post" action="save_article" enctype="multipart/form-data">
+  $if article_meta:
+       <input type="hidden" name="id" id="id" value="$article_meta.id">
+
+       $if article_meta.cid:
+           <input type="hidden" name="cid" id="cid" value="$article_meta.cid" size="80" maxlength="100">
+
+  <table>
+  <tr>
+      <td colspan="2">标题 <input type="text" name="title" id="title" value=""></td>
+  </tr>
+  <tr>
+      <td>作者 <input type="text" name="author" id="author" value=""></td>
+      <td>来源 <input type="text" name="source" id="source" value=""></td>
+  </tr>
+
+  <tr>
+      <td colspan="2">
+          <!--TODO fckeditor-->
+
+          内容 <textarea name="content" cols="100" rows="10" id="content"></textarea>
+      </td>
+  </tr>
+  <tr>
+      <td>
+  <input name="uaction" type="submit" value="Save">
+  <input name="uaction" type="button" value="Preview">
+  <input name="uaction" type="button" value="Publish">
+      </td>
+  </tr>
+  </table>
+</form>
+
+</body>
+</html>
