@@ -5,6 +5,8 @@ from oss import oss_api
 
 bucket_name = "smagazine-qa"
 oss_host="oss-cn-hangzhou.aliyuncs.com"
+appid="C4ewu1YvSkrDgrSg"
+appkey="THbAORmPMfI1BBiKeSJSOcJJmHxLJh"
 
 def upload_file_to_oss(target_path,local_file_path):
 
