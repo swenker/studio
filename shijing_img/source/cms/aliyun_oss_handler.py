@@ -3,10 +3,10 @@ __author__ = 'wenju'
 from oss import oss_api
 
 
-bucket_name = "smagazine-qa"
-oss_host="oss-cn-hangzhou.aliyuncs.com"
-appid="C4ewu1YvSkrDgrSg"
-appkey="THbAORmPMfI1BBiKeSJSOcJJmHxLJh"
+bucket_name = "simage"
+oss_host="oss-cn-beijing.aliyuncs.com"
+appid="MKD6WfLZOSq03lKl"
+appkey="brNGbHQjtKE1SQ4mDuPuPEO4nc0lJB"
 
 def upload_file_to_oss(target_path,local_file_path):
 
