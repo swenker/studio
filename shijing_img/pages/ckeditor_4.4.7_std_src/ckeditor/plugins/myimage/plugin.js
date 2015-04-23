@@ -1,0 +1,1 @@
+CKEDITOR.plugins.add('myimage',{icons:'myimage',init:function(editor){editor.addCommand('myimage',new CKEDITOR.dialogCommand('myimageDialog'));editor.ui.addButton('myimage',{label:editor.lang.common.image,command:'myimage',toolbar:'insert'});CKEDITOR.dialog.add('myimageDialog',this.path+'dialogs/myimage.js')}});
