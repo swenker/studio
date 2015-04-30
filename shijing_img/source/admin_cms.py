@@ -38,7 +38,7 @@ t_globals = {
     'datestr': web.datestr
 }
 
-# web.config.debug = False
+# web.config.debug = FalseListImages
 app = web.application(urls, globals())
 application = app.wsgifunc()
 
@@ -213,8 +213,8 @@ class ListImages:
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
-        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_list_edit(rlist, total, total_pages,npages)
+        return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        # return render.img_list_edit(rlist, total, total_pages,npages)
 
 
 class ListWrapper:
