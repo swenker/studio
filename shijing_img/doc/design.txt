@@ -1,52 +1,59 @@
-schedule:
-1.5����Ѯ��һ�汾����
-���� ��Ϣ������ͼ����Ϣ��ͼƬ�ϴ���
-��վ����ҳ��OK
+﻿schedule:
+1.5月中旬第一版本上线
+包括 信息发布：图文信息，图片上传，
+网站基本页面OK
 
 
-Ŀǰ�����⣺
+目前的问题：
 
-û�к��ʵ��ı��༭��,��baidu��ueditor
-����Ҫ��ͼƬ���֣���ϣ���ķ�ʽ���ǳ���һ��ҳ�棬�Լ���ͼƬ�б��л�ȡͼƬ����ΪͼƬ�ϴ��ǵ����Ĺ��ܡ� 
-����㿴��ckeditor���Ǻܺô�����
+没有合适的文本编辑器,用baidu的ueditor
+【主要是图片部分，我希望的方式就是出现一个页面，自己从图片列表中获取图片，因为图片上传是单独的功能】 
+就这点看，ckeditor不是很好处理。
 
-û�к��ʵ�ģ��
+没有合适的模板
 1.
 
 
-wordpressѡһ�����ʵ�ģ���Ǽ��ܿ��ѵ����鰡��--�����Լ�Ū�ɣ���Ȼ�鷳�㣬�����Լ�����ȫ���ƣ�ÿ��һ��㡣
-��ѡ��һ��ģ�壬�򵥵�ġ�
-����ǹ��ܵ���ƣ�
+wordpress选一个合适的模板是件很苦难的事情啊。--还是自己弄吧，虽然麻烦点，但是自己能完全控制，每天一点点。
+先选择一个模板，简单点的。
+其次是功能的设计：
 
-1.blog��ʽ����Ϣ����
-  ����
-  ���ģ�ͼ�Ļ���
-  ����
+1.blog格式的信息发布
+  标题
+  正文：图文混排
+  评论
   
-2.ͼƬ�⣺
-  ͼƬӦ��Ҳ���Ա�����
-  ͼƬӦ���и�ר�ŵ������Խ�һ����ͼƬ����һ�������λ��
+2.图片库：
+  图片应该也可以被评论
+  图片应该有个专门的类别可以将一部分图片放在一个特殊的位置
   
-ҳ����ڣ�
-1.��ҳ
-2.����
-  �б��;�����Ϣ
-3.ͼƬ��
-  ͼƬ�б�ҳ��
-  ͼƬ��Ϣҳ��
-4.ģ��չʾ
-  ���Ʋ��ͺ�ͼƬ��Ļ�ϣ�
+页面入口：
+1.首页
+2.博客
+  列表和具体信息
+3.图片库
+  图片列表页面
+  图片信息页面
+4.模特展示
+  类似博客和图片库的混合？
   
-5.��ϵ����
+5.联系我们
   
-  һ�ڣ� ��ҳ������ �۸���ϵ���б�  ��ϵ����
+  一期： 首页，博客 价格套系：列表  联系我们
   
  
 	<a id="cke_25" class="cke_button cke_button__image  cke_button_off" href="javascript:void('Image')" title="Image" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_25_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(35,event);" onfocus="return CKEDITOR.tools.callFunction(36,event);" onclick="CKEDITOR.tools.callFunction(37,this);return false;"><span class="cke_button_icon cke_button__image_icon" style="background-image:url(file:///C:/ZZZZZ/studio/shijing_img/pages/ckeditor_4.4.7_std_src/ckeditor/plugins/image/icons/image.png);background-position:0 0px;background-size:16px;">&nbsp;</span><span id="cke_25_label" class="cke_button_label cke_button__image_label" aria-hidden="false">Image</span></a>
 	
 	
 	
-	source�л��ᵼ��ͼƬû���ˡ�����ԭ�еľ�û�¡�
+	source切换会导致图片没有了。但是原有的就没事。
+
+tasks and steps：	
+-------------
+理顺目录：
+js/css/image/ 放在www目录，其中前端和后端分开存放；
+需要动态加载的页面统一采用python方案
+editor就用ckeditor，加入image的list列表
 	
 	
 	

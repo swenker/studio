@@ -8,3 +8,12 @@ make
 4.Mysql_python
 
  wget http://downloads.sourceforge.net/project/mysql-python/mysql-python-test/1.2.4b4/MySQL-python-1.2.4b4.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmysql-python%2F&ts=1429772815&use_mirror=superb-dca2
+
+You're seeing this error because you have web.config.debug set to True. Set that to False if you don't want to see this.
+git clone git@github.com:swenker/studio.git
+
+[sunwj@ws01-shijing website]$ pwd
+/home/sunwj/website
+[sunwj@ws01-shijing website]$ uwsgi web.ini
+
+
