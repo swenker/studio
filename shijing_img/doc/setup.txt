@@ -17,3 +17,5 @@ git clone git@github.com:swenker/studio.git
 [sunwj@ws01-shijing website]$ uwsgi web.ini
 
 
+config : /var/shijing
+www: /usr/local/web/www

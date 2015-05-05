@@ -29,6 +29,7 @@ urls = ("/p/adm/adminsvc", "AdminService",
         "/p/adm/upload_img", "UploadImage",
         "/p/adm/list_imgs", "ListImages",
         "/p/adm/delete_img", "DeleteImage",
+        "/p/adm/select_imgs", "SelectImages",
 
         "/p/pub/get_article/(\d+)", "GetArticle",
         "/p/pub/list_article", "ListPubArticles",
@@ -94,7 +95,7 @@ class Dashboard:
 
 class NewArticle():
     def GET(self):
-        return render.article_form(None)
+        return render.article_form(None,None)
 
 
 class SaveArticle():
@@ -213,8 +214,25 @@ class ListImages:
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
-        return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        # return render.img_list_edit(rlist, total, total_pages,npages)
+        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        return render.img_list_edit(rlist, total, total_pages,npages)
+
+class SelectImages:
+    def GET(self):
+        params = web.input(np=0,aid=1)
+
+        npages = int(params.np)
+        start = npages * _EVERY_PAGE
+        nfetch = _EVERY_PAGE
+
+        aid = params.aid
+
+        rlist, total = cmsService.get_album_imglist(aid,start, nfetch)
+
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        return render.img_list_edit(rlist, total, total_pages,npages,service_config)
 
 
 class ListWrapper:

@@ -33,6 +33,8 @@ class ServiceConfig():
         self.img_save_path = configparser.get("web", "img_save_path")
         self.img_size_limit = configparser.get("web", "img_size_limit")
         self.img_small_width = configparser.get("web", "img_small_width")
+        self.img_small_width = configparser.get("web", "img_small_width")
+        self.img_url = configparser.get("web", "img_url")
 
     def __repr__(self):
         # TODO
@@ -43,7 +45,7 @@ class ServiceConfig():
         return logging.getLogger(loggername)
 
 
-config = ServiceConfig("conf/local")
+config = ServiceConfig("/var/shijing/conf")
 
 config.getlogger("ServiceConfig").info("Service Config loaded successfully..")
 config.getlogger("ServiceConfig").info(config)
