@@ -47,6 +47,8 @@ $def with(article_meta,article_content)
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/ckeditor/ckeditor.js"></script>
+
 
 </head>
 
@@ -113,7 +115,30 @@ $def with(article_meta,article_content)
                                         </div>
                                         <div class="form-group">
                                             <label>正文</label>
-                                            <textarea class="form-control" rows="10" id="content"></textarea>
+                                            <textarea name="content" class="form-control" rows="10" id="content"></textarea>
+
+		<script>
+
+           //CKEDITOR.config.language='zh-cn';
+
+			// This call can be placed at any point after the
+			// <textarea>, or inside a <head><script> in a
+			// window.onload event handler.
+
+			// Replace the <textarea id="editor"> with an CKEditor
+			// instance, using default configurations.
+
+            CKEDITOR.config.allowedContent=true;
+            //CKEDITOR.config.width='100%';
+
+            // add these line
+            CKEDITOR.config.removePlugins= 'image'; //disable default image tool button
+            CKEDITOR.config.extraPlugins = 'myimage'; //enable custimage tool button
+            CKEDITOR.config.removePlugins= 'specialchar';
+			CKEDITOR.replace( 'content',{height:400} );
+
+		</script>
+
                                         </div>
                                         <!--
                                         <div class="form-group">

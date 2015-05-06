@@ -30,10 +30,11 @@ class ServiceConfig():
         self.user = configparser.get('db', 'user')
         self.passwd = configparser.get('db', 'passwd')
 
+        self.img_store = configparser.get("web", "img_store")
         self.img_save_path = configparser.get("web", "img_save_path")
         self.img_size_limit = configparser.get("web", "img_size_limit")
         self.img_small_width = configparser.get("web", "img_small_width")
-        self.img_small_width = configparser.get("web", "img_small_width")
+        self.img_small_height = configparser.get("web", "img_small_height")
         self.img_url = configparser.get("web", "img_url")
 
     def __repr__(self):

@@ -31,6 +31,50 @@ $def with(img_list,total,total_pages,npages,service_config)
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script>
+
+        var imgMap = new Map();
+
+        function selectImage(url,oid){
+            ckId = 'ck_'+oid;
+            imgId = 'img_'+oid;
+
+            eCkbox = document.getElementById(ckId);
+
+            //alert(eCkbox.checked);
+
+            if(eCkbox.checked)
+                imgMap.set(imgId,url);
+            else
+                imgMap.delete(imgId);
+        }
+
+        function onClose(){
+
+            var CKEDITOR   = window.opener.CKEDITOR;
+            for ( var i in CKEDITOR.instances ){
+               var currentInstance = i;
+               break;
+            }
+
+            var oEditor   = window.opener.CKEDITOR.instances[currentInstance];
+
+            imgMap.forEach(function(value,key){
+                var imgUrl = value;
+                var result="<img src="+imgUrl+" style='width:600;heigth:auto;' alt='this is an image from server.'/>";
+                var element = window.opener.CKEDITOR.dom.element.createFromHtml( result );
+                oEditor.insertElement(element);
+
+                var brElem =  window.opener.CKEDITOR.dom.element.createFromHtml("<br/>");
+                oEditor.insertElement(brElem);
+
+            });
+
+            window.close();
+        }
+
+
+    </script>
 </head>
 
 <body>
@@ -61,14 +105,14 @@ $def with(img_list,total,total_pages,npages,service_config)
                             $img.title
                         </div>
                         <div class="panel-body">
-                            <!--<img src="../../js/dropzone/images/spritemap.png" width="160" align="center"/>-->
-                            <a href="http://dl-3m.qasvc.mcitech.cn$img.raw" target="_blank">
-                            <img src="http://dl-3m.qasvc.mcitech.cn$img.raw" width="160" align="center"/>
-                            </a>
+                            <!--<a href="${service_config.img_url + img.raw}" target="_blank">-->
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.raw}" width="160" align="center"/>
+                            <!--</a>-->
                         </div>
                         <div class="panel-footer" align="right">
                              <!--&nbsp;<a href="edit_article?id=$img.oid">Edit</a>-->
                              <!--&nbsp;<a href="delete_img?id=$img.oid">Delete</a>-->
+                            <input id="ck_$img.oid" type="checkbox" onclick="javascript:selectImage('${service_config.img_url+ img.raw}','$img.oid')">
                             &nbsp;
                         </div>
                     </div>
@@ -126,7 +170,7 @@ $def with(img_list,total,total_pages,npages,service_config)
         <!-- /.col-lg-12 -->
     </div>
             <!-- /.row -->
-
+            <input type="button" value="insert" onClick="return onClose()">
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->

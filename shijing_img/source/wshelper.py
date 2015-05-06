@@ -4,8 +4,10 @@ import os
 
 from datetime import datetime
 from cms.aliyun_oss_handler import *
-
 from cms import cms_model
+from cms import service_config
+
+config = service_config.config
 
 
 class ServiceHelper():
@@ -21,9 +23,10 @@ class ServiceHelper():
     def publish(self):
         pass
 
-    def store(self, image, base_store_path):
+    def store(self, image):
         # TODO genreate thumbnail and upload all of them to to oss(/)
 
+        base_store_path = config.img_save_path
         imgpath = image.file.filename.replace('\\', '\\')
         imgname = imgpath.split('/')[-1]
 
@@ -45,7 +48,9 @@ class ServiceHelper():
         #320*..
 
         #raw
-        upload_file_to_oss(relative_store_dir+"/"+imgname,local_tmp_path)
+        img_store = config.img_store
+        if img_store == 'oss':
+            upload_file_to_oss(relative_store_dir+"/"+imgname,local_tmp_path)
 
         return imgname,relative_dir + "/" + imgname
 

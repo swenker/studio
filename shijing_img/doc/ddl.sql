@@ -1,6 +1,9 @@
 
 CREATE DATABASE IF NOT EXISTS `shijing_img` DEFAULT CHARACTER SET UTF8 COLLATE utf8_general_ci;
 GRANT ALL ON shijing_img.* TO 'imgweb'@'%' IDENTIFIED BY 'shijing09';
+GRANT ALL ON shijing_img.* TO 'imgweb'@'localhost' IDENTIFIED BY 'shijing09';
+
+USE `shijing_img`
 
 CREATE TABLE IF NOT EXISTS `cms_article_meta`(
  `id` INT(9) NOT NULL AUTO_INCREMENT,

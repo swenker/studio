@@ -46,7 +46,6 @@ application = app.wsgifunc()
 # session = web.session.Session(app, web.session.DiskStore('sessions.bm'), initializer={'bmuser': None})
 render = web.template.render("templates", globals=t_globals)
 config = service_config.config
-store_path = config.img_save_path
 
 cgi.maxlen = 2 * 1024 * 1024
 
@@ -183,7 +182,7 @@ class UploadImage:
                 imgmeta.aid = 1
 
                 # TODO title field
-                imgmeta.title,imgmeta.file = serviceHelper.store(image_data, store_path)
+                imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
 
                 cmsService.create_img(imgmeta)
             return render.common("OK")
@@ -232,7 +231,7 @@ class SelectImages:
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_list_edit(rlist, total, total_pages,npages,service_config)
+        return render.img_list_selector(rlist, total, total_pages,npages,config)
 
 
 class ListWrapper:
