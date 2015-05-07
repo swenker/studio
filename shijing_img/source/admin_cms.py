@@ -100,8 +100,8 @@ class NewArticle():
 class SaveArticle():
     def POST(self):
 
-        params = web.input(subtitle=None)
-        if not params.id:
+        params = web.input(subtitle=None,oid=None,cid=None)
+        if not params.oid:
             cmsService.new_article(serviceHelper.compose_article(params))
 
         else:

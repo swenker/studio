@@ -34,9 +34,6 @@ $def with(article_meta,article_content)
             $$("#author").val("$article_meta.author");
             $$("#source").val("$article_meta.source");
 
-            $if article_content and article_content.content:
-                $$("#content").val("$article_content.content");
-
         });
 
     </script>
@@ -85,23 +82,23 @@ $def with(article_meta,article_content)
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="/p/adm/save_article">
+                                    <form role="form" action="/p/adm/save_article" method="post">
                                       $if article_meta:
-                                           <input type="hidden" name="id" id="id" value="$article_meta.oid">
+                                           <input type="hidden" name="oid" id="oid" value="$article_meta.oid">
 
                                            $if article_meta.cid:
                                                <input type="hidden" name="cid" id="cid" value="$article_meta.cid">
 
                                         <div class="form-group">
                                             <label>标题</label>
-                                            <input class="form-control" id="title">
+                                            <input class="form-control" name="title" id="title">
                                             <!--<p class="help-block">Example block-level help text here.</p>-->
                                         </div>
                                         <div class="form-group">
                                             <label>来源</label>
-                                            <input   placeholder="Enter text" value="yinyushijing.cn" id="source">
+                                            <input   placeholder="Enter text" value="yinyushijing.cn" name="source" id="source">
                                             &nbsp;&nbsp;<label>作者</label>
-                                            <input  placeholder="Enter text" value="市井影像" id="author">
+                                            <input  placeholder="Enter text" value="市井影像" name="author" id="author">
                                         </div>
 <!--
                                         <div class="form-group">
@@ -115,7 +112,11 @@ $def with(article_meta,article_content)
                                         </div>
                                         <div class="form-group">
                                             <label>正文</label>
-                                            <textarea name="content" class="form-control" rows="10" id="content"></textarea>
+                                            <textarea name="content" class="form-control" rows="10" id="content">
+                                            $if article_meta and article_content and article_content.content:
+                                                $article_content.content
+
+                                            </textarea>
 
 		<script>
 

@@ -58,10 +58,10 @@ class ServiceHelper():
     def compose_article(self, params):
         article_meta = cms_model.ArticleMeta()
 
-        if params.id:
-            article_meta.id = int(params.id)
+        if params.oid:
+            article_meta.oid = int(params.oid)
         else:
-            article_meta.id = -1
+            article_meta.oid = -1
 
         article_meta.title = params.title
 

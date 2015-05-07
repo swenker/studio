@@ -8,7 +8,7 @@ USE `shijing_img`
 CREATE TABLE IF NOT EXISTS `cms_article_meta`(
  `id` INT(9) NOT NULL AUTO_INCREMENT,
  `title` VARCHAR(60) NOT NULL,
- `subtitle` VARCHAR(50) NOT NULL,
+ `subtitle` VARCHAR(50) NULL,
  `dtpub` TIMESTAMP DEFAULT 0,
  `dtupdate` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  `dtcreate` TIMESTAMP NOT NULL DEFAULT 0,
