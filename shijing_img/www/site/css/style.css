@@ -102,6 +102,15 @@ h3 {
 	padding-top:5px;
 	padding-bottom:17px;
 }
+
+h4 {
+	font-size:18px;
+	//color:#5596c7;
+	font-weight:normal;
+	font-style:italic;
+	padding-bottom:8px;
+}
+
 ul {
 	margin:0;
 	padding:0;
@@ -493,6 +502,13 @@ ul.menu li a:hover, ul.menu li.current a {
 	float:left;
 	width:260px;
 }
+
+.col-17 {
+	float:left;
+	width:700px;
+	margin-right:79px;
+}
+
 /* Lightbox image */
 .lightbox-image {
 	display:inline-block;
