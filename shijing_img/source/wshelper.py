@@ -68,6 +68,8 @@ class ServiceHelper():
         article_meta.subtitle = params.subtitle
         article_meta.author = params.author
         article_meta.source = params.source
+        article_meta.cover = params.cover
+
         # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
         #todo auto generate
         article_meta.brief = 'This is brief'
@@ -76,7 +78,7 @@ class ServiceHelper():
         article_content = cms_model.ArticleContent(params.content)
 
         if params.cid:
-            article_content.id = int(params.cid)
+            article_content.oid = int(params.cid)
 
         article = cms_model.ArticleEntity(article_meta, article_content)
 

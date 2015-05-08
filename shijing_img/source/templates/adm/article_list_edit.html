@@ -41,7 +41,7 @@ $def with(article_list,total,total_pages,npages)
         <!-- Navigation -->
         <div id="admnav">
             <script>
-                $$("#admnav").load("/pages/adm/adm_nav.html");
+                $$("#admnav").load("/adm/adm_nav.html");
             </script>
         </div>
 
@@ -66,8 +66,7 @@ $def with(article_list,total,total_pages,npages)
                             $article.title
                         </div>
                         <div class="panel-body">
-                            <img src="http://dl-3m.qasvc.mcitech.cn/raw/2014/12/31/psb805.jpeg" width="120" align="left"/>
-                            <!--<img src="../../js/dropzone/images/spritemap.png" width="160" align="left"/>-->
+                            <img src="$article.cover" width="160" align="left"/>
                             <p>$article.brief [$article.dtcreate]</p>
                         </div>
                         <div class="panel-footer" align="right">

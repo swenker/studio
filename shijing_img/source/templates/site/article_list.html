@@ -1,0 +1,77 @@
+$def with(article_list,total,total_pages,npages)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Paris Clark | Services</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
+<!--<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>-->
+<script src="/site/js/jquery-1.7.min.js"></script>
+<script src="/site/js/jquery.easing.1.3.js"></script>
+<!--[if lt IE 9]>
+<script src="/site/js/html5.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/ie.css">
+<![endif]-->
+</head>
+<body>
+<!--==============================header=================================-->
+<div class="header">
+  <div>
+    <div class="subpages-nav">
+      <nav>
+        <ul class="menu">
+          <li class="li-none"><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li class="li-left li-none current"><a href="services.html">Services</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contacts.html">Contacts</a></li>
+        </ul>
+        <h1><a href="index.html"><img src="images/logo.png" alt=""></a></h1>
+      </nav>
+    </div>
+  </div>
+</div>
+<!--==============================content================================-->
+<section id="content">
+  <div class="pad-1">
+    <div class="page4-row1">
+
+      <div class="col-12">
+        <h2 class="h2 p2">分类作品</h2>
+
+    $for i in range(0,len(article_list)):
+        $ article=article_list[i]
+        <div class="wrap bot-2"> <img src="$article.cover" width="160" alt=""  >
+          <div class="extra-wrap">
+            <p><a href="#" class="link">$article.title</a><br>
+              <strong class="upper">ut dui gravida ut viverra lectus tincidunt</strong><br>
+              nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem.</p>
+            <a href="/p/site/get_article/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/><br/>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-13">
+        <h2 class="h2 p2">Featured news:</h2>
+        <img src="images/page5-img1.jpg" alt="" class="img-border img-indent-2">
+        <p class="upper clr-1 p5 ">ut dui gravida ut viverra lectus tincidunt Cras </p>
+        <p>nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem. sit amet dictum velit velit eu magna.</p>
+        <a href="#" class="link-1 link-1-pad">Read more</a>
+
+        <h2 class="h2 p2">Featured news:</h2>
+        <img src="images/page5-img1.jpg" alt="" class="img-border img-indent-2">
+        <p class="upper clr-1 p5 ">ut dui gravida ut viverra lectus tincidunt Cras </p>
+        <p>nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem. sit amet dictum velit velit eu magna.</p>
+        <a href="#" class="link-1 link-1-pad">Read more</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!--==============================footer=================================-->
+<footer> <span><strong>© 2012 Paris Clarks</strong><br>
+  Website Template by <a target="_blank" href="http://www.templatemonster.com/" class="link-2">TemplateMonster.com</a></span> </footer>
+</body>
+</html>

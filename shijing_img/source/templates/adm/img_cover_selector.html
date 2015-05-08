@@ -1,0 +1,157 @@
+$def with(img_list,total,total_pages,npages,service_config)
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>照片</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+
+        function onClose(img_url){
+            window.opener.document.getElementById('cover').value=img_url;
+            window.opener.document.getElementById('img_cover').src=img_url;
+
+            window.close();
+            return;
+        }
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <!---->
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">照片列表</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+    $ nevery_line=5
+    $for i in range(0,len(img_list)):
+        $ isrow= (i % nevery_line==0)
+        $if isrow:
+            <div class="row">
+
+        $ img=img_list[i]
+                <div class="col-lg-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            $img.title
+                        </div>
+                        <div class="panel-body">
+                            <a href="javascript:void(0)" onClick="onClose('${service_config.img_url+ img.raw}')">
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.raw}" width="160" align="center"/>
+                            </a>
+                        </div>
+                        <div class="panel-footer" align="right">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-4 -->
+        $if (i+1)% nevery_line==0 :
+            </div>
+            <!-- /.row -->
+
+    $if len(img_list)%nevery_line !=0:
+            </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="right">
+                    共 $total_pages 页
+                    $ prev=npages-1
+                    $ next=npages+1
+                    第${npages+1}页
+                    &nbsp;
+                    $if total_pages>1 and npages>0:
+                        <a href="/p/adm/list_imgs?np=0">
+                        首页
+                        </a>
+                    $else:
+                        首页
+                        &nbsp;
+
+                    $if prev>=0:
+                        <a href="/p/adm/list_imgs?np=$prev">
+                        上一页
+                        </a>
+                    $else:
+                        上一页
+                        &nbsp;
+
+                    $if total_pages>next:
+                        <a href="/p/adm/list_imgs?np=$next">
+                        下一页
+                        </a>
+                    $else:
+                        下一页
+                        &nbsp;
+                    $if total_pages>1 and total_pages-1>npages:
+                        <a href="/p/adm/list_imgs?np=${total_pages-1}">
+                        尾页
+                        </a>
+                    $else:
+                        尾页
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+            <!-- /.row -->
+            <input type="button" value="insert" onClick="return onClose()">
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/adm/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/adm/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

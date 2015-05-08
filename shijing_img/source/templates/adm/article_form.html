@@ -33,6 +33,8 @@ $def with(article_meta,article_content)
             $$("#title").val("$article_meta.title");
             $$("#author").val("$article_meta.author");
             $$("#source").val("$article_meta.source");
+            $$("#cover").val("$article_meta.cover");
+            $$("#img_cover").src("$article_meta.cover");
 
         });
 
@@ -107,8 +109,11 @@ $def with(article_meta,article_content)
                                         </div>
 -->
                                         <div class="form-group">
-                                            <label>封面图片</label> <span class="form-control-static">（可选）</span>
-                                            <input type="file">
+                                            <label>封面</label>
+                                            <img id='img_cover' src="" width="160"> <br>
+                                            <input value="" name="cover" id="cover" size="40">
+                                            <button type="button"
+                                                    onclick="return window.open('/p/adm/select_cover','_cover','menubar=1,resizable=1,width=950,height=580,scrollbars=1')">Select</button>
                                         </div>
                                         <div class="form-group">
                                             <label>正文</label>
@@ -133,9 +138,9 @@ $def with(article_meta,article_content)
             //CKEDITOR.config.width='100%';
 
             // add these line
+            //CKEDITOR.config.removePlugins= 'specialchar';
             CKEDITOR.config.removePlugins= 'image'; //disable default image tool button
             CKEDITOR.config.extraPlugins = 'myimage'; //enable custimage tool button
-            CKEDITOR.config.removePlugins= 'specialchar';
 			CKEDITOR.replace( 'content',{height:400} );
 
 		</script>
