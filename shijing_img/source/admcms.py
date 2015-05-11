@@ -30,8 +30,7 @@ urls = ("/adminsvc", "AdminService",
         "/list_imgs", "ListImages",
         "/delete_img", "DeleteImage",
         "/select_imgs", "SelectImages",
-        "/select_cover", "SelectCover",
-        "/files/(.*)", "FilesHandler")
+        "/select_cover", "SelectCover")
 
 t_globals = {
     'datestr': web.datestr

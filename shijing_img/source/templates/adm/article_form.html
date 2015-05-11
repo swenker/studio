@@ -10,7 +10,12 @@ $def with(article_meta,article_content)
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin-图文编辑</title>
+    <title>
+        $if article_meta and article_meta.oid:
+            编辑：${article_meta.title}
+        $else:
+            新建图文
+    </title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/adm/css/bootstrap.min.css" rel="stylesheet">

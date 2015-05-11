@@ -10,8 +10,11 @@ import wshelper
 
 
 urls = (
+        "/home", "HomePage",
+        "/portfolio", "Portfolio",
         "/get_article/(\d+)", "GetArticle",
-        "/list_article", "ListArticles"
+        "/list_article", "ListArticles",
+        "/list_imgs", "ListImages"
 )
 
 app = web.application(urls, globals())
@@ -30,6 +33,17 @@ serviceHelper = wshelper.ServiceHelper()
 _EVERY_PAGE = 10
 
 
+class HomePage():
+    def GET(self):
+
+        return render.index()
+
+class Portfolio():
+    def GET(self):
+
+        return render.portfolio()
+
+
 class GetArticle():
     def GET(self, id):
         article = cmsService.get_article(id)
@@ -41,7 +55,7 @@ class GetArticle():
 
 class ListArticles():
     def GET(self):
-        params = web.input(np=0, kw=None)
+        params = web.input(np=0, kw=None,cid=None)
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
@@ -51,6 +65,9 @@ class ListArticles():
         if keyword:
             keyword = keyword.strip()
 
+        cid = params.cid
+
+
         rlist, total = cmsService.list_articles(start, nfetch, query_in_title=keyword)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
@@ -58,3 +75,7 @@ class ListArticles():
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.article_list(rlist, total, total_pages,npages)
 
+
+class ListImages():
+    def GET(self):
+        params = web.input(np=0, kw=None,aid=None)
