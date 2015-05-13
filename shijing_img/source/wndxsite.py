@@ -40,8 +40,23 @@ class HomePage():
 
 class Portfolio():
     def GET(self):
+        params = web.input(ctid= None)
 
-        return render.portfolio()
+        if not params.ctid:
+            ctid = str(1)
+        else :
+            ctid = params.ctid
+
+        rlist, total = cmsService.list_articles(0, 1,ctid,None,status=str(1))
+        lista = rlist[0]
+
+        article = cmsService.get_article(lista.oid)
+
+        if article:
+            return render.portfolio(article.article_meta, article.article_content)
+
+        else:
+            return render.common("failed:" + str(id))
 
 
 class GetArticle():
@@ -55,7 +70,7 @@ class GetArticle():
 
 class ListArticles():
     def GET(self):
-        params = web.input(np=0, kw=None,cid=None)
+        params = web.input(np=0, kw=None,ctid= None)
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
@@ -65,10 +80,14 @@ class ListArticles():
         if keyword:
             keyword = keyword.strip()
 
-        cid = params.cid
+
+        if not params.ctid:
+            ctid = str(4)
+        else :
+            ctid = params.ctid
 
 
-        rlist, total = cmsService.list_articles(start, nfetch, query_in_title=keyword)
+        rlist, total = cmsService.list_articles(start, nfetch,ctid,query_in_title=keyword,status=str(1))
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 

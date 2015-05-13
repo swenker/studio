@@ -33,13 +33,43 @@ $def with(article_meta,article_content)
     <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
     <script>
 
-    $if article_meta and article_meta.oid:
+
+        data_url = "/p/adm/list_category";
+
+        function generateCategoryList(){
+            $$.getJSON(data_url)
+            .done(
+                function(data){
+                    appendCategoryNode(data);
+                })
+                .fail(
+                function(jqxhr,textStatus,error){
+                    var err = textStatus + "," + error;
+                    console.log( "Request Failed:" + err );
+                }
+                );
+
+        }
+
+        function appendCategoryNode(data){
+            selectNode = $$("#cms_category");
+            for(i=0;i<data.rlist.length;i++){
+                cate = data.rlist[i];
+                optionNode = $$("<option value='"+cate.id+"'>"+cate.title+"</option>");
+                selectNode.append(optionNode);
+            }
+        }
+
         $$(document).ready(function(){
-            $$("#title").val("$article_meta.title");
-            $$("#author").val("$article_meta.author");
-            $$("#source").val("$article_meta.source");
-            $$("#cover").val("$article_meta.cover");
-            $$("#img_cover").src("$article_meta.cover");
+
+            generateCategoryList();
+
+            $if article_meta and article_meta.oid:
+                $$("#title").val("$article_meta.title");
+                $$("#author").val("$article_meta.author");
+                $$("#source").val("$article_meta.source");
+                $$("#cover").val("$article_meta.cover");
+                $$("#img_cover").attr("src","$article_meta.cover");
 
         });
 
@@ -115,7 +145,8 @@ $def with(article_meta,article_content)
 -->
                                         <div class="form-group">
                                             <label>封面</label>
-                                            <img id='img_cover' src="" width="160"> <br>
+                                            <img id='img_cover' src="" width="160">  &nbsp;&nbsp;<label>Category</label><select id="cms_category" name="ctid"></select>
+                                            <br>
                                             <input value="" name="cover" id="cover" size="40">
                                             <button type="button"
                                                     onclick="return window.open('/p/adm/select_cover','_cover','menubar=1,resizable=1,width=950,height=580,scrollbars=1')">Select</button>

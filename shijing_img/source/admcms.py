@@ -20,10 +20,11 @@ urls = ("/adminsvc", "AdminService",
         "/delete_article", "DeleteArticle",
         "/edit_article", "EditArticle",
         "/list_article", "ListEditArticles",
-        "/list_column", "ListEditArticles",
-        "/new_column", "ListEditArticles",
-        "/edit_column", "ListEditArticles",
-        "/delete_column", "ListEditArticles",
+        "/list_category", "ListCategories",
+        # "/new_category", "NewCategory",
+        # "/save_category", "SaveCategory",
+        # "/edit_category", "EditCategory",
+        # "/delete_category", "DeleteCategory",
         "/album", "EditAlbum",
         "/list_album", "ListAlbums",
         "/upload_img", "UploadImage",
@@ -112,22 +113,24 @@ _EVERY_PAGE = 10
 
 class ListEditArticles():
     def GET(self):
-        params = web.input(np=0, kw=None)
+        params = web.input(np=0, kw=None,ctid=None)
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
+        ctid = params.ctid
+
         keyword = params.kw
         if keyword:
             keyword = keyword.strip()
 
-        rlist, total = cmsService.list_articles(start, nfetch, query_in_title=keyword)
+        rlist, total = cmsService.list_articles(start, nfetch,ctid, query_in_title=keyword)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.article_list_edit(rlist, total, total_pages,npages)
+        return render.article_list_edit(rlist, total, total_pages,npages,ctid)
 
 
 # TODO
@@ -156,6 +159,46 @@ class EditArticle():
             return render.article_form(article.article_meta, article.article_content)
         else:
             return render.common("failed:" + str(id))
+
+
+# class NewCategory():
+#     def GET(self):
+#         return render.category_form(None,None)
+#
+# class SaveCategory():
+#     def POST(self):
+#
+#         params = web.input(oid=None,title=None,code=None,cid=None)
+#         if not params.oid:
+#             cmsService.create_category(serviceHelper.compose_category(params))
+#
+#         else:
+#             cmsService.update_category(serviceHelper.compose_category(params))
+#
+#         return render.common("OK")
+#
+# class DeleteCategory():
+#     def GET(self):
+#         id = web.input().id
+#         cmsService.delete_category(id)
+#
+#         return render.common("deleted:" + str(id))
+#
+# class EditCategory():
+#     def GET(self):
+#         id = web.input().id
+#         category = cmsService.get_category(id)
+#         if category:
+#             return render.category_form(category.category_meta, category.category_content)
+#         else:
+#             return render.common("failed:" + str(id))
+
+class ListCategories():
+    def GET(self):
+        rlist = cmsService.get_category_list()
+
+        return to_jsonstr(ListWrapper(rlist))
+
 
 
 class UploadImage:
@@ -240,7 +283,7 @@ class SelectCover:
 
 
 class ListWrapper:
-    def __init__(self, rlist, total_count, total_pages):
+    def __init__(self, rlist, total_count=0, total_pages=0):
         self.rlist = rlist
         self.total = total_count
         self.total_pages = total_pages

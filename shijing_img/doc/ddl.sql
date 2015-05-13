@@ -15,9 +15,10 @@ CREATE TABLE IF NOT EXISTS `cms_article_meta`(
  `author` VARCHAR(30),
  `source` VARCHAR(30),
  `cover` VARCHAR(200),
- `brief` VARCHAR(30),
+ `brief` VARCHAR(255),
  `status` TINYINT(1) DEFAULT 1,
  `cid` int(9) NOT NULL,
+ `ctid` int(9) NOT NULL,
  PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
@@ -27,23 +28,12 @@ CREATE TABLE IF NOT EXISTS cms_article_content(
  PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS cms_column(
- `id` INT(9) NOT NULL AUTO_INCREMENT,
- `cname` VARCHAR(20) NOT NULL,
- PRIMARY KEY(`id`)
-)ENGINE=Innodb DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS cms_article_column(
- `aid` INT(9) NOT NULL,
- `cid` INT(9) NOT NULL
-)ENGINE=Innodb DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE IF NOT EXISTS `cms_album`(
  `id` INT(9) NOT NULL AUTO_INCREMENT,
- `title` VARCHAR(30) NOT NULL,
+ `title` VARCHAR(20) NOT NULL,
  `dtcreate` TIMESTAMP NOT NULL DEFAULT 0,
- `remark` VARCHAR(200),
+ `remark` VARCHAR(50),
  `status` TINYINT(1) DEFAULT 1,
   PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
@@ -69,3 +59,24 @@ CREATE TABLE IF NOT EXISTS `site_user`(
 `status` TINYINT(1) DEFAULT 1,
 PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `cms_category`(
+ `id` INT(9) NOT NULL AUTO_INCREMENT,
+ `title` VARCHAR(20) NOT NULL,
+ `code` VARCHAR(10) UNIQUE NOT NULL,
+ `dtcreate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `remark` VARCHAR(50),
+ `status` TINYINT(1) DEFAULT 1,
+  PRIMARY KEY(`id`)
+) ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS cms_article_category(
+ `aid` INT(9) NOT NULL,
+ `cid` INT(9) NOT NULL
+)ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+INSERT INTO `cms_category`(title,code)VALUES('套系报价','txbj');
+INSERT INTO `cms_category`(title,code)VALUES('服务流程','fwlc');
+INSERT INTO `cms_category`(title,code)VALUES('作品展示','zpzs');
+INSERT INTO `cms_category`(title,code)VALUES('摄影学苑','syxy');
+INSERT INTO `cms_category`(title,code)VALUES('活动','news');

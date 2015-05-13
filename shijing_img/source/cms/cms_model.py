@@ -21,6 +21,7 @@ class ArticleMeta:
         self.brief = ''
         self.status = 1
         self.cid = -1
+        self.ctid = -1
 
     def __repr__(self):
         return self.__str__()
@@ -61,6 +62,24 @@ class ArticleContent:
     def jsonable(self):
         return self.__dict__
 
+
+class Category:
+    def __init__(self, id=-1,code=None,title=None):
+        self.code = code
+        self.title = title
+        self.oid = id
+        self.status = 1
+        self.dtcreate = None
+        self.remark = ''
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
 
 class Album:
     def __init__(self, id=-1, title=None):

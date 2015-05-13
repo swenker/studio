@@ -2,13 +2,15 @@ __author__ = 'wenju'
 
 import web
 
-from oss import oss_api
 from cms_model import *
 import service_config
 from aliyun_oss_handler import *
 
 TABLE_ARTICLE_META = "cms_article_meta"
 TABLE_ARTICLE_CONTENT = "cms_article_content"
+
+TABLE_CATEGORY = "cms_category"
+TABLE_ARTICLE_CATEGORY = "cms_article_category"
 
 TABLE_ALBUM = "cms_album"
 TABLE_ALBUM_IMG = "cms_album_img"
@@ -43,15 +45,15 @@ class CmsService:
                 cid = result[0]['mid']
 
             time_now = get_timenow()
-            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,dtupdate,cover,brief,cid) VALUES" \
-                   "($title,$subtitle,$author,$source,$dtpub,$dtcreate,$dtupdate,$cover,$brief,$cid)" \
+            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,dtupdate,cover,brief,cid,ctid) VALUES" \
+                   "($title,$subtitle,$author,$source,$dtpub,$dtcreate,$dtupdate,$cover,$brief,$cid,$ctid)" \
                    % TABLE_ARTICLE_META
 
             db.query(sqls,
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
                            'dtpub': article_meta.dtpub, 'dtcreate': time_now, 'dtupdate': time_now,
-                           'cover': article_meta.cover, 'brief': article_meta.brief, 'cid': cid}
+                           'cover': article_meta.cover, 'brief': article_meta.brief, 'cid': cid,"ctid":article_meta.ctid}
             )
 
             result = db.query("select LAST_INSERT_ID() AS mid ")
@@ -59,6 +61,9 @@ class CmsService:
             if result:
                 mid = result[0]['mid']
             t.commit()
+
+            #TODO one to many
+            #sqls = "INSERT INTO %s(aid,ctid)VALUES($aid,ctid) " % (TABLE_ARTICLE_CATEGORY,mid,ctid)
 
             logger.info("articleId [%d] is created" % mid)
             return mid
@@ -79,7 +84,7 @@ class CmsService:
                      vars={'content': article.article_content.content, 'oid': article.article_content.oid}
             )
 
-            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,cover=$cover,brief=$brief WHERE id=$oid" \
+            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,cover=$cover,brief=$brief,ctid=$ctid WHERE id=$oid" \
                    % TABLE_ARTICLE_META
 
             # logger.debug(sqls)
@@ -87,6 +92,7 @@ class CmsService:
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
                            'dtupdate': get_timenow(), 'cover': article_meta.cover, 'brief': article_meta.brief,
+                           'ctid':article_meta.ctid,
                            'oid': article_meta.oid}
             )
 
@@ -126,20 +132,43 @@ class CmsService:
         db.query(sqls, vars={'status': 1, 'oid': oid})
 
 
-    def list_articles(self, start, nfetch, query_in_title=None, status=None):
+    def list_articles(self, start, nfetch, ctid=None,query_in_title=None,status=None):
         """list articles meta without content  """
         sql_total = "SELECT COUNT(*) as total FROM cms_article_meta "
 
-        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status FROM " + TABLE_ARTICLE_META
+        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM %s " % (TABLE_ARTICLE_META)
+
+        has_condition = True
+        if ctid or query_in_title or status:
+            sqls += " WHERE "
+            sql_total += " WHERE "
+
+        if ctid:
+            has_condition = True
+            sqls += " ctid="+ctid
+            sql_total += " ctid="+ctid
 
         if query_in_title:
-            sqlwhere = " WHERE title LIKE $keywords OR brief LIKE '%" + query_in_title + "%'"
-            sqls += sqlwhere
+            if has_condition:
+                sqls +=" AND "
+                sql_total += " AND "
+            else:
+                has_condition = True
 
+            sqlwhere = " title LIKE '%s' OR brief LIKE '%s" % (query_in_title,query_in_title)
+
+            sqls += sqlwhere
             sql_total += sqlwhere
 
 
-        # if status:
+        if status:
+            if has_condition:
+                sqls +=" AND "
+                sql_total += " AND "
+
+            sqls += " status="+status
+            sql_total += " status="+status
+
 
         sqls += " ORDER BY dtcreate desc "
 
@@ -147,13 +176,7 @@ class CmsService:
 
         total = 0
 
-        if query_in_title:
-
-            result = db.query(sql_total, vars={'keywords': query_in_title})
-
-        else:
-
-            result = db.query(sql_total)
+        result = db.query(sql_total)
 
         if result:
             total = result[0]['total']
@@ -180,7 +203,7 @@ class CmsService:
 
     def get_article(self, oid):
         sqls = "SELECT m.id AS id,m.title AS title,m.subtitle AS subtitle,m.author AS author,m.source AS source,m.dtpub AS dtpub," \
-               "m.dtupdate AS dtupdate,m.dtcreate AS dtcreate,m.cover AS cover,m.brief AS brief,m.cid AS cid,m.status AS status,c.content AS content " \
+               "m.dtupdate AS dtupdate,m.dtcreate AS dtcreate,m.cover AS cover,m.brief AS brief,m.cid AS cid,m.status AS status,m.ctid as ctid,c.content AS content " \
                "FROM cms_article_meta m inner join cms_article_content c on m.cid=c.id where m.id=$oid"
 
         result = db.query(sqls, vars={'oid': oid})
@@ -196,7 +219,7 @@ class CmsService:
 
     def get_article_meta(self, oid):
 
-        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status  FROM cms_article_meta where id=$oid"
+        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM cms_article_meta where id=$oid"
 
         result = db.query(sqls, vars={'oid': oid})
 
@@ -233,8 +256,76 @@ class CmsService:
         article_meta.cover = r['cover']
         article_meta.brief = r['brief']
         article_meta.cid = r['cid']
+        article_meta.ctid = r['ctid']
 
         return article_meta
+
+    #------------------------------------------------------ category
+    def save_category(self, category):
+
+        if category.oid and category.oid > 0:
+
+            self.update_category(category)
+
+        else:
+
+            self.create_category(category)
+
+    def create_category(self, category):
+
+        sqls = "INSERT INTO %s(title,code,dtcreate,remark)VALUES($title,$code,$dtcreate,$remark) " % TABLE_CATEGORY
+
+        db.query(sqls,
+                 vars={'title': category.title,'code': category.code, 'dtcreate': get_timenow(), 'remark': category.remark}
+        )
+
+        logger.info("category %s created" % category)
+
+    def update_category(self, category):
+
+        sqls = "UPDATE %s SET title=$title,code=$code,remark=$remark WHERE id=$oid" % TABLE_CATEGORY
+
+        db.query(sqls,
+                 vars={'title': category.title, 'code': category.code, 'remark': category.remark, 'oid': category.oid}
+        )
+
+        logger.info("category %s updated" % category)
+
+    def delete_category(self, oid, hard=False):
+
+        if not hard:
+
+            sqls = "UPDATE %s SET `status`=%d where id=$oid" % (TABLE_CATEGORY, 2)
+
+        else:
+
+            sqls = "DELETE FROM %s WHERE id=$oid" % TABLE_CATEGORY
+
+        db.query(sqls, vars={'oid': oid})
+
+    def get_category(self, oid):
+        sqls = "SELECT * FROM %s WHERE id=$oid" % TABLE_CATEGORY
+        result = db.query(sqls,vars={'oid':oid})
+        if result:
+            r = result[0]
+            cate = self.compose_category(r)
+            return cate
+
+
+    def get_category_list(self):
+
+        result = db.select(TABLE_CATEGORY, order="code")
+
+        rlist = []
+
+        if result:
+            for r in result:
+                cate = self.compose_category(r)
+                rlist.append(cate)
+
+        return rlist
+
+
 
     # Album
     def save_album(self, album):
@@ -396,6 +487,13 @@ class CmsService:
 
         return rlist, total
 
+
+    def compose_category(self, r):
+        category = Category(r['id'],r['code'] ,r['title'])
+        category.dtcreate = r['dtcreate']
+        category.remark = r['remark']
+        category.status = r['status']
+        return category
 
     def compose_album(self, r):
         album = Album(r['id'], r['title'])

@@ -97,13 +97,15 @@ class TestCmsService():
         print self.test_get_album_list()
         print self.test_get_album_imglist()
 
+    def test_list_category(self):
+        print cmsService.get_category_list()
 
 if __name__ == '__main__':
     tcs = TestCmsService()
     # tcs.test_article_get()
     #tcs.test_album_get()
 
-    tcs.test_article_write()
-    tcs.test_album_write()
-
+    # tcs.test_article_write()
+    # tcs.test_album_write()
+    tcs.test_list_category()
 

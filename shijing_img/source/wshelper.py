@@ -69,6 +69,7 @@ class ServiceHelper():
         article_meta.author = params.author
         article_meta.source = params.source
         article_meta.cover = params.cover
+        article_meta.ctid = int(params.ctid)
 
         # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
         #todo auto generate
@@ -83,4 +84,20 @@ class ServiceHelper():
         article = cms_model.ArticleEntity(article_meta, article_content)
 
         return article
+
+    def compose_category(self,params):
+        category = cms_model.Category()
+
+        if params.oid:
+            category.oid = params.oid
+
+        category.title = params.title
+        category.code = params.code
+        category.remark = params.remark
+        category.status = params.status
+
+        return category
+
+
+
 
