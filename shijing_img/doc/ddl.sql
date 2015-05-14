@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `cms_article_meta`(
  `brief` VARCHAR(255),
  `status` TINYINT(1) DEFAULT 1,
  `cid` int(9) NOT NULL,
- `ctid` int(9) NOT NULL,
+ `ctcode` VARCHAR(10) NOT NULL,
  PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS cms_article_content(
 CREATE TABLE IF NOT EXISTS `cms_album`(
  `id` INT(9) NOT NULL AUTO_INCREMENT,
  `title` VARCHAR(20) NOT NULL,
+ `code` VARCHAR(10) UNIQUE NOT NULL,
  `dtcreate` TIMESTAMP NOT NULL DEFAULT 0,
  `remark` VARCHAR(50),
  `status` TINYINT(1) DEFAULT 1,

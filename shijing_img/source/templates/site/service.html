@@ -1,8 +1,8 @@
-$def with(article_meta, article_content)
+$def with(article_list,total,total_pages,npages)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>温暖的心-儿童摄影| 作品展示</title>
+<title>Paris Clark | Services</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
@@ -26,7 +26,8 @@ $def with(article_meta, article_content)
           <li><a href="/p/site/service">服务流程</a></li>
           <li class="li-left li-none"><a href="/p/site/la">作品展示</a></li>
           <li><a href="/p/site/sc">摄影学苑</a></li>
-          <li><a href="/p/site/news">活动</a></li>
+          <li class="current"><a href="/p/site/news">活动</a></li>
+
         </ul>
         <h1><a href="/p/site/home"><img src="/site/images/logo.png" alt=""></a></h1>
       </nav>
@@ -36,22 +37,23 @@ $def with(article_meta, article_content)
 <!--==============================content================================-->
 <section id="content">
   <div class="pad-1">
-    <div class="page5-row1">
+    <div class="page4-row1">
+
       <div class="col-12">
-        <h2 class="h2 p2" align="center">
-            $if article_meta:
-                $article_meta.title
-        </h2>
-        <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$datestr(article_meta.dtcreate)</h4>
-        <div class="wrap">
+        <h2 class="h2 p2">服务流程</h2>
 
-          <img src="${service_config.img_url+'/raw'+article_meta.cover}" width="600" alt="" >
+    $for i in range(0,len(article_list)):
+        $ article=article_list[i]
+        <div class="wrap bot-2"> <img src="${service_config.img_url+'/raw'+article.cover}" width="160" alt=""  >
           <div class="extra-wrap">
-             $if article_content:
-                 $:article_content.content
-
+            <p><a href="#" class="link">$article.title</a><br>
+              <!--<strong class="upper"></strong><br>-->
+                $article.brief
+              </p>
+            <a href="/p/site/ga/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/><br/>
           </div>
         </div>
+    <!--end of article list-->
 
       </div>
       <div class="col-13">
@@ -72,7 +74,8 @@ $def with(article_meta, article_content)
   </div>
 </section>
 <!--==============================footer=================================-->
-<footer> <span><strong>© 2012 Paris Clarks</strong><br>
-  Website Template by <a target="_blank" href="http://www.templatemonster.com/" class="link-2">TemplateMonster.com</a></span> </footer>
+<footer>
+    <span><strong>Copyrights © yinyushijing.cn </strong> All rights reseorved <br> 京ICP备15014181号 </span>
+</footer>
 </body>
 </html>

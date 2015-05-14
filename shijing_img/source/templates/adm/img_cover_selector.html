@@ -1,4 +1,4 @@
-$def with(img_list,total,total_pages,npages,service_config)
+$def with(img_list,total,total_pages,npages)
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,10 +31,13 @@ $def with(img_list,total,total_pages,npages,service_config)
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script language="JavaScript" src="/jslib/util.js"></script>
+
     <script>
 
-        function onClose(img_url){
-            window.opener.document.getElementById('cover').value=img_url;
+        function onClose(img_url,img_raw){
+            window.opener.document.getElementById('cover').value=img_raw;
+
             window.opener.document.getElementById('img_cover').src=img_url;
 
             window.close();
@@ -73,8 +76,8 @@ $def with(img_list,total,total_pages,npages,service_config)
                             $img.title
                         </div>
                         <div class="panel-body">
-                            <a href="javascript:void(0)" onClick="onClose('${service_config.img_url+ img.raw}')">
-                            <img id='img_$img.oid' src="${service_config.img_url+ img.raw}" width="160" align="center"/>
+                            <a href="javascript:void(0)" onClick="onClose('${service_config.img_url+ img.thumbnail}','$img.file')">
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
                             </a>
                         </div>
                         <div class="panel-footer" align="right">

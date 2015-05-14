@@ -21,12 +21,12 @@ $def with(article_list,total,total_pages,npages)
     <div class="subpages-nav">
       <nav>
         <ul class="menu">
-          <li class="li-none"><a href="/p/site/home">首页</a></li>
-          <li><a href="services.html">套系介绍</a></li>
-          <li><a href="services.html">服务流程</a></li>
-          <li class="li-left li-none current"><a href="/p/site/list_article">作品展示</a></li>
-          <li><a href="news.html">摄影学堂</a></li>
-          <li><a href="news.html">联系</a></li>
+          <li class="li-none"><a href="/">首页</a></li>
+          <li><a href="/p/site/portfolio">套系报价</a></li>
+          <li><a href="/p/site/service">服务流程</a></li>
+          <li class="li-left li-none current"><a href="/p/site/la">作品展示</a></li>
+          <li><a href="/p/site/sc">摄影学苑</a></li>
+          <li><a href="/p/site/news">活动</a></li>
 
         </ul>
         <h1><a href="/p/site/home"><img src="/site/images/logo.png" alt=""></a></h1>
@@ -40,7 +40,7 @@ $def with(article_list,total,total_pages,npages)
     <div class="page4-row1">
 
       <div class="col-12">
-        <h2 class="h2 p2">分类作品</h2>
+        <h2 class="h2 p2">作品展示</h2>
 
     $for i in range(0,len(article_list)):
         $ article=article_list[i]
@@ -49,7 +49,7 @@ $def with(article_list,total,total_pages,npages)
             <p><a href="#" class="link">$article.title</a><br>
               <strong class="upper">ut dui gravida ut viverra lectus tincidunt</strong><br>
               nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem.</p>
-            <a href="/p/site/get_article/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/><br/>
+            <a href="/p/site/ga/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/><br/>
           </div>
         </div>
     <!--end of article list-->

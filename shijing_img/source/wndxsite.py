@@ -12,19 +12,23 @@ import wshelper
 urls = (
         "/home", "HomePage",
         "/portfolio", "Portfolio",
-        "/get_article/(\d+)", "GetArticle",
-        "/list_article", "ListArticles",
+        "/ga/(\d+)", "GetArticle",
+        "/la", "ListArticles",
+        "/sc", "School",
+        "/news", "News",
+        "/service", "Service",
         "/list_imgs", "ListImages"
 )
 
 app = web.application(urls, globals())
+config = service_config.config
 
 t_globals = {
-    'datestr': web.datestr
+    'datestr': web.datestr,
+    'service_config':config
 }
 
 render = web.template.render("templates/site", globals=t_globals)
-config = service_config.config
 
 cmsService = cms_service.CmsService()
 
@@ -40,14 +44,10 @@ class HomePage():
 
 class Portfolio():
     def GET(self):
-        params = web.input(ctid= None)
 
-        if not params.ctid:
-            ctid = str(1)
-        else :
-            ctid = params.ctid
+        ctcode = config.ctcode_portfolio
 
-        rlist, total = cmsService.list_articles(0, 1,ctid,None,status=str(1))
+        rlist, total = cmsService.list_articles(0, 1,ctcode,None,status=str(1))
         lista = rlist[0]
 
         article = cmsService.get_article(lista.oid)
@@ -58,6 +58,65 @@ class Portfolio():
         else:
             return render.common("failed:" + str(id))
 
+class Service():
+    def GET(self):
+        params = web.input(np=0, kw=None)
+
+        npages = int(params.np)
+        start = npages * _EVERY_PAGE
+        nfetch = _EVERY_PAGE
+
+        keyword = params.kw
+        if keyword:
+            keyword = keyword.strip()
+
+        ctcode = config.ctcode_service
+
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=keyword,status=str(1))
+
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        return render.service(rlist, total, total_pages,npages)
+
+class School():
+    def GET(self):
+        params = web.input(np=0, kw=None)
+
+        npages = int(params.np)
+        start = npages * _EVERY_PAGE
+        nfetch = _EVERY_PAGE
+
+        keyword = params.kw
+        if keyword:
+            keyword = keyword.strip()
+
+        ctcode = config.ctcode_school
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=keyword,status=str(1))
+
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        return render.school(rlist, total, total_pages,npages)
+
+class News():
+    def GET(self):
+        params = web.input(np=0, kw=None)
+
+        npages = int(params.np)
+        start = npages * _EVERY_PAGE
+        nfetch = _EVERY_PAGE
+
+        keyword = params.kw
+        if keyword:
+            keyword = keyword.strip()
+
+        ctcode = config.ctcode_news
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=keyword,status=str(1))
+
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
+        return render.news(rlist, total, total_pages,npages)
+
 
 class GetArticle():
     def GET(self, id):
@@ -66,11 +125,11 @@ class GetArticle():
             return render.article(article.article_meta, article.article_content)
 
         else:
-            return render.common("failed:" + str(id))
+            return render.common("Not Found:" + str(id))
 
 class ListArticles():
     def GET(self):
-        params = web.input(np=0, kw=None,ctid= None)
+        params = web.input(np=0, kw=None,ctcode= None)
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
@@ -81,18 +140,19 @@ class ListArticles():
             keyword = keyword.strip()
 
 
-        if not params.ctid:
-            ctid = str(4)
+        if not params.ctcode:
+            ctcode = config.ctcode_article
         else :
-            ctid = params.ctid
+            ctcode = params.ctcode
 
 
-        rlist, total = cmsService.list_articles(start, nfetch,ctid,query_in_title=keyword,status=str(1))
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=keyword,status=str(1))
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.article_list(rlist, total, total_pages,npages)
+
 
 
 class ListImages():

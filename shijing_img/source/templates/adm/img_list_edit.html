@@ -1,4 +1,4 @@
-$def with(img_list,total,total_pages,npages,service_config)
+$def with(img_list,total,total_pages,npages)
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,9 +66,8 @@ $def with(img_list,total,total_pages,npages,service_config)
                             $img.title
                         </div>
                         <div class="panel-body">
-                            <!--<img src="../../js/dropzone/images/spritemap.png" width="160" align="center"/>-->
-                            <a href="http://dl-3m.qasvc.mcitech.cn$img.raw" target="_blank">
-                            <img id='img_$img.oid' src="${service_config.img_url+ img.raw}" width="160" align="center"/>
+                            <a href="${service_config.img_url+ img.raw}" target="_blank">
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
                             </a>
                         </div>
                         <div class="panel-footer" align="right">

@@ -6,9 +6,11 @@ from datetime import datetime
 from cms.aliyun_oss_handler import *
 from cms import cms_model
 from cms import service_config
+import httplib
 
 config = service_config.config
 
+logger = config.getlogger("CmsService")
 
 class ServiceHelper():
     def load_config(self):
@@ -55,6 +57,23 @@ class ServiceHelper():
         return imgname,relative_dir + "/" + imgname
 
 
+    def generateIndexHtml(self):
+        httpcon = httplib.HTTPConnection("localhost")
+        httpcon.connect()
+        httpcon.request("GET","/p/site/home")
+        httpresp=httpcon.getresponse()
+
+        if httpresp.status==200:
+            out_html = config.web_base+"/index.html"
+            fout = open(out_html, 'w')
+            fout.write(httpresp.read())
+            fout.close()
+            logger.info("generated.")
+        else:
+            logger.error("Failed to generate html :%d %s" %(httpresp.status,httpresp.reason))
+        httpcon.close()
+
+
     def compose_article(self, params):
         article_meta = cms_model.ArticleMeta()
 
@@ -69,7 +88,7 @@ class ServiceHelper():
         article_meta.author = params.author
         article_meta.source = params.source
         article_meta.cover = params.cover
-        article_meta.ctid = int(params.ctid)
+        article_meta.ctcode = params.ctcode[0]
 
         # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
         #todo auto generate

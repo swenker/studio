@@ -1,4 +1,4 @@
-$def with(article_list,total,total_pages,npages,ctid)
+$def with(article_list,total,total_pages,npages,ctcode)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,14 +53,14 @@ $def with(article_list,total,total_pages,npages,ctid)
 
         function appendCategoryNode(data){
             selectNode = $$("#cms_category");
+
             for(i=0;i<data.rlist.length;i++){
                 cate = data.rlist[i];
-                $if ctid:
-                    selected =  ($ctid==cate.oid?'selected':'');
+                $if ctcode:
+                    selected =  ('$ctcode'==cate.code?'selected':'');
                 $else:
                     selected= ""
-
-                optionNode = $$("<option value='"+cate.oid+"' " +selected +" >"+cate.title+"</option>");
+                optionNode = $$("<option value='"+cate.code+"' " +selected +" >"+cate.title+"</option>");
                 selectNode.append(optionNode);
             }
         }
@@ -72,7 +72,7 @@ $def with(article_list,total,total_pages,npages,ctid)
 
         function changeCategory(){
 
-            window.location.href = '/p/adm/list_article?ctid='+ $$("#cms_category").val();
+            window.location.href = '/p/adm/list_article?ctcode='+ $$("#cms_category").val();
         }
     </script>
 </head>
@@ -92,7 +92,7 @@ $def with(article_list,total,total_pages,npages,ctid)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">图文列表</h3> <select id="cms_category" name="ctid" onchange="changeCategory()"> <option value="">ALL</option></select>
+                    <h3 class="page-header">图文列表</h3> <select id="cms_category" name="ctcode" onchange="changeCategory()"> <option value="">ALL</option></select>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -109,7 +109,7 @@ $def with(article_list,total,total_pages,npages,ctid)
                             $article.title
                         </div>
                         <div class="panel-body">
-                            <img src="$article.cover" width="160" align="left"/>
+                            <img src="${service_config.img_url+'/raw'+article.cover}" width="160" align="left"/>
                             <p>$article.brief [$article.dtcreate]</p>
                         </div>
                         <div class="panel-footer" align="right">
@@ -137,7 +137,7 @@ $def with(article_list,total,total_pages,npages,ctid)
                     第${npages+1}页
                     &nbsp;
                     $if total_pages>1 and npages>0:
-                        <a href="/p/adm/list_imgs?np=0&ctid=">
+                        <a href="/p/adm/list_imgs?np=0&ctcode=">
                         首页
                         </a>
                     $else:

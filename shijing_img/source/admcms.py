@@ -31,10 +31,15 @@ urls = ("/adminsvc", "AdminService",
         "/list_imgs", "ListImages",
         "/delete_img", "DeleteImage",
         "/select_imgs", "SelectImages",
-        "/select_cover", "SelectCover")
+        "/select_cover", "SelectCover",
+        "/refresh","RefreshHomePage"
+        )
+
+config = service_config.config
 
 t_globals = {
-    'datestr': web.datestr
+    'datestr': web.datestr,
+    'service_config':config
 }
 
 # web.config.debug = FalseListImages
@@ -43,7 +48,6 @@ app = web.application(urls, globals())
 
 # session = web.session.Session(app, web.session.DiskStore('sessions.bm'), initializer={'bmuser': None})
 render = web.template.render("templates/adm", globals=t_globals)
-config = service_config.config
 
 cgi.maxlen = 2 * 1024 * 1024
 
@@ -98,14 +102,17 @@ class NewArticle():
 class SaveArticle():
     def POST(self):
 
-        params = web.input(subtitle=None,oid=None,cid=None)
+        params = web.input(subtitle=None,oid=None,cid=None,ctcode=[])
         if not params.oid:
             cmsService.new_article(serviceHelper.compose_article(params))
 
         else:
             cmsService.update_article(serviceHelper.compose_article(params))
 
-        return render.common("OK")
+        serviceHelper.generateIndexHtml()
+
+        # return render.common("OK")
+        web.seeother('list_article?ctcode='+params.ctcode[0])
 
 
 _EVERY_PAGE = 10
@@ -113,24 +120,24 @@ _EVERY_PAGE = 10
 
 class ListEditArticles():
     def GET(self):
-        params = web.input(np=0, kw=None,ctid=None)
+        params = web.input(np=0, kw=None,ctcode=None)
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
-        ctid = params.ctid
+        ctcode = params.ctcode
 
         keyword = params.kw
         if keyword:
             keyword = keyword.strip()
 
-        rlist, total = cmsService.list_articles(start, nfetch,ctid, query_in_title=keyword)
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode, query_in_title=keyword)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.article_list_edit(rlist, total, total_pages,npages,ctid)
+        return render.article_list_edit(rlist, total, total_pages,npages,ctcode)
 
 
 # TODO
@@ -159,6 +166,11 @@ class EditArticle():
             return render.article_form(article.article_meta, article.article_content)
         else:
             return render.common("failed:" + str(id))
+
+
+class RefreshHomePage():
+    def GET(self):
+        serviceHelper.generateIndexHtml()
 
 
 # class NewCategory():
@@ -245,7 +257,7 @@ class ListImages:
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_list_edit(rlist, total, total_pages,npages,config)
+        return render.img_list_edit(rlist, total, total_pages,npages)
 
 class SelectImages:
     def GET(self):
@@ -262,7 +274,7 @@ class SelectImages:
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_list_selector(rlist, total, total_pages,npages,config)
+        return render.img_list_selector(rlist, total, total_pages,npages)
 
 class SelectCover:
     def GET(self):
@@ -279,7 +291,7 @@ class SelectCover:
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_cover_selector(rlist, total, total_pages,npages,config)
+        return render.img_cover_selector(rlist, total, total_pages,npages)
 
 
 class ListWrapper:

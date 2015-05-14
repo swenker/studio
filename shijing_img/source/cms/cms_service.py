@@ -45,15 +45,15 @@ class CmsService:
                 cid = result[0]['mid']
 
             time_now = get_timenow()
-            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,dtupdate,cover,brief,cid,ctid) VALUES" \
-                   "($title,$subtitle,$author,$source,$dtpub,$dtcreate,$dtupdate,$cover,$brief,$cid,$ctid)" \
+            sqls = "INSERT INTO %s(title,subtitle,author,source,dtpub,dtcreate,dtupdate,cover,brief,cid,ctcode) VALUES" \
+                   "($title,$subtitle,$author,$source,$dtpub,$dtcreate,$dtupdate,$cover,$brief,$cid,$ctcode)" \
                    % TABLE_ARTICLE_META
 
             db.query(sqls,
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
                            'dtpub': article_meta.dtpub, 'dtcreate': time_now, 'dtupdate': time_now,
-                           'cover': article_meta.cover, 'brief': article_meta.brief, 'cid': cid,"ctid":article_meta.ctid}
+                           'cover': article_meta.cover, 'brief': article_meta.brief, 'cid': cid,"ctcode":article_meta.ctcode}
             )
 
             result = db.query("select LAST_INSERT_ID() AS mid ")
@@ -63,7 +63,7 @@ class CmsService:
             t.commit()
 
             #TODO one to many
-            #sqls = "INSERT INTO %s(aid,ctid)VALUES($aid,ctid) " % (TABLE_ARTICLE_CATEGORY,mid,ctid)
+            #sqls = "INSERT INTO %s(aid,ctcode)VALUES($aid,ctcode) " % (TABLE_ARTICLE_CATEGORY,mid,ctcode)
 
             logger.info("articleId [%d] is created" % mid)
             return mid
@@ -84,7 +84,7 @@ class CmsService:
                      vars={'content': article.article_content.content, 'oid': article.article_content.oid}
             )
 
-            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,cover=$cover,brief=$brief,ctid=$ctid WHERE id=$oid" \
+            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,cover=$cover,brief=$brief,ctcode=$ctcode WHERE id=$oid" \
                    % TABLE_ARTICLE_META
 
             # logger.debug(sqls)
@@ -92,7 +92,7 @@ class CmsService:
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
                            'dtupdate': get_timenow(), 'cover': article_meta.cover, 'brief': article_meta.brief,
-                           'ctid':article_meta.ctid,
+                           'ctcode':article_meta.ctcode,
                            'oid': article_meta.oid}
             )
 
@@ -132,21 +132,21 @@ class CmsService:
         db.query(sqls, vars={'status': 1, 'oid': oid})
 
 
-    def list_articles(self, start, nfetch, ctid=None,query_in_title=None,status=None):
+    def list_articles(self, start, nfetch, ctcode=None,query_in_title=None,status=None):
         """list articles meta without content  """
         sql_total = "SELECT COUNT(*) as total FROM cms_article_meta "
 
-        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM %s " % (TABLE_ARTICLE_META)
+        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctcode FROM %s " % (TABLE_ARTICLE_META)
 
         has_condition = True
-        if ctid or query_in_title or status:
+        if ctcode or query_in_title or status:
             sqls += " WHERE "
             sql_total += " WHERE "
 
-        if ctid:
+        if ctcode:
             has_condition = True
-            sqls += " ctid="+ctid
-            sql_total += " ctid="+ctid
+            sqls += " ctcode='"+ctcode+"'"
+            sql_total += " ctcode='"+ctcode+"'"
 
         if query_in_title:
             if has_condition:
@@ -203,7 +203,7 @@ class CmsService:
 
     def get_article(self, oid):
         sqls = "SELECT m.id AS id,m.title AS title,m.subtitle AS subtitle,m.author AS author,m.source AS source,m.dtpub AS dtpub," \
-               "m.dtupdate AS dtupdate,m.dtcreate AS dtcreate,m.cover AS cover,m.brief AS brief,m.cid AS cid,m.status AS status,m.ctid as ctid,c.content AS content " \
+               "m.dtupdate AS dtupdate,m.dtcreate AS dtcreate,m.cover AS cover,m.brief AS brief,m.cid AS cid,m.status AS status,m.ctcode as ctcode,c.content AS content " \
                "FROM cms_article_meta m inner join cms_article_content c on m.cid=c.id where m.id=$oid"
 
         result = db.query(sqls, vars={'oid': oid})
@@ -219,7 +219,7 @@ class CmsService:
 
     def get_article_meta(self, oid):
 
-        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM cms_article_meta where id=$oid"
+        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctcode FROM cms_article_meta where id=$oid"
 
         result = db.query(sqls, vars={'oid': oid})
 
@@ -256,7 +256,7 @@ class CmsService:
         article_meta.cover = r['cover']
         article_meta.brief = r['brief']
         article_meta.cid = r['cid']
-        article_meta.ctid = r['ctid']
+        article_meta.ctcode = r['ctcode']
 
         return article_meta
 
@@ -507,8 +507,14 @@ class CmsService:
         image.dtcreate = r['dtcreate']
         image.file = r['file']
         image.raw = '/raw'+image.file
-        image.thumbnail='/thu'+image.file
-        image.large='/lar'+image.file
+
+        #TODO
+        #image.thumbnail='/t'+image.file
+        #image.large='/lar'+image.file
+
+
+        image.thumbnail=image.raw
+        image.large=image.raw
 
         return image
 
