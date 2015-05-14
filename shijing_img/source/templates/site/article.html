@@ -2,7 +2,10 @@ $def with(article_meta, article_content)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>温暖的心-儿童摄影| 作品展示</title>
+<title>温暖的心-儿童摄影|
+     $if article_meta:
+                $article_meta.title
+</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
