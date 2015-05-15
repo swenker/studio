@@ -3,9 +3,14 @@
 2.download uwsgi
 make
 
-3.install pip?
+download webpy
 
-4.Mysql_python
+download mysql_python
+
+download PIL
+wget http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+
+3.install pip?
 
  wget http://downloads.sourceforge.net/project/mysql-python/mysql-python-test/1.2.4b4/MySQL-python-1.2.4b4.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmysql-python%2F&ts=1429772815&use_mirror=superb-dca2
 

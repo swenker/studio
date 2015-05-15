@@ -6,11 +6,13 @@ from datetime import datetime
 from cms.aliyun_oss_handler import *
 from cms import cms_model
 from cms import service_config
+from cms.image_processor import ImageProcessor
 import httplib
 
 config = service_config.config
 
 logger = config.getlogger("CmsService")
+improcessor = ImageProcessor()
 
 class ServiceHelper():
     def load_config(self):
@@ -26,33 +28,50 @@ class ServiceHelper():
         pass
 
     def store(self, image):
-        # TODO genreate thumbnail and upload all of them to to oss(/)
 
         base_store_path = config.img_save_path
         imgpath = image.file.filename.replace('\\', '\\')
         imgname = imgpath.split('/')[-1]
 
         date_path = datetime.now().strftime("%Y/%m/%d")
-        relative_store_dir = "raw/%s" % date_path
+
+        # relative_store_dir = "raw/%s" % date_path
         relative_dir = "/%s" % date_path
-        full_store_dir = "%s/%s" % (base_store_path, relative_store_dir)
 
-        if not os.path.exists(full_store_dir):
-            os.makedirs(full_store_dir)
+        raw_relative_dir="raw/"+date_path
+        large_relative_dir="lar/"+date_path
+        thumb_relative_dir="thumb/"+date_path
 
-        local_tmp_path = full_store_dir + "/" + imgname
-        fout = open(local_tmp_path, 'w')
+        raw_full_store_dir = "%s/%s" % (base_store_path, raw_relative_dir)
+        large_full_store_dir = "%s/%s" % (base_store_path, large_relative_dir)
+        thumb_full_store_dir = "%s/%s" % (base_store_path, thumb_relative_dir)
+
+        if not os.path.exists(raw_full_store_dir):
+            os.makedirs(raw_full_store_dir)
+
+        if not os.path.exists(large_full_store_dir):
+            os.makedirs(large_full_store_dir)
+
+        if not os.path.exists(thumb_full_store_dir):
+            os.makedirs(thumb_full_store_dir)
+
+        local_tmp_path_pattern = "%s/%s"
+
+
+        fout = open((local_tmp_path_pattern%(raw_full_store_dir,imgname)), 'w')
         fout.write(image.file.file.read())
         fout.close()
 
-        #160*...
+        improcessor.thumbnail(date_path)
+        improcessor.large(date_path)
 
-        #320*..
 
-        #raw
+
         img_store = config.img_store
         if img_store == 'oss':
-            upload_file_to_oss(relative_store_dir+"/"+imgname,local_tmp_path)
+            upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
+            upload_file_to_oss(large_relative_dir+"/"+imgname,(local_tmp_path_pattern%(large_full_store_dir,imgname)))
+            upload_file_to_oss(thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
 
         return imgname,relative_dir + "/" + imgname
 
