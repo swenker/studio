@@ -2,7 +2,7 @@ __author__ = 'wenju'
 
 from cms.cms_service import *
 from cms.cms_model import *
-
+from cms import aliyun_oss_handler
 
 cmsService = CmsService()
 
@@ -100,6 +100,9 @@ class TestCmsService():
     def test_list_category(self):
         print cmsService.get_category_list()
 
+    def test_time_conversion(self):
+        aliyun_oss_handler.upload_file_to_oss(None,None)
+
 if __name__ == '__main__':
     tcs = TestCmsService()
     # tcs.test_article_get()
@@ -107,5 +110,6 @@ if __name__ == '__main__':
 
     # tcs.test_article_write()
     # tcs.test_album_write()
-    tcs.test_list_category()
+    # tcs.test_list_category()
 
+    tcs.test_time_conversion()
