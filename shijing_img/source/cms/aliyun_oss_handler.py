@@ -1,17 +1,25 @@
 __author__ = 'wenju'
 
 from oss import oss_api
-
+import service_config
+from datetime import datetime
 
 bucket_name = "simage"
 oss_host="oss-cn-beijing.aliyuncs.com"
 appid="MKD6WfLZOSq03lKl"
 appkey="brNGbHQjtKE1SQ4mDuPuPEO4nc0lJB"
 
+config = service_config.config
+
 def upload_file_to_oss(target_path,local_file_path):
 
         oss = oss_api.OssAPI(oss_host,appid,appkey)
-        oss_resp = oss.put_object_from_file(bucket_name,target_path,local_file_path,'image/jpeg')
+
+
+        expires = datetime.now()+int(config.img_ttl)
+        datetime.strftime("%a, %d %b %Y %H:%M%S %z")
+        header={'Expires':'Fri, 28 Feb 2012 05:38:42 GMT'}
+        oss_resp = oss.put_object_from_file(bucket_name,target_path,local_file_path, content_type='image/jpeg',headers=header)
 
         if oss_resp.status != 200:
             raise Exception(oss_resp.read())

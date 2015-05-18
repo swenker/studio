@@ -46,6 +46,8 @@ class ServiceConfig():
         self.img_watermark_angle = int(configparser.get("img", "watermark_angle"))
         self.img_watermark_opacity = float(configparser.get("img", "watermark_opacity"))
 
+        self.img_ttl = float(configparser.get("img", "ttl"))
+
 
 
         self.ctcode_portfolio = configparser.get("web", "ctcode_portfolio")
