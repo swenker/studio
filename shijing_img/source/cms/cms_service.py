@@ -15,6 +15,12 @@ TABLE_ARTICLE_CATEGORY = "cms_article_category"
 TABLE_ALBUM = "cms_album"
 TABLE_ALBUM_IMG = "cms_album_img"
 
+
+TABLE_SITE_USER='site_user'
+TABLE_SITE_ORDER='site_order'
+TABLE_ORDER_IMG='site_order_img'
+
+
 config = service_config.config
 logger = config.getlogger("CmsService")
 
@@ -326,7 +332,6 @@ class CmsService:
         return rlist
 
 
-
     # Album
     def save_album(self, album):
 
@@ -362,10 +367,10 @@ class CmsService:
     def create_img(self, img):
 
         try:
-            sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES($title,$dtcreate,$file,$aid)" % TABLE_ALBUM_IMG
+            sqls = "INSERT INTO %s(title,dtcreate,file,aid,itype)VALUES($title,$dtcreate,$file,$aid,$itype)" % TABLE_ALBUM_IMG
 
             db.query(sqls,
-                     vars={'title': img.title, 'dtcreate': get_timenow(), 'file': img.file, 'aid': img.aid}
+                     vars={'title': img.title, 'dtcreate': get_timenow(), 'file': img.file, 'aid': img.aid,'itype':img.itype}
             )
 
         except Exception, e:
@@ -464,19 +469,19 @@ class CmsService:
         return rlist
 
 
-    def get_album_imglist(self, aid, start=0, nfetch=20):
+    def get_album_imglist(self, aid, start=0, nfetch=20,itype=1):
         total = 0
 
-        sql_total = "SELECT COUNT(*) as total FROM %s WHERE aid=$aid " % TABLE_ALBUM_IMG
+        sql_total = "SELECT COUNT(*) as total FROM %s WHERE aid=$aid and itype=$itype " % TABLE_ALBUM_IMG
 
-        total_query = db.query(sql_total, vars={'aid': aid})
+        total_query = db.query(sql_total, vars={'aid': aid,'itype':itype})
 
         if total_query:
             total = total_query[0]['total']
 
-        sqls = "SELECT * FROM %s WHERE aid=$aid ORDER BY dtcreate DESC LIMIT $start,$nfetch " % TABLE_ALBUM_IMG
+        sqls = "SELECT * FROM %s WHERE aid=$aid and itype=$itype ORDER BY dtcreate DESC LIMIT $start,$nfetch " % TABLE_ALBUM_IMG
 
-        result = db.query(sqls, vars={"aid": aid, "start": start, "nfetch": nfetch})
+        result = db.query(sqls, vars={"aid": aid, "start": start, "nfetch": nfetch,'itype':itype})
 
         rlist = []
 
@@ -508,14 +513,13 @@ class CmsService:
         image.file = r['file']
         image.raw = '/raw'+image.file
 
-        #TODO
-        #image.thumbnail='/t'+image.file
-        #image.large='/lar'+image.file
+        image.thumbnail='/thumb'+image.file
+        image.large='/lar'+image.file
 
+        # image.thumbnail=image.raw
+        # image.large=image.raw
 
-        image.thumbnail=image.raw
-        image.large=image.raw
-
+        image.itype=r['itype']
         return image
 
     def addComment(self):
@@ -525,6 +529,74 @@ class CmsService:
     def deleteComment(self):
         pass
 
+    def compose_order(self,r):
+        order  = Order(r['uid'])
+        order.price =r['price']
+        order.dtcreate = r['dtcreate']
+        order.dtupdate = r['dtupdate']
+        order.dtcomplete = r['dtcomplete']
+
+        order.status = r['status']
+
+
+    def list_orders(self,uid=None):
+        sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
+
+        where_condition=''
+        if uid:
+            where_condition = 'WHERE uid='+uid
+        result = db.query((sqls %(TABLE_SITE_ORDER,where_condition)))
+
+        rlist = []
+
+        if result:
+            for r in result:
+                order = self.compose_order(r)
+                rlist.append(order)
+
+    #TODO
+    def list_order_imgs(self,oid, status=1):
+        sqls = 'SELECT a.* FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id WHERE b.oid=%d AND b.status=%d ORDER BY a.dtcreate desc '
+
+        result = db.query((sqls %(oid,status)))
+
+        rlist = []
+
+        if result:
+            for r in result:
+                img = self.compose_image(r)
+                rlist.append(img)
+
+        return rlist
+
+    def update_user_choice(self,iid,oid,status):
+        sqls = 'UPDATE site_order_img SET status=%d where oid=%d and iid=%d'
+
+        db.query((sqls %(status,oid,iid)))
+
+    def site_user_login(self,email,passwd):
+        sqls = 'select uid,passwd,status from $table where email=$email'
+        result = db.query(sqls,vars={'table':TABLE_SITE_USER,'email':email})
+
+        if result:
+            for r in result:
+                uid = r['uid']
+                status = r['status']
+                upasswd = r['passwd']
+
+                if status==1:
+                    if upasswd == passwd:
+                    # if len(upasswd) == len(passwd):
+                    #     for i in xrange(0,len(upasswd)):
+                    #         if upasswd[i] != passwd[i]:
+                    #             return 0,'Invalid Password'
+
+                        return uid,'OK'
+                else:
+                    return status,'status'
+
+        # not found this email id
+        return -1,'NotFound'
 
 def get_timenow():
     return datetime.now().strftime(TIME_FORMAT)

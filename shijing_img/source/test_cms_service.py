@@ -103,6 +103,9 @@ class TestCmsService():
     def test_time_conversion(self):
         aliyun_oss_handler.upload_file_to_oss(None,None)
 
+def abc():
+    print "abc"
+
 if __name__ == '__main__':
     tcs = TestCmsService()
     # tcs.test_article_get()
@@ -112,4 +115,7 @@ if __name__ == '__main__':
     # tcs.test_album_write()
     # tcs.test_list_category()
 
-    tcs.test_time_conversion()
+    # tcs.test_time_conversion()
+
+    abc
+

@@ -111,6 +111,10 @@ class Image:
         self.large = ''
         self.raw = ''
 
+        #itype = 1,2,3  [1:common, 2,homepage-banner 3,homepage-gallery,4 for user]
+        self.itype=1
+
+
     def __repr__(self):
         return self.__str__()
 
@@ -135,6 +139,48 @@ class Comment:
 
     def jsonable(self):
         return self.__dict__
+
+class Order:
+    def __init__(self,uid):
+        self.oid = 0
+        self.remark = ''
+        self.dtcreate = None
+        self.dtupdate = None
+        self.dtcomplete = None
+        self.uid = uid
+        self.price=None
+        self.status = 1
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
+
+class SiteUser:
+    def __init__(self,uid,email, passwd, nickname = None, mobile=None, status=1 ):
+        self.oid = 0
+        self.uid = uid
+        self.email = email
+        self.nickname = nickname
+        self.passwd = passwd
+        self.mobile = mobile
+        self.status = status
+
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
+
+
 
 
 class ComplexEncoder(json.JSONEncoder):
