@@ -1,10 +1,13 @@
+
 __author__ = 'wenju'
 
+import decimal
 import web
 
+from backend_service_helper import get_timenow
 from cms_model import *
-import service_config
 from aliyun_oss_handler import *
+
 
 TABLE_ARTICLE_META = "cms_article_meta"
 TABLE_ARTICLE_CONTENT = "cms_article_content"
@@ -20,7 +23,7 @@ TABLE_SITE_USER='site_user'
 TABLE_SITE_ORDER='site_order'
 TABLE_ORDER_IMG='site_order_img'
 
-
+decimal.getcontext().prec=2
 config = service_config.config
 logger = config.getlogger("CmsService")
 
@@ -598,7 +601,7 @@ class CmsService:
         # not found this email id
         return -1,'NotFound'
 
-def get_timenow():
-    return datetime.now().strftime(TIME_FORMAT)
+
+
 
 
