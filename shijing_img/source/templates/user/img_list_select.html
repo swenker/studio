@@ -9,7 +9,7 @@ $def with(img_list,total,total_pages,npages)
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>照片管理</title>
+    <title>挑选照片</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +53,7 @@ $def with(img_list,total,total_pages,npages)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-    $ nevery_line=5
+    $ nevery_line=10
     $for i in range(0,len(img_list)):
         $ isrow= (i % nevery_line==0)
         $if isrow:
@@ -62,9 +62,7 @@ $def with(img_list,total,total_pages,npages)
         $ img=img_list[i]
                 <div class="col-lg-2">
                     <div class="panel panel-info">
-                        <div class="panel-heading">
-                            $img.title
-                        </div>
+                        <div class="panel-heading"></div>
                         <div class="panel-body">
                             <a href="${service_config.img_url+ img.raw}" target="_blank">
                             <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
@@ -88,40 +86,7 @@ $def with(img_list,total,total_pages,npages)
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading" align="right">
-                    共 $total_pages 页
-                    $ prev=npages-1
-                    $ next=npages+1
-                    第${npages+1}页
-                    &nbsp;
-                    $if total_pages>1 and npages>0:
-                        <a href="/p/adm/list_imgs?np=0">
-                        首页
-                        </a>
-                    $else:
-                        首页
-                        &nbsp;
-
-                    $if prev>=0:
-                        <a href="/p/adm/list_imgs?np=$prev">
-                        上一页
-                        </a>
-                    $else:
-                        上一页
-                        &nbsp;
-
-                    $if total_pages>next:
-                        <a href="/p/adm/list_imgs?np=$next">
-                        下一页
-                        </a>
-                    $else:
-                        下一页
-                        &nbsp;
-                    $if total_pages>1 and total_pages-1>npages:
-                        <a href="/p/adm/list_imgs?np=${total_pages-1}">
-                        尾页
-                        </a>
-                    $else:
-                        尾页
+                      下一步》》
                 </div>
             </div>
             <!-- /.panel -->
