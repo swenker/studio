@@ -34,10 +34,16 @@ class ServiceConfig():
         self.img_store = configparser.get("img", "store")
         self.img_save_path = configparser.get("img", "save_path")
         self.img_size_limit = configparser.get("img", "size_limit")
+
         self.img_thumb_width = configparser.get("img", "thumb_width")
         self.img_thumb_height = configparser.get("img", "thumb_height")
+
+        self.img_medium_width = configparser.get("img", "medium_width")
+        self.img_medium_height = configparser.get("img", "medium_height")
+
         self.img_large_width = configparser.get("img", "large_width")
         self.img_large_height = configparser.get("img", "large_height")
+
         self.img_url = configparser.get("img", "url")
 
         self.img_watermark_text = configparser.get("img", "watermark_text")

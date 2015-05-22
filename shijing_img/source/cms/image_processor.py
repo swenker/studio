@@ -56,23 +56,27 @@ class ImageProcessor():
         return Image.composite(watermark, img, watermark)
 
 
-    def thumbnail(self,infile, inpath):
+    def thumbnail(self,inpath):
         width=config.img_thumb_width
 
         outpath = "/thumb/"+inpath
-        outfile = config.img_save_path+outpath
-
-        self.zoom(infile,outfile,width)
+        self.zoom(inpath,outpath,width)
 
         return outpath
 
-    def large(self,infile, inpath):
+    def medium(self,inpath):
+        width=config.img_medium_height
+
+        outpath = "/mid/"+inpath
+        self.zoom(inpath, outpath,width,water_mark=True)
+
+        return outpath
+
+    def large(self,inpath):
         width=config.img_large_width
 
         outpath = "/lar/"+inpath
-        outfile = config.img_save_path+ outpath
-
-        self.zoom(infile,outfile,width,water_mark=True)
+        self.zoom(inpath, outpath,width,water_mark=True)
 
         return outpath
 
@@ -84,7 +88,11 @@ class ImageProcessor():
         # woption={'leftup':(0,0),'rightup':(,0),'leftlow':(0,),'rightlow':(,)}
         im.paste(watermark_im,wbox)
 
-    def zoom(self, infile,outfile,width=0,height=0,water_mark=False):
+    def zoom(self, inpath,outpath,width=0,height=0,water_mark=False):
+
+        outfile = config.img_save_path+ outpath
+        infile = config.img_save_path +'/raw/'+ inpath
+
         im = Image.open(infile)
         om = im.copy()
 

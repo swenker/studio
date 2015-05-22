@@ -518,9 +518,7 @@ class CmsService:
 
         image.thumbnail='/thumb'+image.file
         image.large='/lar'+image.file
-
-        # image.thumbnail=image.raw
-        # image.large=image.raw
+        image.medium='/mid'+image.file
 
         image.itype=r['itype']
         return image
