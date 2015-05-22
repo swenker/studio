@@ -114,6 +114,8 @@ class Image:
         #itype = 1,2,3  [1:common, 2,homepage-banner 3,homepage-gallery,4 for user]
         self.itype=1
 
+        self.ext_status=1
+
 
     def __repr__(self):
         return self.__str__()

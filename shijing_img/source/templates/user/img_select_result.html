@@ -22,7 +22,6 @@ $def with(rlist,total)
 
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
     <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
     <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
@@ -38,21 +37,7 @@ $def with(rlist,total)
         function showImage(url){
             $$("#img_viewer").attr("src","${service_config.img_url}" +url);
             $$("#img_viewer").attr("width","400");
-            $$("#dialog").dialog({width:450,
-                show: {
-                effect: "blind",
-                duration: 500
-                },
-                hide: {
-                effect: "blind",
-                duration: 500
-                }
-            });
-            $$(".ui-dialog-titlebar").hide();
-        }
-
-        function hideImage(){
-            $$("#dialog").dialog('close');
+            $$("#dialog").dialog({width:450});
         }
 
         function updateChoice(ckbox,iid){
@@ -82,7 +67,7 @@ $def with(rlist,total)
 <body>
 
     <div id="dialog" title="" style="display:none">
-      <img id="img_viewer" src="" width="0" onclick="hideImage()">
+      <img id="img_viewer" src="" width="0">
     </div>
 
     <div id="wrapper">
@@ -103,30 +88,27 @@ $def with(rlist,total)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+    $ selected_list=[]
     $ nevery_line=10
-    $for i in range(0,total):
+    $for i in range(0,len(rlist)):
         $ isrow= (i % nevery_line==0)
         $if isrow:
             <div class="row">
 
         $ img=rlist[i]
-        $ checked=''
-        $if img.ext_status==2:
-                $ checked='checked'
-        $else:
-                $ checked=''
-        <div class="col-lg-2">
-            <div class="panel panel-info">
-                <div class="panel-heading"></div>
-                <div class="panel-body">
-                    <a href="javascript:showImage('$img.medium')">
-                    <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
-                    </a>
+        $  selected_list.append(img.file.split('/')[-1])
+                <div class="col-lg-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            <a href="javascript:showImage('$img.medium')">
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
+                            </a>
+                        </div>
+                        <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" onchange="updateChoice(this,'$img.oid')">
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" $checked onchange="updateChoice(this,'$img.oid')">
-                </div>
-            </div>
-        </div>
                 <!-- /.col-lg-4 -->
         $if (i+1)% nevery_line==0 :
             </div>
@@ -139,7 +121,9 @@ $def with(rlist,total)
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading" align="right">
-                      下一步》》
+                    &nbsp;
+                      $for si in selected_list:
+                          $si &nbsp;
                 </div>
             </div>
             <!-- /.panel -->

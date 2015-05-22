@@ -510,7 +510,7 @@ class CmsService:
         album.status = r['status']
         return album
 
-    def compose_image(self, r):
+    def compose_image(self, r,ext_status=False):
         image = Image(r['id'], r['title'], r['aid'])
         image.dtcreate = r['dtcreate']
         image.file = r['file']
@@ -521,6 +521,10 @@ class CmsService:
         image.medium='/mid'+image.file
 
         image.itype=r['itype']
+
+        if ext_status:
+            image.ext_status = r['status']
+
         return image
 
     def addComment(self):
@@ -531,7 +535,7 @@ class CmsService:
         pass
 
     def compose_order(self,r):
-        order  = Order(r['uid'])
+        order  = Order(r['id'])
         order.price =r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
@@ -545,7 +549,7 @@ class CmsService:
 
         where_condition=''
         if uid:
-            where_condition = 'WHERE uid='+uid
+            where_condition = 'WHERE id='+uid
         result = db.query((sqls %(TABLE_SITE_ORDER,where_condition)))
 
         rlist = []
@@ -555,11 +559,28 @@ class CmsService:
                 order = self.compose_order(r)
                 rlist.append(order)
 
+        return rlist,len(rlist)
+
     #TODO
     def list_order_imgs(self,oid, status=1):
-        sqls = 'SELECT a.* FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id WHERE b.oid=%d AND b.status=%d ORDER BY a.dtcreate desc '
+        sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id WHERE b.oid=$oid ORDER BY a.dtcreate desc '
 
-        result = db.query((sqls %(oid,status)))
+        result = db.query(sqls,vars={'oid':oid,'status':status})
+
+        rlist = []
+
+        if result:
+            for r in result:
+                img = self.compose_image(r,True)
+                rlist.append(img)
+
+        return rlist
+
+    #TODO
+    def list_selected_imgs(self,oid):
+        sqls = 'SELECT a.* FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id WHERE b.oid=$oid AND b.status=2 ORDER BY a.dtcreate desc '
+
+        result = db.query(sqls,vars={'oid':oid})
 
         rlist = []
 
@@ -570,18 +591,18 @@ class CmsService:
 
         return rlist
 
-    def update_user_choice(self,iid,oid,status):
-        sqls = 'UPDATE site_order_img SET status=%d where oid=%d and iid=%d'
+    def update_user_choice(self,iid,status):
+        sqls = 'UPDATE site_order_img SET status=$status where iid=$iid'
 
-        db.query((sqls %(status,oid,iid)))
+        db.query(sqls,vars={'status':status,'iid':iid})
 
     def site_user_login(self,email,passwd):
-        sqls = 'select uid,passwd,status from $table where email=$email'
+        sqls = 'select id,passwd,status from %s where email=$email' % TABLE_SITE_USER
         result = db.query(sqls,vars={'table':TABLE_SITE_USER,'email':email})
 
         if result:
             for r in result:
-                uid = r['uid']
+                uid = r['id']
                 status = r['status']
                 upasswd = r['passwd']
 
@@ -596,7 +617,7 @@ class CmsService:
                 else:
                     return status,'status'
 
-        # not found this email id
+        logger.info("NotFound:%s" %email)
         return -1,'NotFound'
 
 

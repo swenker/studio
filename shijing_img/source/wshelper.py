@@ -35,10 +35,10 @@ class ServiceHelper():
 
         date_path = datetime.now().strftime("/%Y/%m/%d")
 
-        raw_relative_dir="raw"+date_path
-        large_relative_dir="lar"+date_path
-        medium_relative_dir="mid"+date_path
-        thumb_relative_dir="thumb"+date_path
+        raw_relative_dir="/raw"+date_path
+        large_relative_dir="/lar"+date_path
+        medium_relative_dir="/mid"+date_path
+        thumb_relative_dir="/thumb"+date_path
 
         raw_full_store_dir = "%s%s" % (base_store_path, raw_relative_dir)
         large_full_store_dir = "%s%s" % (base_store_path, large_relative_dir)
@@ -57,7 +57,7 @@ class ServiceHelper():
         if not os.path.exists(thumb_full_store_dir):
             os.makedirs(thumb_full_store_dir)
 
-        local_tmp_path_pattern = "%s/%s"
+        local_tmp_path_pattern = "/%s/%s"
 
 
         fout = open((local_tmp_path_pattern%(raw_full_store_dir,imgname)), 'w')
@@ -69,7 +69,6 @@ class ServiceHelper():
         improcessor.large(date_path)
 
 
-
         img_store = config.img_store
         if img_store == 'oss':
             # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
@@ -77,7 +76,7 @@ class ServiceHelper():
             upload_file_to_oss(medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
             upload_file_to_oss(thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
 
-        return imgname,relative_dir + "/" + imgname
+        return imgname,date_path  + "/" + imgname
 
 
     def generateIndexHtml(self):

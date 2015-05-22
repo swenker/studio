@@ -11,12 +11,13 @@ import wshelper
 
 urls = (
         "/login", "LoginService",
-        "/dashboard", "LoginService",
+        "", "LoginService",
         "/orders", "ListOrders",
-        "/list_imgs/(+d)", "ListOrderImages",
-        "/upc/(+d)", "UpdateChoice",
-        "/order/(+d)", "GetOrder",
-        "/user/(+d)", "GetUser"
+        "/listimgs/(\d+)", "ListOrderImages",
+        "/okimgs/(\d+)", "ListSelectedImages",
+        "/upc/(\d+)", "UpdateChoice",
+        "/order/(\d+)", "GetOrder",
+        "/user/(\d+)", "GetUser"
 )
 
 app = web.application(urls, globals())
@@ -70,21 +71,23 @@ class GetOrder():
 class UpdateChoice():
     def GET(self, iid):
         params = web.input()
-        oid = int(params.oid)
+        # oid = int(params.oid)
         status = int(params.status)
-        cmsService.update_user_choice(iid,oid,status)
-
+        # cmsService.update_user_choice(iid,oid,status)
+        cmsService.update_user_choice(iid,status)
+        return "{'result':'OK'}"
 
 class ListOrders():
     def GET(self):
-        params = web.input()
+        params = web.input(uid=None)
 
-        uid = int(params.uid)
+        uid = None
+        if params.uid:
+            uid = int(params.uid)
 
         rlist, total = cmsService.list_orders(uid)
 
-        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.article_list(rlist, total)
+        return render.order_list(rlist, total)
 
 class ListOrderImages():
     def GET(self,oid):
@@ -92,9 +95,14 @@ class ListOrderImages():
 
         status = int(params.status)
 
-        rlist, total = cmsService.list_order_imgs(oid,status=status)
+        rlist = cmsService.list_order_imgs(int(oid),status=status)
 
-        # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.article_list(rlist, total)
+        return render.img_list_select(rlist, len(rlist))
+
+class ListSelectedImages():
+    def GET(self,oid):
+        rlist = cmsService.list_selected_imgs(int(oid))
+
+        return render.img_select_result(rlist, len(rlist))
 
 
