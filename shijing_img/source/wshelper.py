@@ -35,10 +35,10 @@ class ServiceHelper():
 
         date_path = datetime.now().strftime("/%Y/%m/%d")
 
-        raw_relative_dir="/raw"+date_path
-        large_relative_dir="/lar"+date_path
-        medium_relative_dir="/mid"+date_path
-        thumb_relative_dir="/thumb"+date_path
+        raw_relative_dir="raw"+date_path
+        large_relative_dir="lar"+date_path
+        medium_relative_dir="mid"+date_path
+        thumb_relative_dir="thumb"+date_path
 
         raw_full_store_dir = "%s%s" % (base_store_path, raw_relative_dir)
         large_full_store_dir = "%s%s" % (base_store_path, large_relative_dir)
@@ -57,16 +57,18 @@ class ServiceHelper():
         if not os.path.exists(thumb_full_store_dir):
             os.makedirs(thumb_full_store_dir)
 
-        local_tmp_path_pattern = "/%s/%s"
+        local_tmp_path_pattern = "%s/%s"
 
 
         fout = open((local_tmp_path_pattern%(raw_full_store_dir,imgname)), 'w')
         fout.write(image.file.file.read())
         fout.close()
 
-        improcessor.thumbnail(date_path)
-        improcessor.medium(date_path)
-        improcessor.large(date_path)
+        file_relative_path=date_path+"/"+imgname
+        improcessor.thumbnail(file_relative_path)
+        improcessor.medium(file_relative_path)
+        improcessor.large(file_relative_path)
+
 
 
         img_store = config.img_store
@@ -76,7 +78,63 @@ class ServiceHelper():
             upload_file_to_oss(medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
             upload_file_to_oss(thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
 
-        return imgname,date_path  + "/" + imgname
+        return imgname,date_path + "/" + imgname
+
+    def store_list(self, imagefiles):
+        saved_path_list=[]
+        for imgfile in imagefiles['file']:
+            base_store_path = config.img_save_path
+            imgpath = imgfile.filename.replace('\\', '\\')
+            imgname = imgpath.split('/')[-1]
+
+            date_path = datetime.now().strftime("/%Y/%m/%d")
+
+            raw_relative_dir="/raw"+date_path
+            large_relative_dir="/lar"+date_path
+            medium_relative_dir="/mid"+date_path
+            thumb_relative_dir="/thumb"+date_path
+
+            raw_full_store_dir = "%s%s" % (base_store_path, raw_relative_dir)
+            large_full_store_dir = "%s%s" % (base_store_path, large_relative_dir)
+            medium_full_store_dir = "%s%s" % (base_store_path, medium_relative_dir)
+            thumb_full_store_dir = "%s%s" % (base_store_path, thumb_relative_dir)
+
+            if not os.path.exists(raw_full_store_dir):
+                os.makedirs(raw_full_store_dir)
+
+            if not os.path.exists(large_full_store_dir):
+                os.makedirs(large_full_store_dir)
+
+            if not os.path.exists(medium_full_store_dir):
+                os.makedirs(medium_full_store_dir)
+
+            if not os.path.exists(thumb_full_store_dir):
+                os.makedirs(thumb_full_store_dir)
+
+            local_tmp_path_pattern = "/%s/%s"
+
+
+            fout = open((local_tmp_path_pattern%(raw_full_store_dir,imgname)), 'w')
+            fout.write(imgfile.file.read())
+            fout.close()
+
+            file_relative_path=date_path+"/"+imgname
+            improcessor.thumbnail(file_relative_path)
+            improcessor.medium(file_relative_path)
+            improcessor.large(file_relative_path)
+
+
+            img_store = config.img_store
+            if img_store == 'oss':
+                # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
+                upload_file_to_oss(large_relative_dir+"/"+imgname,(local_tmp_path_pattern%(large_full_store_dir,imgname)))
+                upload_file_to_oss(medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
+                upload_file_to_oss(thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
+
+            saved_path_list.append((imgname,date_path  + "/" + imgname))
+
+        return saved_path_list
+
 
 
     def generateIndexHtml(self):

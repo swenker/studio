@@ -392,22 +392,22 @@ class CmsService:
             logger.exception("failed to update img:%d" % oid, exc_info=e)
 
 
-    # def create_imglist(self,imglist):
-    #
-    #     t = db.transaction()
-    #
-    #     try:
-    #         for img in imglist:
-    #
-    #             sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img.title,get_timenow(),img.file,img.aid)
-    #
-    #             db.query(sqls)
-    #
-    #         t.commit()
-    #
-    #     except Exception, e:
-    #         logger.error("failed to create images:%s" % e)
-    #         t.rollback()
+    def create_imglist(self,aid,imglist):
+
+         t = db.transaction()
+
+         try:
+             for img in imglist:
+
+                 sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img[0],get_timenow(),img[1],aid)
+
+                 db.query(sqls)
+
+             t.commit()
+
+         except Exception, e:
+             logger.error("failed to create images:%s" % e)
+             t.rollback()
 
     def get_img(self,oid):
         sqls = "SELECT * FROM %s WHERE id=$oid" % TABLE_ALBUM_IMG

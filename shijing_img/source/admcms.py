@@ -224,10 +224,32 @@ class UploadImage:
                 imgmeta = cms_model.Image(image_data.aid)
                 imgmeta.aid = 1
 
-                # TODO title field
                 imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
 
                 cmsService.create_img(imgmeta)
+            return render.common("OK")
+
+        except ValueError:
+            return "File Limit is 1MB."
+
+    def POST1(self):
+        try:
+            image_data = web.input(file=[{}])
+
+            if image_data and 'file' in image_data:
+                print image_data
+                print type(image_data['file'])
+                print type(image_data['file'][0])
+                # print image_data['file']
+
+                imgmeta = cms_model.Image(image_data.aid)
+                imgmeta.aid = 1
+
+                # TODO title field
+                imglist = serviceHelper.store_list(image_data)
+
+                cmsService.create_imglist(imgmeta.aid,imglist)
+
             return render.common("OK")
 
         except ValueError:

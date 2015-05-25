@@ -59,7 +59,7 @@ class ImageProcessor():
     def thumbnail(self,inpath):
         width=config.img_thumb_width
 
-        outpath = "/thumb/"+inpath
+        outpath = "/thumb"+inpath
         self.zoom(inpath,outpath,width)
 
         return outpath
@@ -67,7 +67,7 @@ class ImageProcessor():
     def medium(self,inpath):
         width=config.img_medium_height
 
-        outpath = "/mid/"+inpath
+        outpath = "/mid"+inpath
         self.zoom(inpath, outpath,width,water_mark=True)
 
         return outpath
@@ -75,7 +75,7 @@ class ImageProcessor():
     def large(self,inpath):
         width=config.img_large_width
 
-        outpath = "/lar/"+inpath
+        outpath = "/lar"+inpath
         self.zoom(inpath, outpath,width,water_mark=True)
 
         return outpath
@@ -91,7 +91,7 @@ class ImageProcessor():
     def zoom(self, inpath,outpath,width=0,height=0,water_mark=False):
 
         outfile = config.img_save_path+ outpath
-        infile = config.img_save_path +'/raw/'+ inpath
+        infile = config.img_save_path +'/raw'+ inpath
 
         im = Image.open(infile)
         om = im.copy()

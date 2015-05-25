@@ -1,0 +1,17 @@
+index:
+menu node name
+logo
+pictures from album
+gallery
+biography
+news
+
+generate html from index
+
+
+-------------
+1.pick photo
+2.upload photo
+
+
+
