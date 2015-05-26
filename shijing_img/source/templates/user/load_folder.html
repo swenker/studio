@@ -7,9 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Upload Image</title>
-        <link href="/jslib/dropzone/basic.css" rel="stylesheet" />
-        <script src="/jslib/dropzone/dropzone.js"></script>
+        <title>load</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
@@ -53,7 +51,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="page-header">图片上传</h3>
+                        <h3 class="page-header">Load 图片</h3>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -61,22 +59,14 @@
                 <div class="row">
                     <div class="col-lg-12">
 
-                        <!--Image upload form goes here......-->
-
                         <div id="dropzone">
-                            <form action="/p/adm/upload_img"
-                              class="dropzone"
-                              id="myAwesomeDropzone" enctype="multipart/form-data">
+                            <form action=""    method="post"   >
+                                <input type="text" name="folder" size="30">
+                                <input type="text" name="orderid" size="10">
 
-                              <input type="hidden" name="acode" value="ac">
-                              <input type="hidden" name="itype" value="1">
+                                <button type="submit" value="load">Load</button>
                             </form>
 
-                            <script>
-
-                                //Dropzone.Options.myAwesomeDropzone.uploadMultiple=true;
-                                //Dropzone.Options.myAwesomeDropzone.maxFilesize=0.001;
-                            </script>
                         </div>
                     </div>
                 </div>

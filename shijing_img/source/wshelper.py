@@ -7,6 +7,8 @@ from cms.aliyun_oss_handler import *
 from cms import cms_model
 from cms import service_config
 from cms.image_processor import ImageProcessor
+from cms import cms_service
+
 import httplib
 
 config = service_config.config
@@ -169,7 +171,7 @@ class ServiceHelper():
         article_meta.author = params.author
         article_meta.source = params.source
         article_meta.cover = params.cover
-        article_meta.ctcode = params.ctcode[0]
+        article_meta.ctid = cms_service.category_map.get(params.ctcode[0]).oid
 
         # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
         #todo auto generate

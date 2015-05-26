@@ -44,7 +44,7 @@ $def with(article_list,total,total_pages,npages)
 
     $for i in range(0,len(article_list)):
         $ article=article_list[i]
-        <div class="wrap bot-2"> <img src="${service_config.img_url+'/raw'+article.cover}" width="160" alt=""  >
+        <div class="wrap bot-2"> <img src="${service_config.img_url+'/mid'+article.cover}" width="160" alt=""  >
           <div class="extra-wrap">
             <p><a href="#" class="link">$article.title</a><br>
               $article.brief</p>

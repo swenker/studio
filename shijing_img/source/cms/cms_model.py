@@ -88,6 +88,7 @@ class Album:
         self.status = 1
         self.dtcreate = None
         self.remark = ''
+        self.code = None
 
     def __repr__(self):
         return self.__str__()
@@ -116,6 +117,8 @@ class Image:
         self.itype=1
 
         self.ext_status=1
+
+        self.code = None
 
 
     def __repr__(self):

@@ -51,7 +51,7 @@ render = web.template.render("templates/adm", globals=t_globals)
 
 cgi.maxlen = 2 * 1024 * 1024
 
-cmsService = cms_service.CmsService()
+cmsService = cms_service.cmsService
 
 serviceHelper = wshelper.ServiceHelper()
 
@@ -65,7 +65,6 @@ class LoginService():
         email = params.email
         passwd = params.passwd
 
-        print "abc:"+email,passwd
         if email and passwd:
             if email == 'abctest@126.com' and passwd=='onecase':
                 #TODO save session?
@@ -171,6 +170,8 @@ class EditArticle():
 class RefreshHomePage():
     def GET(self):
         serviceHelper.generateIndexHtml()
+        web.seeother('/')
+
 
 
 # class NewCategory():
@@ -207,7 +208,7 @@ class RefreshHomePage():
 
 class ListCategories():
     def GET(self):
-        rlist = cmsService.get_category_list()
+        rlist = cms_service.category_map.values()
 
         return to_jsonstr(ListWrapper(rlist))
 
@@ -221,8 +222,10 @@ class UploadImage:
         try:
             image_data = web.input(file={})
             if image_data and 'file' in image_data:
-                imgmeta = cms_model.Image(image_data.aid)
-                imgmeta.aid = 1
+                imgmeta = cms_model.Image()
+                imgmeta.aid = cms_service.album_map.get(image_data.acode).oid
+
+                imgmeta.code = image_data.acode
 
                 imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
 
@@ -238,10 +241,7 @@ class UploadImage:
             image_data = web.input(file=[{}])
 
             if image_data and 'file' in image_data:
-                print image_data
-                print type(image_data['file'])
-                print type(image_data['file'][0])
-                # print image_data['file']
+                #image_data['file']
 
                 imgmeta = cms_model.Image(image_data.aid)
                 imgmeta.aid = 1
@@ -267,15 +267,15 @@ class DeleteImage():
 
 class ListImages:
     def GET(self):
-        params = web.input(np=0,aid=1)
+        params = web.input(np=0,acode='ac')
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
-        aid = params.aid
+        acode = params.acode
 
-        rlist, total = cmsService.get_album_imglist(aid,start, nfetch)
+        rlist, total = cmsService.get_album_imglist(acode,start, nfetch)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
@@ -284,15 +284,16 @@ class ListImages:
 
 class SelectImages:
     def GET(self):
-        params = web.input(np=0,aid=1)
+        params = web.input(np=0,acode='ac')
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
-        aid = params.aid
 
-        rlist, total = cmsService.get_album_imglist(aid,start, nfetch)
+        acode = params.acode
+
+        rlist, total = cmsService.get_album_imglist(acode,start, nfetch)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
@@ -301,15 +302,15 @@ class SelectImages:
 
 class SelectCover:
     def GET(self):
-        params = web.input(np=0,aid=1)
+        params = web.input(np=0,acode='ac')
 
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
-        aid = params.aid
+        acode = params.acode
 
-        rlist, total = cmsService.get_album_imglist(aid,start, nfetch)
+        rlist, total = cmsService.get_album_imglist(acode,start, nfetch)
 
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 

@@ -30,7 +30,7 @@ t_globals = {
 
 render = web.template.render("templates/site", globals=t_globals)
 
-cmsService = cms_service.CmsService()
+cmsService = cms_service.cmsService
 
 serviceHelper = wshelper.ServiceHelper()
 

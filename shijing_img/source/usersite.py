@@ -7,6 +7,7 @@ from cms import cms_model
 from cms import cms_service
 from cms import service_config
 import wshelper
+from cms import batch_image_handler
 
 
 urls = (
@@ -17,7 +18,8 @@ urls = (
         "/okimgs/(\d+)", "ListSelectedImages",
         "/upc/(\d+)", "UpdateChoice",
         "/order/(\d+)", "GetOrder",
-        "/user/(\d+)", "GetUser"
+        "/user/(\d+)", "GetUser",
+        "/loadfolder","LoadFolder"
 )
 
 app = web.application(urls, globals())
@@ -30,7 +32,7 @@ t_globals = {
 
 render = web.template.render("templates/user", globals=t_globals)
 
-cmsService = cms_service.CmsService()
+cmsService = cms_service.cmsService
 
 serviceHelper = wshelper.ServiceHelper()
 
@@ -94,7 +96,7 @@ class ListOrderImages():
     def GET(self,oid):
         rlist = cmsService.list_order_imgs(int(oid))
 
-        return render.img_list_select(rlist, len(rlist))
+        return render.img_list_select(rlist, len(rlist),oid)
 
 class ListSelectedImages():
     def GET(self,oid):
@@ -103,3 +105,18 @@ class ListSelectedImages():
         return render.img_select_result(rlist, len(rlist))
 
 
+
+class LoadFolder():
+    def GET(self):
+
+        return render.load_folder()
+
+    def POST(self):
+        params = web.input()
+        folder = params.folder
+
+        orderid = int(params.orderid)
+
+        batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
+
+        web.seeother('/p/u/listimgs/'+str(orderid))

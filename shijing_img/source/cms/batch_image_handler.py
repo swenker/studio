@@ -19,9 +19,10 @@ class LocalFileScanner():
     def __init__(self):
         pass
 
-    def scan(self,relative_path):
-        full_path = config.img_save_path+"/raw"
-        files = glob.glob(full_path+"/*.jpg")
+    def scan(self,relative_folder):
+        full_path = config.img_save_path+"/raw"+relative_folder
+        # files = glob.glob(full_path+"/*.jpg")
+        files = glob.glob(full_path+"/*")
         filenames=[]
         if files:
             for f in files:
@@ -31,31 +32,41 @@ class LocalFileScanner():
 
 
 class RecordStore():
-    def __init__(self):
-        self.fileScanner = LocalFileScanner()
+    def __init__(self,fileScanner):
+        self.fileScanner = fileScanner
         self.imageProcessor = ImageProcessor()
 
-    def process(self,aid,relative_path):
-        filenames = self.fileScanner.scan(relative_path)
+    def process(self,aid,relative_folder,orderid):
+        filenames = self.fileScanner.scan(relative_folder)
+
+        logger.info('total files:%d' % len(filenames))
 
         #save
+        counter = 0
         for f in filenames:
-            cmsService.create_img(self.compose_image(relative_path,f))
+            iid = cmsService.create_img(self.compose_image(relative_folder,f,aid))
+            cmsService.add_order_img(iid,orderid)
 
-        #zoom
-        self.imageProcessor.thumbnail(relative_path)
-        self.imageProcessor.medium(relative_path)
-        self.imageProcessor.large(relative_path)
+            #zoom
+            relative_folder_file = relative_folder + '/' + f
+            self.imageProcessor.thumbnail(relative_folder_file)
+            self.imageProcessor.medium(relative_folder_file)
+            self.imageProcessor.large(relative_folder_file)
 
-        logger.info('done for:'+relative_path)
+            counter += 1
+        logger.info('done for(%s,%d):'%(relative_folder,counter))
 
 
-    def compose_image(self,relative_path,title):
-        image = Image(title)
+    def compose_image(self, relative_path, title,aid):
+        image = Image(title=title)
 
-        image.file =  relative_path+'/'+filename
-
-        image.itype=Image.IMG_TYPE_USER
+        image.file =  relative_path + '/' + title
+        image.aid = aid
+        image.itype = Image.IMG_TYPE_USER
 
         return image
 
+
+def load_local_folder(aid,relative_folder,orderid):
+    recordStore = RecordStore(LocalFileScanner())
+    recordStore.process(aid,relative_folder,orderid)

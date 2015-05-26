@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `cms_article_meta`(
  `brief` VARCHAR(255),
  `status` TINYINT(1) DEFAULT 1,
  `cid` int(9) NOT NULL,
- `ctcode` VARCHAR(10) NOT NULL,
+ `ctid` int(9) NOT NULL DEFAULT 1,
  PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cms_album`(
  `id` INT(9) NOT NULL AUTO_INCREMENT,
  `title` VARCHAR(20) NOT NULL,
  `code` VARCHAR(10) UNIQUE NOT NULL,
- `dtcreate` TIMESTAMP NOT NULL DEFAULT 0,
+ `dtcreate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `remark` VARCHAR(50),
  `status` TINYINT(1) DEFAULT 1,
   PRIMARY KEY(`id`)
@@ -104,3 +104,9 @@ INSERT INTO `cms_category`(title,code)VALUES('活动','news');
 
 INSERT INTO `site_order`(uid,price)VALUES(1,999.00);
 INSERT INTO `site_order_img`(oid,iid)VALUES(1,1)(1,2)(1,3);
+
+INSERT INTO `cms_album`(`title`,`code`)VALUES('article-common','ac');
+INSERT INTO `cms_album`(`title`,`code`)VALUES('home-banner','hb');
+INSERT INTO `cms_album`(`title`,`code`)VALUES('home-gallery','hg');
+INSERT INTO `cms_album`(`title`,`code`)VALUES('order-all','oa');
+

@@ -1,10 +1,10 @@
 __author__ = 'wenju'
 
-from cms.cms_service import *
+from cms import cms_service
 from cms.cms_model import *
 from cms import aliyun_oss_handler
 
-cmsService = CmsService()
+cmsService = cms_service.cmsService
 
 
 def test_get_article_content(id):
@@ -72,7 +72,7 @@ class TestCmsService():
 
 
     def test_get_album_imglist(self):
-        return cmsService.get_album_imglist(1)
+        return cmsService.get_album_imglist('ac')
 
 
     def test_article_write(self):
@@ -103,6 +103,14 @@ class TestCmsService():
     def test_time_conversion(self):
         aliyun_oss_handler.upload_file_to_oss(None,None)
 
+    def test_batch_image(self):
+        folder = '/2015/05/26'
+        aid =100
+        orderid = 2015
+        from cms import batch_image_handler
+        batch_image_handler.load_local_folder(aid,folder,orderid)
+
+
 def abc():
     print "abc"
 
@@ -117,5 +125,6 @@ if __name__ == '__main__':
 
     # tcs.test_time_conversion()
 
-    abc
+    tcs.test_batch_image()
+
 

@@ -1,8 +1,10 @@
 __author__ = 'wenjusun'
 
+import os
 from PIL import Image,ImageFont,ImageDraw,ImageEnhance
 
 import service_config
+
 
 config = service_config.config
 # def ori_add_watermark_original(in_file, text, out_file='watermark.jpg', angle=23, opacity=0.25):
@@ -32,7 +34,7 @@ class ImageProcessor():
         self.text_size = config.img_watermark_text_size
         self.angle=config.img_watermark_angle
         self.opacity=config.img_watermark_opacity
-        print self.text_size
+        #print self.text_size
         self.w_font = ImageFont.truetype(self.FONT, self.text_size)
         self.w_font_size = self.w_font.getsize(self.text)
 
@@ -91,6 +93,11 @@ class ImageProcessor():
     def zoom(self, inpath,outpath,width=0,height=0,water_mark=False):
 
         outfile = config.img_save_path+ outpath
+
+        outfile_folder = outfile[0:outfile.rindex('/')]
+        if not os.path.exists(outfile_folder):
+            os.makedirs(outfile_folder)
+
         infile = config.img_save_path +'/raw'+ inpath
 
         im = Image.open(infile)
