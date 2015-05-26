@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Upload Image</title>
-        <link href="/jslib/dropzone/css/basic.css" rel="stylesheet" />
+        <link href="/jslib/dropzone/basic.css" rel="stylesheet" />
         <script src="/jslib/dropzone/dropzone.js"></script>
 
         <!-- Bootstrap Core CSS -->
@@ -62,14 +62,21 @@
                     <div class="col-lg-12">
 
                         <!--Image upload form goes here......-->
+
                         <div id="dropzone">
                             <form action="/p/adm/upload_img"
                               class="dropzone"
-                              id="myAwesomeDropzone">
+                              id="myAwesomeDropzone" enctype="multipart/form-data">
 
                               <input type="hidden" name="aid" value="1">
-                              <input type="hidden" name="itype" value="1">
+                              <input type="hidden" name="itype" value="4">
                             </form>
+
+                            <script>
+
+                                //Dropzone.Options.myAwesomeDropzone.uploadMultiple=true;
+                                //Dropzone.Options.myAwesomeDropzone.maxFilesize=0.001;
+                            </script>
                         </div>
                     </div>
                 </div>

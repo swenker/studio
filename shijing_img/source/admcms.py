@@ -232,6 +232,7 @@ class UploadImage:
         except ValueError:
             return "File Limit is 1MB."
 
+    #Not used now
     def POST1(self):
         try:
             image_data = web.input(file=[{}])

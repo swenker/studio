@@ -35,10 +35,10 @@ class ServiceHelper():
 
         date_path = datetime.now().strftime("/%Y/%m/%d")
 
-        raw_relative_dir="raw"+date_path
-        large_relative_dir="lar"+date_path
-        medium_relative_dir="mid"+date_path
-        thumb_relative_dir="thumb"+date_path
+        raw_relative_dir="/raw"+date_path
+        large_relative_dir="/lar"+date_path
+        medium_relative_dir="/mid"+date_path
+        thumb_relative_dir="/thumb"+date_path
 
         raw_full_store_dir = "%s%s" % (base_store_path, raw_relative_dir)
         large_full_store_dir = "%s%s" % (base_store_path, large_relative_dir)
@@ -69,8 +69,6 @@ class ServiceHelper():
         improcessor.medium(file_relative_path)
         improcessor.large(file_relative_path)
 
-
-
         img_store = config.img_store
         if img_store == 'oss':
             # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
@@ -80,6 +78,9 @@ class ServiceHelper():
 
         return imgname,date_path + "/" + imgname
 
+
+    #not used at the moment because dropzone upload the pic one by one instead of in one request.
+    #I hadn't found how to config it.
     def store_list(self, imagefiles):
         saved_path_list=[]
         for imgfile in imagefiles['file']:

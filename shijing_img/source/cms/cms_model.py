@@ -100,6 +100,7 @@ class Album:
 
 
 class Image:
+    IMG_TYPE_USER=4
     def __init__(self, id=-1, title=None, aid=-1, file=None):
         self.title = title
         self.oid = id

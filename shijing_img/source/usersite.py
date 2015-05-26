@@ -90,12 +90,9 @@ class ListOrders():
         return render.order_list(rlist, total)
 
 class ListOrderImages():
+    "List all images of for the order"
     def GET(self,oid):
-        params = web.input()
-
-        status = int(params.status)
-
-        rlist = cmsService.list_order_imgs(int(oid),status=status)
+        rlist = cmsService.list_order_imgs(int(oid))
 
         return render.img_list_select(rlist, len(rlist))
 

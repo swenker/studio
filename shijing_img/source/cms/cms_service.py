@@ -399,9 +399,9 @@ class CmsService:
          try:
              for img in imglist:
 
-                 sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES('%s','%s','%s',%d)" %(TABLE_ALBUM_IMG,img[0],get_timenow(),img[1],aid)
-
-                 db.query(sqls)
+                 sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES($title,$dtcreate,$file,$aid,$itype)" %(TABLE_ALBUM_IMG)
+                 vars = {'title':img.title,'dtcreate':get_timenow(),'file':img.file,'aid':aid,'itype':img.itype}
+                 db.query(sqls,vars)
 
              t.commit()
 
@@ -565,7 +565,7 @@ class CmsService:
     def list_order_imgs(self,oid, status=1):
         sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id WHERE b.oid=$oid ORDER BY a.dtcreate desc '
 
-        result = db.query(sqls,vars={'oid':oid,'status':status})
+        result = db.query(sqls,vars={'oid':oid})
 
         rlist = []
 
