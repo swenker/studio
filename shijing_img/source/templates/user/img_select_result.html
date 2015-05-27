@@ -37,7 +37,21 @@ $def with(rlist,total)
         function showImage(url){
             $$("#img_viewer").attr("src","${service_config.img_url}" +url);
             $$("#img_viewer").attr("width","400");
-            $$("#dialog").dialog({width:450});
+            $$("#dialog").dialog({width:450,
+                show: {
+                effect: "blind",
+                duration: 500
+                },
+                hide: {
+                effect: "blind",
+                duration: 500
+                }
+            });
+            $$(".ui-dialog-titlebar").hide();
+        }
+
+        function hideImage(){
+            $$("#dialog").dialog('close');
         }
 
         function updateChoice(ckbox,iid){
@@ -61,6 +75,7 @@ $def with(rlist,total)
                 }
                 );
         }
+
     </script>
 </head>
 
@@ -105,7 +120,7 @@ $def with(rlist,total)
                             <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
                             </a>
                         </div>
-                        <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" onchange="updateChoice(this,'$img.oid')">
+                        <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" checked onchange="updateChoice(this,'$img.oid')">
                         </div>
                     </div>
                 </div>
