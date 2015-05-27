@@ -82,7 +82,7 @@ $def with(rlist,total)
 <body>
 
     <div id="dialog" title="" style="display:none">
-      <img id="img_viewer" src="" width="0">
+      <img id="img_viewer" src="" width="0" onclick="hideImage()">
     </div>
 
     <div id="wrapper">
@@ -91,7 +91,7 @@ $def with(rlist,total)
         <!--todo nav goes here how?-->
         <div id="admnav">
             <script>
-                ("#admnav").load("/site/user_nav.html");
+                $$("#admnav").load("/site/user_nav.html");
             </script>
         </div>
 
