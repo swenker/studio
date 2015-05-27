@@ -97,7 +97,7 @@ INSERT INTO `cms_category`(title,code)VALUES('摄影学苑','syxy');
 INSERT INTO `cms_category`(title,code)VALUES('活动','news');
 
 INSERT INTO `site_order`(uid,price)VALUES(1,999.00);
-INSERT INTO `site_order_img`(oid,iid)VALUES(1,1)(1,2)(1,3);
+INSERT INTO `site_order_img`(oid,iid)VALUES(1,1),(1,2),(1,3);
 
 INSERT INTO `cms_album`(`title`,`code`)VALUES('article-common','ac');
 INSERT INTO `cms_album`(`title`,`code`)VALUES('home-banner','hb');
