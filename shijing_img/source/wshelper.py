@@ -200,6 +200,7 @@ class ServiceHelper():
 
         return category
 
-
+    def set_common_header(self,web):
+        web.header('Content-Type','text/html; charset=utf-8', unique=True)
 
 

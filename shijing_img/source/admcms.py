@@ -210,6 +210,7 @@ class ListCategories():
     def GET(self):
         rlist = cms_service.category_map.values()
 
+        serviceHelper.set_common_header(web)
         return to_jsonstr(ListWrapper(rlist))
 
 
