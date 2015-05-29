@@ -103,12 +103,13 @@ $def with(rlist,total)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <div class="row">
     $ selected_list=[]
     $ nevery_line=10
     $for i in range(0,len(rlist)):
-        $ isrow= (i % nevery_line==0)
-        $if isrow:
-            <div class="row">
+         <!--isrow= (i % nevery_line==0)-->
+        <!--if isrow:-->
+            <!--<div class="row">-->
 
         $ img=rlist[i]
         $  selected_list.append(img.file.split('/')[-1])
@@ -125,11 +126,12 @@ $def with(rlist,total)
                     </div>
                 </div>
                 <!-- /.col-lg-4 -->
-        $if (i+1)% nevery_line==0 :
-            </div>
+        <!--if (i+1)% nevery_line==0 :-->
+            <!--</div>-->
             <!-- /.row -->
 
-    $if len(rlist)%nevery_line !=0:
+    <!--if len(rlist)%nevery_line !=0:-->
+            <!--</div>-->
             </div>
 
     <div class="row">
