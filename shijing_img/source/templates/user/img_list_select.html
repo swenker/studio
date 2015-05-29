@@ -55,12 +55,20 @@ $def with(rlist,total,oid)
             $$("#dialog").dialog('close');
         }
 
+        //TODO counter
+        SELECTED_LIMIT=30
+        selected_counter=0
         function updateChoice(ckbox,iid){
             istatus=0;
             if(ckbox.checked){
                 istatus = 2;
+                selected_counter++;
+
+                if(selected_counter >= SELECTED_LIMIT)
+                    alert('exceeds.');
             }else{
                 istatus = 1;
+                selected_counter--;
             }
 
             data_url = '/p/u/upc/'+iid+'?status='+istatus
@@ -120,7 +128,7 @@ $def with(rlist,total,oid)
                 <div class="panel-heading"></div>
                 <div class="panel-body">
                     <a href="javascript:showImage('$img.medium')">
-                    <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
+                    <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" height="120" align="center"/>
                     </a>
                 </div>
                 <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" $checked onchange="updateChoice(this,'$img.oid')">

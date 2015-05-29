@@ -119,4 +119,4 @@ class LoadFolder():
 
         batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
 
-        web.seeother('/p/u/listimgs/'+str(orderid))
+        web.seeother('/listimgs/'+str(orderid))
