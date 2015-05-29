@@ -127,7 +127,7 @@ $def with(rlist,total,oid)
                 $ checked=''
         <div class="col-lg-2">
             <div class="panel panel-info">
-                <div class="panel-heading"></div>
+                <!--<div class="panel-heading"></div>-->
                 <div class="panel-body">
                     <a href="javascript:showImage('$img.medium')">
                     <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" height="120" align="center"/>
@@ -138,11 +138,11 @@ $def with(rlist,total,oid)
             </div>
         </div>
                 <!-- /.col-lg-4 -->
-        <!--$if (i+1)% nevery_line==0 :-->
+        <!--if (i+1)% nevery_line==0 :-->
             <!--</div>-->
             <!-- /.row -->
 
-    <!--$if len(rlist)%nevery_line !=0:-->
+    <!--if len(rlist)%nevery_line !=0:-->
             <!--</div>-->
            </div>
     <div class="row">
