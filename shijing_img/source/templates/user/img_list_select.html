@@ -117,8 +117,6 @@ $def with(order,rlist,total)
     $ nevery_line=10
     $for i in range(0,total):
         $ isrow= (i % nevery_line==0)
-        <!--if isrow:-->
-            <!--<div class="row">-->
 
         $ img=rlist[i]
         $ checked=''
@@ -138,13 +136,8 @@ $def with(order,rlist,total)
                 </div>
             </div>
         </div>
-                <!-- /.col-lg-4 -->
-        <!--if (i+1)% nevery_line==0 :-->
-            <!--</div>-->
-            <!-- /.row -->
 
-    <!--if len(rlist)%nevery_line !=0:-->
-            <!--</div>-->
+
            </div>
     <div class="row">
         <div class="col-lg-12">

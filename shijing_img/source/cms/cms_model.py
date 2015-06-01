@@ -155,7 +155,8 @@ class Order:
         self.dtupdate = None
         self.dtcomplete = None
         self.uid = uid
-        self.limit = 30
+        self.total_limit = 120
+        self.edit_limit = 30
         self.price=999.00
         self.status = 1
 
@@ -170,8 +171,7 @@ class Order:
 
 class SiteUser:
     def __init__(self,uid,email=None, passwd = None, nickname = None, mobile=None, status=1 ):
-        self.oid = 0
-        self.uid = uid
+        self.oid = uid
         self.email = email
         self.nickname = nickname
         self.passwd = passwd

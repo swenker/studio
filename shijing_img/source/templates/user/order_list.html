@@ -4,7 +4,7 @@ $def with(rlist,total)
 
 <head>
 
-    <meta charset="utf-8">人
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -52,10 +52,8 @@ $def with(rlist,total)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-    $for i in range(0,len(rlist)):
-        $ isrow= (i%2==0)
-        $if isrow:
             <div class="row">
+    $for i in range(0,len(rlist)):
 
         $ order=rlist[i]
                 <div class="col-lg-4">
@@ -64,25 +62,18 @@ $def with(rlist,total)
                             order
                         </div>
                         <div class="panel-body">
-
+                            $order.title &nbsp; $order.total_limit &nbsp; $order.edit_limit
                         </div>
                         <div class="panel-footer" align="right">
-                             &nbsp;<a href="delete_article?id=">Delete</a>
+                             &nbsp;<!--<a href="delete_article?id=">Delete</a>-->
                         </div>
                     </div>
                 </div>
                 <!-- /.col-lg-4 -->
-        $if (i+1)%2==0 :
-            </div>
-            <!-- /.row -->
-
-    $if len(rlist)%2 !=0:
             </div>
 
                  <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            
+
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->

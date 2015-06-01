@@ -564,7 +564,8 @@ class CmsService:
         order = Order(r['id'])
         order.title = r['title']
         order.uid = r['uid']
-        order.limit = r['limit']
+        order.total_limit = r['total_limit']
+        order.edit_list = r['edit_limit']
         order.price = r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
@@ -578,7 +579,7 @@ class CmsService:
     def compose_siteuser(self, r):
         user = SiteUser(r['id'])
         user.status = r['status']
-        user.upasswd = r['passwd']
+        user.passwd = r['passwd']
         user.email = r['passwd']
         user.nickname = r['nickname']
 
@@ -590,7 +591,7 @@ class CmsService:
 
         where_condition = ''
         if uid:
-            where_condition = 'WHERE id=' + uid
+            where_condition = 'WHERE uid=' + str(uid)
         result = db.query((sqls % (TABLE_SITE_ORDER, where_condition)))
 
         rlist = []
@@ -600,7 +601,7 @@ class CmsService:
                 order = self.compose_order(r)
                 rlist.append(order)
 
-        return rlist, len(rlist)
+        return rlist
 
 
     def add_order_img(self, iid, orderid):
@@ -661,9 +662,9 @@ class CmsService:
                         user.passwd=None
                         return user, 'OK'
                 else:
-                    return status, 'status'
+                    return user.status, 'status'
 
-        logger.info("NotFound:%s" % email)
+        logger.warn("NotFoundUser:%s" % mobile)
         return -1, 'NotFound'
 
 cmsService = CmsService()

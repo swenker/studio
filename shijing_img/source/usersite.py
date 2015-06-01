@@ -9,9 +9,10 @@ from cms import service_config
 import wshelper
 from cms import batch_image_handler
 
-
+print 'abc....'
 urls = (
         "/login", "LoginService",
+        "/logout", "LogoutService",
         "", "LoginService",
         "/orders", "ListOrders",
         "/listimgs/(\d+)", "ListOrderImages",
@@ -25,6 +26,9 @@ urls = (
 )
 
 app = web.application(urls, globals())
+web.config.session_parameters['timeout'] = 8
+web.config.session_parameters['ignore_change_ip'] = True
+
 config = service_config.config
 
 t_globals = {
@@ -67,7 +71,8 @@ class LoginService():
                 if orders:
                     order = orders[0]
 
-                    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'userinfo_'+str(user.oid): UserInfo(user,order)})
+                    serviceHelper.save_user_session(web,app,UserInfo(user,order))
+
                     return web.seeother('/listimgs/'+str(order.oid))
                 else:
                     return web.seeother('/home')
@@ -75,6 +80,11 @@ class LoginService():
                 return render.login("Failed:"+reason)
         else:
             return render.login("Please Input email and password")
+
+class LogoutService():
+    def GET(self):
+        serviceHelper.save_user_session()
+        return render.login('')
 
 
 class GetUser():
@@ -110,12 +120,14 @@ class ListOrders():
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
-        uid = None
-        order_list = cmsService.list_orders()
-        rlist = cmsService.list_order_imgs(int(oid))
 
-        return render.img_list_select(order_list[0],rlist, len(rlist))
-
+        #todo adm?
+        userinfo=serviceHelper.get_user_session(web,app)
+        if userinfo:
+            rlist = cmsService.list_order_imgs(int(oid))
+            return render.img_list_select(userinfo.order,rlist, len(rlist))
+        else:
+            return render.common('please login')
 class ListSelectedImages():
     def GET(self,oid):
         rlist = cmsService.list_selected_imgs(int(oid))

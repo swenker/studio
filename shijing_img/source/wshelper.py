@@ -74,9 +74,9 @@ class ServiceHelper():
         img_store = config.img_store
         if img_store == 'oss':
             # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
-            upload_file_to_oss(large_relative_dir+"/"+imgname,(local_tmp_path_pattern%(large_full_store_dir,imgname)))
-            upload_file_to_oss(medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
-            upload_file_to_oss(thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
+            upload_file_to_oss('img'+large_relative_dir+"/"+imgname,(local_tmp_path_pattern%(large_full_store_dir,imgname)))
+            upload_file_to_oss('img'+medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
+            upload_file_to_oss('img'+thumb_relative_dir+"/"+imgname,(local_tmp_path_pattern%(thumb_full_store_dir,imgname)))
 
         return imgname,date_path + "/" + imgname
 
@@ -203,4 +203,14 @@ class ServiceHelper():
     def set_common_header(self,web):
         web.header('Content-Type','text/html; charset=utf-8', unique=True)
 
+    def save_user_session(self,web,app,user_order):
+        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': user_order})
+        # web.config.session_parameters['timeout'] = 86400, #24 * 60 * 60, # 24 hours   in seconds
 
+    def get_user_session(self,web,app):
+        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
+        session._load()
+        return session.uinfo
+
+    def delete_user_session(self,web,app):
+        web.ctx.session.destory()

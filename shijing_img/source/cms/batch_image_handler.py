@@ -4,6 +4,7 @@ import glob
 from service_config import config
 import cms_service
 from cms_model import *
+from cms.aliyun_oss_handler import *
 from image_processor import ImageProcessor
 
 """
@@ -49,11 +50,19 @@ class RecordStore():
 
             #zoom
             relative_folder_file = relative_folder + '/' + f
-            self.imageProcessor.thumbnail(relative_folder_file)
-            self.imageProcessor.medium(relative_folder_file)
-            self.imageProcessor.large(relative_folder_file)
+            large_relative = self.imageProcessor.thumbnail(relative_folder_file)
+            medium_relative = self.imageProcessor.medium(relative_folder_file)
+            thumb_relative = self.imageProcessor.large(relative_folder_file)
+
+            img_store = config.img_store
+            if img_store == 'oss':
+                # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
+                upload_file_to_oss('img'+large_relative,config.img_save_path+large_relative)
+                upload_file_to_oss('img'+medium_relative,config.img_save_path+medium_relative)
+                upload_file_to_oss('img'+thumb_relative,config.img_save_path+thumb_relative)
 
             counter += 1
+
         logger.info('done for(%s,%d):'%(relative_folder,counter))
 
 
