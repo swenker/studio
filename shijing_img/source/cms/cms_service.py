@@ -3,7 +3,7 @@ __author__ = 'wenju'
 import decimal
 import web
 
-from backend_service_helper import get_timenow
+from backend_service_helper import *
 from cms_model import *
 from aliyun_oss_handler import *
 
@@ -562,12 +562,27 @@ class CmsService:
 
     def compose_order(self, r):
         order = Order(r['id'])
+        order.title = r['title']
+        order.uid = r['uid']
+        order.limit = r['limit']
         order.price = r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
         order.dtcomplete = r['dtcomplete']
 
+        order.remark = r['remark']
         order.status = r['status']
+
+        return order
+
+    def compose_siteuser(self, r):
+        user = SiteUser(r['id'])
+        user.status = r['status']
+        user.upasswd = r['passwd']
+        user.email = r['passwd']
+        user.nickname = r['nickname']
+
+        return user
 
 
     def list_orders(self, uid=None):
@@ -630,24 +645,21 @@ class CmsService:
 
         db.query(sqls, vars={'status': status, 'iid': iid})
 
-    def site_user_login(self, email, passwd):
-        sqls = 'select id,passwd,status from %s where email=$email' % TABLE_SITE_USER
-        result = db.query(sqls, vars={'table': TABLE_SITE_USER, 'email': email})
+    def site_user_login(self, mobile, passwd):
+        sqls = 'select * from %s where mobile=$mobile' % TABLE_SITE_USER
+        result = db.query(sqls, vars={'table': TABLE_SITE_USER, 'mobile': mobile})
 
         if result:
             for r in result:
-                uid = r['id']
-                status = r['status']
-                upasswd = r['passwd']
-
-                if status == 1:
-                    if upasswd == passwd:
+                user = self.compose_siteuser(r)
+                if user.status == 1:
+                    if user.passwd == md5(passwd):
                         # if len(upasswd) == len(passwd):
                         #     for i in xrange(0,len(upasswd)):
                         #         if upasswd[i] != passwd[i]:
                         #             return 0,'Invalid Password'
-
-                        return uid, 'OK'
+                        user.passwd=None
+                        return user, 'OK'
                 else:
                     return status, 'status'
 

@@ -64,6 +64,9 @@ CREATE TABLE IF NOT EXISTS `site_order`(
  `dtcomplete` TIMESTAMP NOT NULL DEFAULT 0,
  `price` DECIMAL(7,2) DEFAULT 0,
  `remark` VARCHAR(50),
+ `title` VARCHAR(50),
+ `total_limit` INT(2),
+ `edit_limit` INT(2),
  `status` TINYINT(1) DEFAULT 1,
   PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;

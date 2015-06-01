@@ -15,7 +15,9 @@ urls = (
         "", "LoginService",
         "/orders", "ListOrders",
         "/listimgs/(\d+)", "ListOrderImages",
+        "/listimgs", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
+        "/okimgs", "ListSelectedImages",
         "/upc/(\d+)", "UpdateChoice",
         "/order/(\d+)", "GetOrder",
         "/user/(\d+)", "GetUser",
@@ -40,6 +42,10 @@ class Dashboard():
     def GET(self):
         return render.dashboard()
 
+class UserInfo():
+    def __init__(self,user,order):
+        self.user = user
+        self.order = order
 
 class LoginService():
     def GET(self):
@@ -47,14 +53,24 @@ class LoginService():
 
     def POST(self):
         params = web.input()
-        email = params.email
+        # email = params.email
+        mobile = params.mobile
         passwd = params.passwd
 
         #print "abc:"+email,passw
-        if email and passwd:
-            stat,reason = cmsService.site_user_login(email,passwd)
+        if mobile and passwd:
+            stat,reason = cmsService.site_user_login(mobile,passwd)
             if(reason=='OK'):
-                return web.seeother('/dashboard')
+                user = stat
+                orders = cmsService.list_orders(user.oid)
+
+                if orders:
+                    order = orders[0]
+
+                    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'userinfo_'+str(user.oid): UserInfo(user,order)})
+                    return web.seeother('/listimgs/'+str(order.oid))
+                else:
+                    return web.seeother('/home')
             else:
                 return render.login("Failed:"+reason)
         else:
@@ -94,9 +110,11 @@ class ListOrders():
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
+        uid = None
+        order_list = cmsService.list_orders()
         rlist = cmsService.list_order_imgs(int(oid))
 
-        return render.img_list_select(rlist, len(rlist),oid)
+        return render.img_list_select(order_list[0],rlist, len(rlist))
 
 class ListSelectedImages():
     def GET(self,oid):

@@ -149,12 +149,14 @@ class Comment:
 class Order:
     def __init__(self,uid):
         self.oid = 0
+        self.title = ''
         self.remark = ''
         self.dtcreate = None
         self.dtupdate = None
         self.dtcomplete = None
         self.uid = uid
-        self.price=None
+        self.limit = 30
+        self.price=999.00
         self.status = 1
 
     def __repr__(self):
@@ -167,7 +169,7 @@ class Order:
         return self.__dict__
 
 class SiteUser:
-    def __init__(self,uid,email, passwd, nickname = None, mobile=None, status=1 ):
+    def __init__(self,uid,email=None, passwd = None, nickname = None, mobile=None, status=1 ):
         self.oid = 0
         self.uid = uid
         self.email = email
