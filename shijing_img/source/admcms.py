@@ -13,6 +13,7 @@ import wshelper
 
 urls = ("/adminsvc", "AdminService",
         "", "Dashboard",
+        "/", "Dashboard",
         "/login", "LoginService",
         "/new_article", "NewArticle",
         "/save_article", "SaveArticle",
@@ -68,7 +69,7 @@ class LoginService():
         if email and passwd:
             if email == 'abctest@126.com' and passwd=='onecase':
                 serviceHelper.save_adm_session(web,app)
-                return web.seeother("/adm")
+                return web.seeother("/")
 
             else:
                 return render.login("Failed")

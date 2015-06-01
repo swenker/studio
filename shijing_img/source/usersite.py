@@ -120,6 +120,13 @@ class ListOrders():
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
+        rlist = cmsService.list_order_imgs(int(oid))
+        return render.img_list_select(userinfo.order,rlist, len(rlist))
+
+
+class ListOrderImages2():
+    "List all images of for the order"
+    def GET(self,oid):
 
         isadm = serviceHelper.get_adm_session(web,app)
 
