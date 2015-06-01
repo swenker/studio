@@ -67,11 +67,10 @@ class LoginService():
 
         if email and passwd:
             if email == 'abctest@126.com' and passwd=='onecase':
-                #TODO save session?
-                return web.seeother("/p/adm")
+                serviceHelper.save_adm_session(web,app)
+                return web.seeother("/adm")
 
             else:
-
                 return render.login("Failed")
         else:
             return render.login("Please Input email and password")

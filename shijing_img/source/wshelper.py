@@ -203,14 +203,31 @@ class ServiceHelper():
     def set_common_header(self,web):
         web.header('Content-Type','text/html; charset=utf-8', unique=True)
 
+    def save_adm_session(self,web,app):
+        web.session.Session(app, web.session.DiskStore('sessions/adm_users'), initializer={'admin': True})
+
     def save_user_session(self,web,app,user_order):
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': user_order})
-        # web.config.session_parameters['timeout'] = 86400, #24 * 60 * 60, # 24 hours   in seconds
 
     def get_user_session(self,web,app):
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
         session._load()
-        return session.uinfo
+        try:
+            return session.uinfo
+        except AttributeError:
+            return None
+
+    def get_adm_session(self,web,app):
+        session = web.session.Session(app, web.session.DiskStore('sessions/adm_users'))
+        session._load()
+        try:
+            return session.admin
+        except AttributeError:
+            return None
+
+
+    def delete_adm_session(self,web,app):
+        web.ctx.session.destory()
 
     def delete_user_session(self,web,app):
         web.ctx.session.destory()

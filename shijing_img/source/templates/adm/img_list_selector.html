@@ -92,11 +92,9 @@ $def with(img_list,total,total_pages,npages)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <div class="row">
     $ nevery_line=5
     $for i in range(0,len(img_list)):
-        $ isrow= (i % nevery_line==0)
-        $if isrow:
-            <div class="row">
         $ img=img_list[i]
                 <div class="col-lg-3">
                     <div class="panel panel-info">
@@ -117,11 +115,8 @@ $def with(img_list,total,total_pages,npages)
                     </div>
                 </div>
                 <!-- /.col-lg-2 -->
-        $if (i+1)% nevery_line==0 :
-            </div>
             <!-- /.row -->
 
-    $if len(img_list)%nevery_line !=0:
             </div>
 
     <div class="row">

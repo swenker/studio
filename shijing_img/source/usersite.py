@@ -121,13 +121,15 @@ class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
 
-        #todo adm?
+        isadm = serviceHelper.get_adm_session(web,app)
+
         userinfo=serviceHelper.get_user_session(web,app)
-        if userinfo:
+        if userinfo or isadm:
             rlist = cmsService.list_order_imgs(int(oid))
             return render.img_list_select(userinfo.order,rlist, len(rlist))
         else:
-            return render.common('please login')
+            return render.common("<a href='/login'>please login</a>")
+
 class ListSelectedImages():
     def GET(self,oid):
         rlist = cmsService.list_selected_imgs(int(oid))
