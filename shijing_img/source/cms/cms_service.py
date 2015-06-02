@@ -580,8 +580,9 @@ class CmsService:
         user = SiteUser(r['id'])
         user.status = r['status']
         user.passwd = r['passwd']
-        user.email = r['passwd']
+        user.email = r['email']
         user.nickname = r['nickname']
+        user.mobile = r['mobile']
 
         return user
 

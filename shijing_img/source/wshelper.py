@@ -209,10 +209,13 @@ class ServiceHelper():
     def save_user_session(self,web,app,user_order):
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': user_order})
 
-    def get_user_session(self,web,app):
-        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
-        session._load()
+        print user_order
+        print "session saved.."
+        #print session.uinfo
+
+    def get_user_session(self,session):
         try:
+            #print session.uinfo.user
             return session.uinfo
         except AttributeError:
             return None
@@ -221,6 +224,7 @@ class ServiceHelper():
         session = web.session.Session(app, web.session.DiskStore('sessions/adm_users'))
         session._load()
         try:
+            print session._data
             return session.admin
         except AttributeError:
             return None
@@ -230,4 +234,6 @@ class ServiceHelper():
         web.ctx.session.destory()
 
     def delete_user_session(self,web,app):
-        web.ctx.session.destory()
+        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
+        session._load()
+

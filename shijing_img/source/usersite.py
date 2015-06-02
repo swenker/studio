@@ -9,16 +9,13 @@ from cms import service_config
 import wshelper
 from cms import batch_image_handler
 
-print 'abc....'
 urls = (
         "/login", "LoginService",
         "/logout", "LogoutService",
         "", "LoginService",
         "/orders", "ListOrders",
         "/listimgs/(\d+)", "ListOrderImages",
-        "/listimgs", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
-        "/okimgs", "ListSelectedImages",
         "/upc/(\d+)", "UpdateChoice",
         "/order/(\d+)", "GetOrder",
         "/user/(\d+)", "GetUser",
@@ -27,8 +24,11 @@ urls = (
 
 app = web.application(urls, globals())
 web.config.debug=False
-web.config.session_parameters['timeout'] = 8
-web.config.session_parameters['ignore_change_ip'] = True
+
+#web.config.session_parameters['timeout'] = 8000
+# web.config.session_parameters['ignore_change_ip'] = True
+print '---------------------------------------------------------------------------------------------------------------'
+session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': None})
 
 config = service_config.config
 
@@ -54,7 +54,12 @@ class UserInfo():
 
 class LoginService():
     def GET(self):
-        return render.login('')
+        #userinfo=serviceHelper.get_user_session(web,app)
+        userinfo = session.uinfo
+        if not userinfo:
+            return render.login('')
+        else:
+            return web.seeother('/listimgs/'+str(userinfo.order.oid))
 
     def POST(self):
         params = web.input()
@@ -68,11 +73,12 @@ class LoginService():
             if(reason=='OK'):
                 user = stat
                 orders = cmsService.list_orders(user.oid)
-
+                session.uinfo =UserInfo(user,None)
                 if orders:
                     order = orders[0]
 
-                    serviceHelper.save_user_session(web,app,UserInfo(user,order))
+                    #serviceHelper.save_user_session(web,app,UserInfo(user,order))
+                    session.uinfo = UserInfo(user,order)
 
                     return web.seeother('/listimgs/'+str(order.oid))
                 else:
@@ -84,8 +90,10 @@ class LoginService():
 
 class LogoutService():
     def GET(self):
-        serviceHelper.save_user_session()
-        return render.login('')
+        print session
+        #serviceHelper.delete_user_session(web,app)
+        session.kill()
+        return web.seeother('/login')
 
 
 class GetUser():
@@ -118,26 +126,19 @@ class ListOrders():
 
         return render.order_list(rlist, total)
 
-class ListOrderImages2():
-    "List all images of for the order"
-    def GET(self,oid):
-        rlist = cmsService.list_order_imgs(int(oid))
-        orders = cmsService.list_orders(user.oid)
-        return render.img_list_select(orders[0],rlist, len(rlist))
 
 
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
 
-        isadm = serviceHelper.get_adm_session(web,app)
+        userinfo=serviceHelper.get_user_session(session)
 
-        userinfo=serviceHelper.get_user_session(web,app)
-        if userinfo or isadm:
+        if userinfo:
             rlist = cmsService.list_order_imgs(int(oid))
             return render.img_list_select(userinfo.order,rlist, len(rlist))
         else:
-            return render.common("<a href='/login'>please login</a>")
+            return render.common("<a href='/p/u/login'>please login</a>")
 
 class ListSelectedImages():
     def GET(self,oid):
