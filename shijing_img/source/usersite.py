@@ -26,6 +26,7 @@ urls = (
 )
 
 app = web.application(urls, globals())
+web.config.debug=False
 web.config.session_parameters['timeout'] = 8
 web.config.session_parameters['ignore_change_ip'] = True
 
@@ -117,14 +118,15 @@ class ListOrders():
 
         return render.order_list(rlist, total)
 
-class ListOrderImages():
+class ListOrderImages2():
     "List all images of for the order"
     def GET(self,oid):
         rlist = cmsService.list_order_imgs(int(oid))
-        return render.img_list_select(userinfo.order,rlist, len(rlist))
+        orders = cmsService.list_orders(user.oid)
+        return render.img_list_select(orders[0],rlist, len(rlist))
 
 
-class ListOrderImages2():
+class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
 
