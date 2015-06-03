@@ -1,0 +1,8 @@
+#compiled python 
+source/*.pyc
+source/cms/*.pyc
+
+.idea
+
+#sessions
+source/sessions

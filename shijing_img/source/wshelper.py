@@ -201,7 +201,7 @@ class ServiceHelper():
         return category
 
     def set_common_header(self,web):
-        web.header('Content-Type','text/html; charset=utf-8', unique=True)
+        web.header('Content-Type','text/html; charset=UTF-8', unique=True)
 
     def save_adm_session(self,web,app):
         web.session.Session(app, web.session.DiskStore('sessions/adm_users'), initializer={'admin': True})
@@ -209,8 +209,8 @@ class ServiceHelper():
     def save_user_session(self,web,app,user_order):
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': user_order})
 
-        print user_order
-        print "session saved.."
+        # print user_order
+        # print "session saved.."
         #print session.uinfo
 
     def get_user_session(self,session):
