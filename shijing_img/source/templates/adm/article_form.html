@@ -54,7 +54,7 @@ $def with(article_meta,article_content)
             selectNode = $$("#cms_category");
             for(i=0;i<data.rlist.length;i++){
                 cate = data.rlist[i];
-                optionNode = $$("<option value='"+cate.code+"'>"+cate.title+"</option>");
+                optionNode = $$("<option value='"+cate.code+"'>"+"("+cate.code+")"cate.title+"</option>");
                 selectNode.append(optionNode);
             }
         }
