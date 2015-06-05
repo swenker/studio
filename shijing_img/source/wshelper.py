@@ -175,7 +175,7 @@ class ServiceHelper():
 
         # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
         #todo auto generate
-        article_meta.brief = 'This is brief'
+        article_meta.brief = params.brief
         article_meta.status = 1
 
         article_content = cms_model.ArticleContent(params.content)

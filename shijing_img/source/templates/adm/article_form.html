@@ -136,20 +136,24 @@ $def with(article_meta,article_content)
                                             &nbsp;&nbsp;<label>作者</label>
                                             <input  placeholder="Enter text" value="市井影像" name="author" id="author">
                                         </div>
-<!--
-                                        <div class="form-group">
-                                            <label>Static Control</label>
-                                            <p class="form-control-static">email@example.com</p>
-                                        </div>
--->
+
                                         <div class="form-group">
                                             <label>封面</label>
                                             <img id='img_cover' src="" width="160">  &nbsp;&nbsp;<label>Category</label><select id="cms_category" name="ctcode"></select>
                                             <br>
-                                            <input value="" name="cover" id="cover" size="40" readonly>
+                                            <input value="" name="cover" id="cover" size="30" readonly>
                                             <button type="button"
                                                     onclick="return window.open('/p/adm/select_cover','_cover','menubar=1,resizable=1,width=950,height=580,scrollbars=1')">Select</button>
                                         </div>
+
+                                       <div class="form-group">
+                                            <label>摘要</label>
+                                            <textarea class="form-control" name="brief" id="brief" rows="3" >
+                                              $if article_meta and article_meta.brief:
+                                                $article_meta.brief
+                                            </textarea>
+                                        </div>
+
                                         <div class="form-group">
                                             <label>正文</label>
                                             <textarea name="content" class="form-control" rows="10" id="content">

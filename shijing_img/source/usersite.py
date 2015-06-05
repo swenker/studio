@@ -54,8 +54,8 @@ class UserInfo():
 
 class LoginService():
     def GET(self):
-        #userinfo=serviceHelper.get_user_session(web,app)
-        userinfo = session.uinfo
+        userinfo=serviceHelper.get_user_session(web)
+        # userinfo = session.uinfo
         if not userinfo:
             return render.login('')
         else:
@@ -67,7 +67,6 @@ class LoginService():
         mobile = params.mobile
         passwd = params.passwd
 
-        #print "abc:"+email,passw
         if mobile and passwd:
             stat,reason = cmsService.site_user_login(mobile,passwd)
             if(reason=='OK'):
