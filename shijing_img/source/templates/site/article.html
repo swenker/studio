@@ -7,6 +7,7 @@ $def with(article_meta, article_content)
                 $article_meta.title
 </title>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
 <!--<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>-->
@@ -45,7 +46,7 @@ $def with(article_meta, article_content)
             $if article_meta:
                 $article_meta.title
         </h2>
-        <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$datestr(article_meta.dtcreate)</h4>
+        <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$article_meta.dtcreate</h4>
         <div class="wrap">
 
           <img src="${service_config.img_url+'/lar'+article_meta.cover}" width="600" alt="" >
@@ -58,12 +59,15 @@ $def with(article_meta, article_content)
 
       </div>
       <div class="col-13">
+
         <!-- start one unit -->
+<!--
         <h2 class="h2 p2">Featured news:</h2>
         <img src="images/page5-img1.jpg" alt="" class="img-border img-indent-2">
         <p class="upper clr-1 p5 ">ut dui gravida ut viverra lectus tincidunt Cras </p>
         <p>nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem. sit amet dictum velit velit eu magna.</p>
         <a href="#" class="link-1 link-1-pad">Read more</a>
+-->
         <!-- end one unit -->
 
       </div>

@@ -8,6 +8,7 @@ import web
 from cms import cms_model
 from cms import cms_service
 from cms import service_config
+from cms import batch_image_handler
 import wshelper
 
 
@@ -33,7 +34,9 @@ urls = ("/adminsvc", "AdminService",
         "/delete_img", "DeleteImage",
         "/select_imgs", "SelectImages",
         "/select_cover", "SelectCover",
-        "/refresh","RefreshHomePage"
+        "/refresh","RefreshHomePage",
+        "/orders", "ListOrders",
+        "/loadfolder","LoadFolder"
         )
 
 config = service_config.config
@@ -317,6 +320,34 @@ class SelectCover:
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.img_cover_selector(rlist, total, total_pages,npages)
+
+class LoadFolder():
+    def GET(self):
+
+        return render.load_folder()
+
+    def POST(self):
+        params = web.input()
+        folder = params.folder
+
+        orderid = int(params.orderid)
+
+        counter = batch_image_handler.load_local_folder(folder,cms_service.album_map.get('oa').oid,orderid)
+        #web.seeother('/listimgs/'+str(orderid))
+        return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %counter,orderid)
+
+class ListOrders():
+    def GET(self):
+        params = web.input(uid = None)
+
+        uid = None
+        if params.uid:
+            uid = int(params.uid)
+
+        rlist = cmsService.list_orders(uid)
+
+        return render.order_list(rlist, len(rlist))
+
 
 
 class ListWrapper:

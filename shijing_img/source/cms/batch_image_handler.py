@@ -4,7 +4,7 @@ import glob
 from service_config import config
 import cms_service
 from cms_model import *
-from cms.aliyun_oss_handler import *
+from aliyun_oss_handler import *
 from image_processor import ImageProcessor
 
 """
@@ -64,6 +64,7 @@ class RecordStore():
             counter += 1
 
         logger.info('done for(%s,%d):'%(relative_folder,counter))
+        return counter
 
 
     def compose_image(self, relative_path, title,aid):
@@ -78,4 +79,4 @@ class RecordStore():
 
 def load_local_folder(aid,relative_folder,orderid):
     recordStore = RecordStore(LocalFileScanner())
-    recordStore.process(aid,relative_folder,orderid)
+    return recordStore.process(aid,relative_folder,orderid)

@@ -656,10 +656,6 @@ class CmsService:
                 user = self.compose_siteuser(r)
                 if user.status == 1:
                     if user.passwd == md5(passwd):
-                        # if len(upasswd) == len(passwd):
-                        #     for i in xrange(0,len(upasswd)):
-                        #         if upasswd[i] != passwd[i]:
-                        #             return 0,'Invalid Password'
                         user.passwd=None
                         return user, 'OK'
                 else:

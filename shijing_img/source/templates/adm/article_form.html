@@ -29,7 +29,6 @@ $def with(article_meta,article_content)
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <!-- jQuery /home/sunwj/work/studio/shijing_img/js/jquery -->
     <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
     <script>
 
@@ -68,7 +67,7 @@ $def with(article_meta,article_content)
                 $$("#author").val("$article_meta.author");
                 $$("#source").val("$article_meta.source");
                 $$("#cover").val("$article_meta.cover");
-                $$("#img_cover").attr("src","${service_config.img_url +"/raw"+ article_meta.cover}");
+                $$("#img_cover").attr("src","${service_config.img_url +"/thumb"+ article_meta.cover}");
 
         });
 
@@ -148,7 +147,7 @@ $def with(article_meta,article_content)
 
                                        <div class="form-group">
                                             <label>摘要</label>
-                                            <textarea class="form-control" name="brief" id="brief" rows="3" >
+                                            <textarea  name="brief" id="brief" rows="3" cols="60">
                                               $if article_meta and article_meta.brief:
                                                 $article_meta.brief
                                             </textarea>

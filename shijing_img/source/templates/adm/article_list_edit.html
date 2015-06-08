@@ -97,31 +97,32 @@ $def with(article_list,total,total_pages,npages,ctcode)
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">
+
+   <div class="row">
     $for i in range(0,len(article_list)):
 
         $ article=article_list[i]
-                <div class="col-lg-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            $article.title
-                        </div>
-                        <div class="panel-body">
-                            <img src="${service_config.img_url+'/raw'+article.cover}" width="160" align="left"/>
-                            <p>$article.brief [$article.dtcreate]</p>
-                        </div>
-                        <div class="panel-footer" align="right">
-                             &nbsp;<a href="edit_article?id=$article.oid">Edit</a>
-                             &nbsp;<a href="delete_article?id=$article.oid">Delete</a>
-                             &nbsp;<a href="preview_article?id=$article.oid">Preview</a>
-                        </div>
-                    </div>
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    $article.title
                 </div>
+                <div class="panel-body">
+                    <img src="${service_config.img_url+'/thumb'+article.cover}" width="160" align="left"/>
+                    <p>$article.brief [$article.dtcreate]</p>
+                </div>
+                <div class="panel-footer" align="right">
+                     &nbsp;<a href="edit_article?id=$article.oid">Edit</a>
+                     &nbsp;<a href="delete_article?id=$article.oid">Delete</a>
+                     &nbsp;<a href="preview_article?id=$article.oid">Preview</a>
+                </div>
+            </div>
+        </div>
                 <!-- /.col-lg-4 -->
 
             <!-- /.row -->
 
-            </div>
+   </div>
 
     <div class="row">
         <div class="col-lg-12">
