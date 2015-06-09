@@ -1,6 +1,7 @@
+
+
 __author__ = 'sunwj'
 
-import json
 
 import cgi
 import web
@@ -9,7 +10,10 @@ from cms import cms_model
 from cms import cms_service
 from cms import service_config
 from cms import batch_image_handler
-import wshelper
+
+from wshelper import ServiceHelper
+from wshelper import ListWrapper
+
 
 
 urls = ("/adminsvc", "AdminService",
@@ -56,7 +60,7 @@ cgi.maxlen = 2 * 1024 * 1024
 
 cmsService = cms_service.cmsService
 
-serviceHelper = wshelper.ServiceHelper()
+serviceHelper = ServiceHelper()
 
 
 class LoginService():
@@ -146,7 +150,7 @@ class PreviewArticle():
     def GET(self, id):
         article = cmsService.get_article(id)
         if article:
-            return to_jsonstr(article)
+            return serviceHelper.to_jsonstr(article)
         else:
             return render.common("failed:" + str(id))
 
@@ -213,7 +217,7 @@ class ListCategories():
         rlist = cms_service.category_map.values()
 
         serviceHelper.set_common_header(web)
-        return to_jsonstr(ListWrapper(rlist))
+        return serviceHelper.to_jsonstr(ListWrapper(rlist))
 
 
 
@@ -346,20 +350,5 @@ class ListOrders():
         rlist = cmsService.list_orders(uid)
 
         return render.order_list(rlist, len(rlist))
-
-
-
-class ListWrapper:
-    def __init__(self, rlist, total_count=0, total_pages=0):
-        self.rlist = rlist
-        self.total = total_count
-        self.total_pages = total_pages
-
-    def jsonable(self):
-        return self.__dict__
-
-
-def to_jsonstr(obj):
-    return json.dumps(obj.__dict__, cls=cms_model.ComplexEncoder)
 
 

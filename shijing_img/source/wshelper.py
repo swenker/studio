@@ -1,16 +1,16 @@
 __author__ = 'sunwj'
 
 import os
-
+import httplib
+import json
 from datetime import datetime
-from time import time
+
 from cms.aliyun_oss_handler import *
 from cms import cms_model
 from cms import service_config
 from cms.image_processor import ImageProcessor
 from cms import cms_service
 
-import httplib
 
 config = service_config.config
 
@@ -174,14 +174,24 @@ class ServiceHelper():
         article_meta.cover = params.cover
         article_meta.ctid = cms_service.category_map.get(params.ctcode[0]).oid
 
-        DATE_TIME_FORMAT = '%Y%m%d %H%M%S'
+        DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+        dtnow = datetime.now()
+        dtnow_str = dtnow.strftime(DATE_TIME_FORMAT)
         if params.dtpub:
             dtpub_input = params.dtpub
 
             if len(dtpub_input)==10:
-                dtpub_input += datetime.now().time()
+                dtpub_input += dtnow_str[10:]
 
-            article_meta.dtpub = datetime.strptime(dtpub_input, DATE_TIME_FORMAT)
+            elif len(dtpub_input)<10:
+                dtpub_input = dtnow_str
+
+            elif len(dtpub_input)>19:
+                dtpub_input = dtpub_input[:19]
+        else:
+            dtpub_input = dtnow_str
+
+        article_meta.dtpub = datetime.strptime(dtpub_input, DATE_TIME_FORMAT)
 
         article_meta.brief = params.brief
         article_meta.status = 1
@@ -245,3 +255,15 @@ class ServiceHelper():
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
         session._load()
 
+
+    def to_jsonstr(self,obj):
+        return json.dumps(obj.__dict__, cls=cms_model.ComplexEncoder)
+
+class ListWrapper:
+    def __init__(self, rlist, total_count=0, total_pages=0):
+        self.rlist = rlist
+        self.total = total_count
+        self.total_pages = total_pages
+
+    def jsonable(self):
+        return self.__dict__

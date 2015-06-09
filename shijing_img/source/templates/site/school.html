@@ -44,28 +44,23 @@ $def with(article_list,total,total_pages,npages)
 
     $for i in range(0,len(article_list)):
         $ article=article_list[i]
-        <div class="wrap bot-2"> <img src="${service_config.img_url+'/mid'+article.cover}" width="160" alt=""  >
+        <div class="wrap bot-2">
+          <div style="padding:5px">
+            <a href="/p/site/ga/$article.oid" class="link"><strong class="upper">$article.title </strong></a> <br/>
+          </div>
           <div class="extra-wrap">
-            <p><a href="#" class="link">$article.title</a><br>
-              $article.brief</p>
-            <a href="/p/site/ga/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/><br/>
+            <p>
+              <a href="/p/site/ga/$article.oid"  ><img src="${service_config.img_url+'/thumb'+article.cover}"  width="160" alt=""></a>
+              <br><br>
+              $article.brief ......</p>
+            <a href="/p/site/ga/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/>
           </div>
         </div>
     <!--end of article list-->
 
       </div>
       <div class="col-13">
-        <h2 class="h2 p2">Featured news:</h2>
-        <img src="images/page5-img1.jpg" alt="" class="img-border img-indent-2">
-        <p class="upper clr-1 p5 ">ut dui gravida ut viverra lectus tincidunt Cras </p>
-        <p>nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem. sit amet dictum velit velit eu magna.</p>
-        <a href="#" class="link-1 link-1-pad">Read more</a>
-
-        <h2 class="h2 p2">Featured news:</h2>
-        <img src="images/page5-img1.jpg" alt="" class="img-border img-indent-2">
-        <p class="upper clr-1 p5 ">ut dui gravida ut viverra lectus tincidunt Cras </p>
-        <p>nec tristique. Sed sed felis arcu, vel vehicula augue sagittis cursus. Fusce tincidunt, tellus eget tristique cursus, orci mi iaculis sem. sit amet dictum velit velit eu magna.</p>
-        <a href="#" class="link-1 link-1-pad">Read more</a>
+          <!--now?-->
       </div>
 
     </div>

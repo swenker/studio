@@ -104,13 +104,14 @@ class CmsService:
                      vars={'content': article.article_content.content, 'oid': article.article_content.oid}
             )
 
-            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,cover=$cover,brief=$brief,ctid=$ctid WHERE id=$oid" \
+            sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,dtpub=$dtpub,cover=$cover,brief=$brief,ctid=$ctid WHERE id=$oid" \
                    % TABLE_ARTICLE_META
 
             # logger.debug(sqls)
             db.query(sqls,
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
+                           'dtpub' :article_meta.dtpub,
                            'dtupdate': get_timenow(), 'cover': article_meta.cover, 'brief': article_meta.brief,
                            'ctid': article_meta.ctid,
                            'oid': article_meta.oid}
@@ -159,7 +160,7 @@ class CmsService:
         sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM %s " % (
             TABLE_ARTICLE_META)
 
-        has_condition = True
+        has_condition = False
         if ctcode or query_in_title or status:
             sqls += " WHERE "
             sql_total += " WHERE "
@@ -190,7 +191,7 @@ class CmsService:
             sqls += " status=" + status
             sql_total += " status=" + status
 
-        sqls += " ORDER BY dtcreate desc "
+        sqls += " ORDER BY dtpub desc,dtcreate desc "
 
         sqls += " LIMIT $start,$nfetch"
 

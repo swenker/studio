@@ -3,10 +3,12 @@ __author__ = 'wenjusun'
 import cgi
 import web
 
-from cms import cms_model
+from cms.cms_model import Image
 from cms import cms_service
 from cms import service_config
-import wshelper
+from wshelper import ServiceHelper
+from wshelper import ListWrapper
+
 
 
 urls = (
@@ -17,6 +19,7 @@ urls = (
         "/sc", "School",
         "/news", "News",
         "/service", "Service",
+        "/all","ListAllForHomePage",
         "/list_imgs", "ListImages"
 )
 
@@ -32,15 +35,30 @@ render = web.template.render("templates/site", globals=t_globals)
 
 cmsService = cms_service.cmsService
 
-serviceHelper = wshelper.ServiceHelper()
+serviceHelper = ServiceHelper()
 
 _EVERY_PAGE = 10
 
 
 class HomePage():
     def GET(self):
+        rlist, total = self.get_all_articles()
+        return render.index(rlist)
 
-        return render.index()
+    def get_gallery_imgs(self):
+        start= 0
+        nfetch=10
+        acode = 'hg'
+
+        cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
+    def get_all_articles(self):
+
+        start = 0
+        nfetch = 8
+        ctcode = None
+
+        return cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
+
 
 class Portfolio():
     def GET(self):
@@ -153,8 +171,24 @@ class ListArticles():
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.article_list(rlist, total, total_pages,npages)
 
+class ListAllForHomePage():
+    def GET(self):
+        params = web.input(n=0)
+
+        start = 0
+        nfetch = 8
+        if params.n :
+            nfetch = int(params.n)
+        ctcode = None
+
+
+        rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
+
+        return serviceHelper.to_jsonstr(ListWrapper(rlist))
+
 
 
 class ListImages():
     def GET(self):
         params = web.input(np=0, kw=None,aid=None)
+        return None
