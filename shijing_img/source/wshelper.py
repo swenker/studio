@@ -3,6 +3,7 @@ __author__ = 'sunwj'
 import os
 
 from datetime import datetime
+from time import time
 from cms.aliyun_oss_handler import *
 from cms import cms_model
 from cms import service_config
@@ -173,8 +174,15 @@ class ServiceHelper():
         article_meta.cover = params.cover
         article_meta.ctid = cms_service.category_map.get(params.ctcode[0]).oid
 
-        # article_meta.dtpub = datetime.now().strftime(TIME_FORMAT)
-        #todo auto generate
+        DATE_TIME_FORMAT = '%Y%m%d %H%M%S'
+        if params.dtpub:
+            dtpub_input = params.dtpub
+
+            if len(dtpub_input)==10:
+                dtpub_input += datetime.now().time()
+
+            article_meta.dtpub = datetime.strptime(dtpub_input, DATE_TIME_FORMAT)
+
         article_meta.brief = params.brief
         article_meta.status = 1
 

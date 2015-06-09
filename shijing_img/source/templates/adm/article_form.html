@@ -7,8 +7,6 @@ $def with(article_meta,article_content)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>
         $if article_meta and article_meta.oid:
@@ -64,6 +62,7 @@ $def with(article_meta,article_content)
 
             $if article_meta and article_meta.oid:
                 $$("#title").val("$article_meta.title");
+                $$("#dtpub").val("$article_meta.dtpub");
                 $$("#author").val("$article_meta.author");
                 $$("#source").val("$article_meta.source");
                 $$("#cover").val("$article_meta.cover");
@@ -126,7 +125,8 @@ $def with(article_meta,article_content)
 
                                         <div class="form-group">
                                             <label>标题</label>
-                                            <input class="form-control" name="title" id="title" maxlength="100">
+                                            <input class="form-control" name="title" id="title" size="40" maxlength="80"> &nbsp;&nbsp;<label>发布时间</label>
+                                            <input  placeholder="2015-06-10" value="" name="dtpub" id="dtpub">
                                             <!--<p class="help-block">Example block-level help text here.</p>-->
                                         </div>
                                         <div class="form-group">
@@ -138,11 +138,12 @@ $def with(article_meta,article_content)
 
                                         <div class="form-group">
                                             <label>封面</label>
-                                            <img id='img_cover' src="" width="160">  &nbsp;&nbsp;<label>Category</label><select id="cms_category" name="ctcode"></select>
-                                            <br>
-                                            <input value="" name="cover" id="cover" size="30" readonly>
+                                            <img id='img_cover' src="" width="160">  &nbsp;&nbsp;
+                                            <input value="" name="cover" id="cover" size="20" readonly>
                                             <button type="button"
                                                     onclick="return window.open('/p/adm/select_cover','_cover','menubar=1,resizable=1,width=950,height=580,scrollbars=1')">Select</button>
+                                            <br>
+                                            <label>Category</label><select id="cms_category" name="ctcode"></select>
                                         </div>
 
                                        <div class="form-group">

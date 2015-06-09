@@ -46,7 +46,7 @@ $def with(article_meta, article_content)
             $if article_meta:
                 $article_meta.title
         </h2>
-        <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$article_meta.dtcreate</h4>
+        <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$article_meta.dtpub</h4>
         <div class="wrap">
 
           <img src="${service_config.img_url+'/lar'+article_meta.cover}" width="600" alt="" >

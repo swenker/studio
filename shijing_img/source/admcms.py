@@ -50,7 +50,6 @@ t_globals = {
 app = web.application(urls, globals())
 #application = app.wsgifunc()
 
-# session = web.session.Session(app, web.session.DiskStore('sessions.bm'), initializer={'bmuser': None})
 render = web.template.render("templates/adm", globals=t_globals)
 
 cgi.maxlen = 2 * 1024 * 1024
