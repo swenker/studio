@@ -33,7 +33,7 @@ class ServiceConfig():
         self.web_base = configparser.get("web", "web_base")
         self.img_store = configparser.get("img", "store")
         self.img_save_path = configparser.get("img", "save_path")
-        self.img_size_limit = configparser.get("img", "size_limit")
+        self.img_size_limit = int(configparser.get("img", "size_limit"))
 
         self.img_thumb_width = configparser.get("img", "thumb_width")
         self.img_thumb_height = configparser.get("img", "thumb_height")

@@ -93,9 +93,10 @@ $$(document)
   <div class="gallery-block">
     <h2>各位萌宝:</h2>
     <ul id="mycarousel" class="jcarousel-skin-tango gallery-photo">
-      $for pic in plist:
-          <li><a href="portfolio.html"><img src="/site/images/gallery-1.jpg" alt="1"></a><a href="portfolio.html"><img src="/site/images/gallery-6.jpg" alt="6"></a>
-          </li>
+      $if plist:
+          $for pic in plist:
+              <li><a href="portfolio.html"><img src="/site/images/gallery-1.jpg" alt="1"></a><a href="portfolio.html"><img src="/site/images/gallery-6.jpg" alt="6"></a>
+              </li>
 
       <li><a href="portfolio.html"><img src="/site/images/gallery-2.jpg" alt="2"></a><a href="portfolio.html"><img src="/site/images/gallery-7.jpg" alt="7"></a></li>
       <li><a href="portfolio.html"><img src="/site/images/gallery-3.jpg" alt="3"></a><a href="portfolio.html"><img src="/site/images/gallery-8.jpg" alt="8"></a></li>

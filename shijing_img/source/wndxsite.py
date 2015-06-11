@@ -43,7 +43,7 @@ _EVERY_PAGE = 10
 class HomePage():
     def GET(self):
         rlist, total = self.get_all_articles()
-        return render.index(rlist)
+        return render.index(rlist, self.get_gallery_imgs())
 
     def get_gallery_imgs(self):
         start= 0

@@ -54,7 +54,6 @@ $def with(img_list,total,total_pages,npages)
             </div>
             <!-- /.row -->
   <div class="row">
-    $ nevery_line=5
     $for i in range(0,len(img_list)):
 
         $ img=img_list[i]
@@ -69,14 +68,11 @@ $def with(img_list,total,total_pages,npages)
                     </a>
                 </div>
                 <div class="panel-footer" align="right">
-                     &nbsp;<a href="edit_article?id=$img.oid">Edit</a>
                      &nbsp;<a href="delete_img?id=$img.oid">Delete</a>
                 </div>
             </div>
         </div>
                 <!-- /.col-lg-4 -->
-
-            <!-- /.row -->
   </div>
 
     <div class="row">

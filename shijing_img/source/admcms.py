@@ -56,7 +56,7 @@ app = web.application(urls, globals())
 
 render = web.template.render("templates/adm", globals=t_globals)
 
-cgi.maxlen = 2 * 1024 * 1024
+cgi.maxlen = config.img_size_limit * 1024 * 1024
 
 cmsService = cms_service.cmsService
 
