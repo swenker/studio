@@ -221,9 +221,17 @@ class ListCategories():
 
 class ListAlbums():
     def GET(self):
+
+        params = web.input(format=None)
         rlist = cms_service.album_map.values()
 
-        return render.album_list_edit(rlist)
+        if params.format and 'json'== params.format:
+
+            serviceHelper.set_common_header(web)
+            return serviceHelper.to_jsonstr(ListWrapper(rlist))
+
+        else:
+            return render.album_list_edit(rlist)
 
 
 
@@ -240,10 +248,12 @@ class UploadImage:
 
                 imgmeta.code = image_data.acode
 
-                imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
-
-                cmsService.create_img(imgmeta)
-            return render.common("OK")
+                try:
+                    imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
+                    cmsService.create_img(imgmeta)
+                    return render.common("OK")
+                except Error,e:
+                    return render.common("Failed:"+e)
 
         except ValueError:
             return "File Limit is 1MB."
@@ -293,7 +303,7 @@ class ListImages:
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
-        return render.img_list_edit(rlist, total, total_pages,npages)
+        return render.img_list_edit(rlist, total, total_pages,npages,acode)
 
 class SelectImages:
     def GET(self):

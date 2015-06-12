@@ -1,4 +1,4 @@
-$def with(img_list,total,total_pages,npages)
+$def with(img_list,total,total_pages,npages,acode)
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,8 +6,6 @@ $def with(img_list,total,total_pages,npages)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>照片管理</title>
 
@@ -31,6 +29,50 @@ $def with(img_list,total,total_pages,npages)
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script>
+
+        data_url = "/p/adm/list_album?format=json";
+
+        function generateList(){
+            $$.getJSON(data_url)
+            .done(
+                function(data){
+                    appendDataNode(data);
+                })
+                .fail(
+                function(jqxhr,textStatus,error){
+                    var err = textStatus + "," + error;
+                    console.log( "Request Failed:" + err );
+                }
+                );
+
+        }
+
+        function appendDataNode(data){
+            selectNode = $$("#cms_album");
+
+            for(i=0;i<data.rlist.length;i++){
+                album = data.rlist[i];
+                $if acode:
+                    selected =  ('$acode'==album.code?'selected':'');
+                $else:
+                    selected= ""
+                optionNode = $$("<option value='"+album.code+"' " +selected +" >"+album.title+"</option>");
+                selectNode.append(optionNode);
+            }
+        }
+
+        $$(document).ready(function(){
+
+            generateList();
+        });
+
+        function changeAlbum(){
+
+            window.location.href = '/p/adm/list_imgs?acode='+ $$("#cms_album").val();
+        }
+    </script>
+
 </head>
 
 <body>
@@ -48,10 +90,11 @@ $def with(img_list,total,total_pages,npages)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">照片列表</h3>
+                    <h3 class="page-header">照片列表</h3> <select id="cms_album" name="ac" onchange="changeAlbum()"> </select>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+
             <!-- /.row -->
   <div class="row">
     $for i in range(0,len(img_list)):

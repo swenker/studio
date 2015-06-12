@@ -1,4 +1,4 @@
-$def with(album_list,total,total_pages)
+$def with(album_list)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,10 +7,8 @@ $def with(album_list,total,total_pages)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Articles List</title>
+    <title>Album List</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +21,7 @@ $def with(album_list,total,total_pages)
 
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,6 +36,11 @@ $def with(album_list,total,total_pages)
     <div id="wrapper">
 
         <!-- Navigation -->
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/adm/adm_nav.html");
+            </script>
+        </div>
 
         <div id="page-wrapper">
             <div class="row">
@@ -49,25 +52,19 @@ $def with(album_list,total,total_pages)
             <!-- /.row -->
     <div class="row">
           $for album in album_list:
-                <div class="col-lg-4">
-                    <div class="panel panel-primary">
+                <div class="col-lg-2">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
                             $album.title
                         </div>
                         <div class="panel-body">
-                            ID:  $album.id
+                            ID:  $album.oid <br>
                             code:$album.code
+
                         </div>
-                        <div class="panel-footer" align="right">
-                             &nbsp;<a href="edit_article?id=$article.id">Edit</a>
-                             &nbsp;<a href="delete_article?id=$article.id">Delete</a>
-                        </div>
+                        <div class="panel-footer" align="right">&nbsp;</div>
                     </div>
                 </div>
-                <!-- /.col-lg-4 -->
-
-            <!-- /.row -->
-
     </div>
 
 

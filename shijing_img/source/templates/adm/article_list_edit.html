@@ -7,8 +7,6 @@ $def with(article_list,total,total_pages,npages,ctcode)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>Articles List</title>
 
@@ -102,8 +100,8 @@ $def with(article_list,total,total_pages,npages,ctcode)
     $for i in range(0,len(article_list)):
 
         $ article=article_list[i]
-        <div class="col-lg-4">
-            <div class="panel panel-primary">
+        <div class="col-lg-3">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     $article.title
                 </div>
@@ -118,9 +116,6 @@ $def with(article_list,total,total_pages,npages,ctcode)
                 </div>
             </div>
         </div>
-                <!-- /.col-lg-4 -->
-
-            <!-- /.row -->
 
    </div>
 

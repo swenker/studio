@@ -49,16 +49,30 @@ class ServiceHelper():
         thumb_full_store_dir = "%s%s" % (base_store_path, thumb_relative_dir)
 
         if not os.path.exists(raw_full_store_dir):
-            os.makedirs(raw_full_store_dir)
+            try:
+                os.makedirs(raw_full_store_dir)
+            except OSError:
+                pass
+
 
         if not os.path.exists(large_full_store_dir):
-            os.makedirs(large_full_store_dir)
+            try:
+                os.makedirs(large_full_store_dir)
+            except OSError:
+                pass
+
 
         if not os.path.exists(medium_full_store_dir):
-            os.makedirs(medium_full_store_dir)
+            try:
+                os.makedirs(medium_full_store_dir)
+            except OSError:
+                pass
 
         if not os.path.exists(thumb_full_store_dir):
-            os.makedirs(thumb_full_store_dir)
+            try:
+                os.makedirs(thumb_full_store_dir)
+            except OSError:
+                pass
 
         local_tmp_path_pattern = "%s/%s"
 
