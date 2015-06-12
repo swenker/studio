@@ -1,17 +1,11 @@
-index:
-menu node name
-logo
-pictures from album
-gallery
-biography
-news
-
-generate html from index
+2015-06-12:
+1.logo
+2.banner pictures
+3.gallery pictures
+4.all news
+5.content on right side
 
 
--------------
-1.pick photo
-2.upload photo
 
 
 

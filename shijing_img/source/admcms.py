@@ -219,6 +219,12 @@ class ListCategories():
         serviceHelper.set_common_header(web)
         return serviceHelper.to_jsonstr(ListWrapper(rlist))
 
+class ListAlbums():
+    def GET(self):
+        rlist = cms_service.album_map.values()
+
+        return render.album_list_edit(rlist)
+
 
 
 class UploadImage:
