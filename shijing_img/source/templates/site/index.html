@@ -92,31 +92,24 @@ $$(document)
 </div>
 <!--==============================content================================-->
 <section id="content">
-  <div class="gallery-block">
+<!--  <div class="gallery-block">
     <h2>各位萌宝:</h2>
     <ul id="mycarousel" class="jcarousel-skin-tango gallery-photo">
-      $if plist:
-          $for pic in plist:
+      if plist:
+          for pic in plist:
               <li><a href="portfolio.html"><img src="/site/images/gallery-1.jpg" alt="1"></a><a href="portfolio.html"><img src="/site/images/gallery-6.jpg" alt="6"></a>
               </li>
-<!--
-      <li><a href="portfolio.html"><img src="/site/images/gallery-2.jpg" alt="2"></a><a href="portfolio.html"><img src="/site/images/gallery-7.jpg" alt="7"></a></li>
-      <li><a href="portfolio.html"><img src="/site/images/gallery-3.jpg" alt="3"></a><a href="portfolio.html"><img src="/site/images/gallery-8.jpg" alt="8"></a></li>
-      <li><a href="portfolio.html"><img src="/site/images/gallery-4.jpg" alt="4"></a><a href="portfolio.html"><img src="/site/images/gallery-2.jpg" alt="9"></a></li>
-      <li><a href="portfolio.html"><img src="/site/images/gallery-5.jpg" alt="5"></a><a href="portfolio.html"><img src="/site/images/gallery-7.jpg" alt="10"></a></li>
--->
 
     </ul>
-  </div>
+  </div>-->
   <div class="page1-row1 pad-1">
     <div class="col-1">
-      <h3 class="h3 p2">动态:</h3>
+      <h3 class="h3 p2">综合动态:</h3>
       <ul class="list-1">
         $for article in rlist:
             <li><a href="/p/site/ga/$article.oid">$article.title</a></li>
-
       </ul>
-      <a href="/p/site/list_article?code=dt" class="link-1 link-1-pad bot-1">More</a>
+      <!--<a href="/p/site/list_article?code=dt" class="link-1 link-1-pad bot-1">More</a>-->
     </div>
 
 

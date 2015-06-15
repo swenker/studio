@@ -12,7 +12,7 @@ from image_processor import ImageProcessor
     the images will be manually uploaded to a folder /raw/.....
 """
 
-cmsService = cms_service.CmsService()
+cmsService = cms_service.cmsService
 logger = config.getlogger('batch_process')
 
 
