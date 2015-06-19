@@ -24,6 +24,7 @@
 
         <!-- jQuery /home/sunwj/work/studio/shijing_img/js/jquery -->
         <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+        <script language="JavaScript" src="/jslib/shijing.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,6 +32,33 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <script>
+
+            album_data_url = "/p/adm/list_album?format=json";
+
+            function appendAlbumDataNode(data){
+                selectNode = $$("#cms_album");
+
+                for(i=0;i<data.rlist.length;i++){
+                    album = data.rlist[i];
+                    selected =  'ac'=== album.code?'selected':'';
+                    optionNode = $$("<option value='"+album.code+"' " +selected +" >"+album.title+"</option>");
+                    selectNode.append(optionNode);
+                }
+            }
+
+            $$(document).ready(function(){
+
+                generateList(album_data_url,appendAlbumDataNode);
+            });
+
+            function changeAlbum(){
+
+                $$("[name='acode']").val($$("#cms_album").val());
+
+            }
+        </script>
 
     </head>
 
@@ -50,33 +78,38 @@
             <!-- Navigation ends here -->
             <div id="page-wrapper">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-3">
                         <h3 class="page-header">图片上传</h3>
                     </div>
+                    <div class="col-lg-3">
+                        <h4 class="page-header">Album <select id="cms_album" name="cms_album" form="myAwesomeDropzone" onchange="changeAlbum()"> </select></h4>
+                    </div>
+
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                    <div class="col-lg-12">
+                    <!--<div class="col-lg-12">-->
 
                         <!--Image upload form goes here......-->
 
                         <div id="dropzone" class="panel panel-info">
                             <form action="/p/adm/upload_img"
                               class="dropzone"
-                              id="myAwesomeDropzone" enctype="multipart/form-data">
+                              id="myAwesomeDropzone" enctype="multipart/form-data" method="GET">
 
                               <input type="hidden" name="acode" value="ac">
                               <input type="hidden" name="itype" value="1">
                             </form>
 
                             <script>
-
-                                //Dropzone.Options.myAwesomeDropzone.uploadMultiple=true;
-                                //Dropzone.Options.myAwesomeDropzone.maxFilesize=0.001;
+                                //Dropzone.options.myAwesomeDropzone = {
+                                //    dictDefaultMessage:'Here'
+                                //};
                             </script>
                         </div>
-                    </div>
+                    <!--</div>-->
+
                 </div>
                 <!-- /.row -->
             </div>

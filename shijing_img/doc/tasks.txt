@@ -1,7 +1,10 @@
 2015-06-12:
 1.logo
 2.banner pictures
+1024
 3.gallery pictures
+205px × 114px
+
 4.all news
 5.content on right side
 

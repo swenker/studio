@@ -21,6 +21,7 @@ $def with(img_list,total,total_pages,npages,acode)
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/shijing.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,24 +32,10 @@ $def with(img_list,total,total_pages,npages,acode)
 
     <script>
 
-        data_url = "/p/adm/list_album?format=json";
+        album_data_url = "/p/adm/list_album?format=json";
 
-        function generateList(){
-            $$.getJSON(data_url)
-            .done(
-                function(data){
-                    appendDataNode(data);
-                })
-                .fail(
-                function(jqxhr,textStatus,error){
-                    var err = textStatus + "," + error;
-                    console.log( "Request Failed:" + err );
-                }
-                );
 
-        }
-
-        function appendDataNode(data){
+        function appendAlbumDataNode(data){
             selectNode = $$("#cms_album");
 
             for(i=0;i<data.rlist.length;i++){
@@ -64,7 +51,7 @@ $def with(img_list,total,total_pages,npages,acode)
 
         $$(document).ready(function(){
 
-            generateList();
+            generateList(album_data_url,appendAlbumDataNode);
         });
 
         function changeAlbum(){
@@ -100,7 +87,7 @@ $def with(img_list,total,total_pages,npages,acode)
     $for i in range(0,len(img_list)):
 
         $ img=img_list[i]
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     $img.title

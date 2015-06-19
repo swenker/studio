@@ -21,11 +21,11 @@ def test_http():
 
 
 def test_python():
-    import sys
+    #import sys
     # reload(sys)
     # sys.setdefaultencoding('utf-8')
 
-    kv_file='/home/wenjusun/Localizer_zh_CN.js'
+    kv_file='/home/wenjusun/Localizer_zh_CN_20150618.js'
     jsonfile='/home/wenjusun/resources-locale_default.js'
 
     kv_map = {}
