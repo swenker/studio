@@ -122,12 +122,12 @@ function hideImage(){
     <h2>各位萌宝:</h2>
     <ul id="mycarousel" class="jcarousel-skin-tango gallery-photo">
       $if plist:
-          $for i in range(0,len(plist)):
-              img1 = plist[i]
-              img2 = plist[i+1]
-              i += 2
-              <li><a href="javascript:showImage('$img1.large')"><img src="${service_config.img_url + img1.thumbnail}" height="205"></a>
-                   <a href="javascript:showImage('$img2.large')"><img src="${service_config.img_url + img2.thumbnail}" height="205"></a>
+          $for i in range(0,len(plist),2):
+             $ img1 = plist[i]
+             $ img2 = plist[i+1]
+
+              <li><a href="javascript:showImage('$img1.large')"><img src="${service_config.img_url + img1.thumbnail}" width="205" height="114"></a>
+                   <a href="javascript:showImage('$img2.large')"><img src="${service_config.img_url + img2.thumbnail}" width="205" height="114"></a>
               </li>
     </ul>
   </div>

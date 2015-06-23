@@ -2,10 +2,10 @@
 1.logo
 2.banner pictures
 1024
-3.gallery pictures
+3.gallery pictures --done
 205px × 114px
 
-4.all news
+4.all news --done
 5.content on right side
 
 

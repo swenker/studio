@@ -47,10 +47,12 @@ class HomePage():
 
     def get_gallery_imgs(self):
         start= 0
-        nfetch=10
+        nfetch=16
         acode = 'hg'
 
-        cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
+        # cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
+        plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
+        return plist
     def get_all_articles(self):
 
         start = 0

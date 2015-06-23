@@ -119,6 +119,9 @@ $def with(article_list,total,total_pages,npages,ctcode)
 
    </div>
 
+    $ got_code =''
+    $if ctcode:
+    $    got_code = ctcode
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -129,7 +132,7 @@ $def with(article_list,total,total_pages,npages,ctcode)
                     第${npages+1}页
                     &nbsp;
                     $if total_pages>1 and npages>0:
-                        <a href="/p/adm/list_imgs?np=0&ctcode=">
+                        <a href="/p/adm/list_imgs?np=0&ctcode=$got_code">
                         首页
                         </a>
                     $else:
@@ -137,7 +140,7 @@ $def with(article_list,total,total_pages,npages,ctcode)
                         &nbsp;
 
                     $if prev>=0:
-                        <a href="/p/adm/list_imgs?np=$prev">
+                        <a href="/p/adm/list_imgs?np=$prev&ctcode=$got_code">
                         上一页
                         </a>
                     $else:
@@ -145,14 +148,14 @@ $def with(article_list,total,total_pages,npages,ctcode)
                         &nbsp;
 
                     $if total_pages>next:
-                        <a href="/p/adm/list_imgs?np=$next">
+                        <a href="/p/adm/list_imgs?np=$next&ctcode=$got_code">
                         下一页
                         </a>
                     $else:
                         下一页
                         &nbsp;
                     $if total_pages>1 and total_pages-1>npages:
-                        <a href="/p/adm/list_imgs?np=${total_pages-1}">
+                        <a href="/p/adm/list_imgs?np=${total_pages-1}&ctcode=$got_code">
                         尾页
                         </a>
                     $else:
