@@ -42,6 +42,27 @@ $$(document)
         animation: 1200
     });
 });
+
+function showImage(url){
+    $$("#img_viewer").attr("src","${service_config.img_url}" +url);
+    $$("#img_viewer").attr("width","400");
+    $$("#dialog").dialog({width:450,
+        show: {
+        effect: "blind",
+        duration: 500
+        },
+        hide: {
+        effect: "blind",
+        duration: 500
+        }
+    });
+    $$(".ui-dialog-titlebar").hide();
+}
+
+function hideImage(){
+    $$("#dialog").dialog('close');
+}
+
 </script>
 <!--[if lt IE 9]>
 <script src="/site/js/html5.js"></script>
@@ -92,16 +113,24 @@ $$(document)
 </div>
 <!--==============================content================================-->
 <section id="content">
-<!--  <div class="gallery-block">
+
+   <div id="dialog" title="" style="display:none">
+     <img id="img_viewer" src="" width="0" onclick="hideImage()">
+   </div>
+
+  <div class="gallery-block">
     <h2>各位萌宝:</h2>
     <ul id="mycarousel" class="jcarousel-skin-tango gallery-photo">
-      if plist:
-          for pic in plist:
-              <li><a href="portfolio.html"><img src="/site/images/gallery-1.jpg" alt="1"></a><a href="portfolio.html"><img src="/site/images/gallery-6.jpg" alt="6"></a>
+      $if plist:
+          $for i in range(0,len(plist)):
+              img1 = plist[i]
+              img2 = plist[i+1]
+              i += 2
+              <li><a href="javascript:showImage('$img1.large')"><img src="${service_config.img_url + img1.thumbnail}" height="205"></a>
+                   <a href="javascript:showImage('$img2.large')"><img src="${service_config.img_url + img2.thumbnail}" height="205"></a>
               </li>
-
     </ul>
-  </div>-->
+  </div>
   <div class="page1-row1 pad-1">
     <div class="col-1">
       <h3 class="h3 p2">综合动态:</h3>
