@@ -235,15 +235,12 @@ class ServiceHelper():
     def set_common_header(self,web):
         web.header('Content-Type','text/html; charset=UTF-8', unique=True)
 
-    def save_adm_session(self,web,app):
-        web.session.Session(app, web.session.DiskStore('sessions/adm_users'), initializer={'admin': True})
+    def init_adm_session(self,web,app):
+        return web.session.Session(app, web.session.DiskStore('sessions/adm_users'), initializer={'admin': None})
 
-    def save_user_session(self,web,app,user_order):
-        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': user_order})
+    def init_user_session(self,web,app):
+        return web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': None})
 
-        # print user_order
-        # print "session saved.."
-        #print session.uinfo
 
     def get_user_session(self,session):
         try:
@@ -252,18 +249,11 @@ class ServiceHelper():
         except AttributeError:
             return None
 
-    def get_adm_session(self,web,app):
-        session = web.session.Session(app, web.session.DiskStore('sessions/adm_users'))
-        session._load()
-        try:
-            print session._data
-            return session.admin
-        except AttributeError:
-            return None
 
+    def delete_adm_session(self,adm_session):
+        if adm_session.get('admin'):
+            adm_session['admin'] = None
 
-    def delete_adm_session(self,web,app):
-        web.ctx.session.destory()
 
     def delete_user_session(self,web,app):
         session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))

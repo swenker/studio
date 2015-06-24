@@ -26,7 +26,6 @@ web.config.debug=False
 #web.config.session_parameters['timeout'] = 8000
 # web.config.session_parameters['ignore_change_ip'] = True
 print '---------------------------------------------------------------------------------------------------------------'
-session = web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': None})
 
 config = service_config.config
 
@@ -40,6 +39,16 @@ render = web.template.render("templates/user", globals=t_globals)
 cmsService = cms_service.cmsService
 
 serviceHelper = wshelper.ServiceHelper()
+session = serviceHelper.init_user_session(web,app)
+
+def my_loadhook():
+    request_uri = web.ctx.environ.get('REQUEST_URI')
+    if not session.get('uinfo') and request_uri != '/p/u/login':
+        web.seeother('/login')
+
+
+app.add_processor(web.loadhook(my_loadhook))
+
 
 class Dashboard():
     def GET(self):
@@ -52,7 +61,7 @@ class UserInfo():
 
 class LoginService():
     def GET(self):
-        userinfo=serviceHelper.get_user_session(web)
+        userinfo=session.get('uinfo')
         # userinfo = session.uinfo
         if not userinfo:
             return render.login('')
@@ -74,7 +83,6 @@ class LoginService():
                 if orders:
                     order = orders[0]
 
-                    #serviceHelper.save_user_session(web,app,UserInfo(user,order))
                     session.uinfo = UserInfo(user,order)
 
                     return web.seeother('/listimgs/'+str(order.oid))
@@ -87,7 +95,6 @@ class LoginService():
 
 class LogoutService():
     def GET(self):
-        print session
         #serviceHelper.delete_user_session(web,app)
         session.kill()
         return web.seeother('/login')

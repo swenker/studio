@@ -665,6 +665,22 @@ class CmsService:
         logger.warn("NotFoundUser:%s" % mobile)
         return -1, 'NotFound'
 
+    def send_mail(self, subject, message_body):
+        from_address = config.mail_from_address
+        to_address = config.mail_to_address
+        if config.mail_smtp_host:
+            web.config.smtp_server = config.mail_smtp_host
+
+        #['user1@example.com', 'user2@example.com']
+        try:
+            web.sendmail(from_address,to_address,subject,message_body)
+            logger.info("Mail sent to :"+to_address)
+            return True
+        except Error,e:
+            logger.error("Failed to send notification email:"+subject)
+            return False
+
+
 cmsService = CmsService()
 
 

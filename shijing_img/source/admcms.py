@@ -40,7 +40,8 @@ urls = ("/adminsvc", "AdminService",
         "/select_cover", "SelectCover",
         "/refresh","RefreshHomePage",
         "/orders", "ListOrders",
-        "/loadfolder","LoadFolder"
+        "/loadfolder","LoadFolder",
+        "/signout", "Signout"
         )
 
 config = service_config.config
@@ -50,9 +51,10 @@ t_globals = {
     'service_config':config
 }
 
-# web.config.debug = FalseListImages
+#print web.config.debug #default is True
+web.config.debug = False
+#print web.config.debug
 app = web.application(urls, globals())
-#application = app.wsgifunc()
 
 render = web.template.render("templates/adm", globals=t_globals)
 
@@ -61,6 +63,21 @@ cgi.maxlen = config.img_size_limit * 1024 * 1024
 cmsService = cms_service.cmsService
 
 serviceHelper = ServiceHelper()
+adm_session = serviceHelper.init_adm_session(web,app)
+
+
+def my_loadhook():
+    request_uri = web.ctx.environ.get('REQUEST_URI')
+    print adm_session.get('admin')
+    if not adm_session.get('admin') and request_uri != '/p/adm/login':
+        web.seeother('/login')
+
+def my_unloadhook():
+    #print "my unload hook"
+    pass
+
+app.add_processor(web.loadhook(my_loadhook))
+app.add_processor(web.unloadhook(my_unloadhook))
 
 
 class LoginService():
@@ -74,13 +91,20 @@ class LoginService():
 
         if email and passwd:
             if email == 'abctest@126.com' and passwd=='onecase':
-                serviceHelper.save_adm_session(web,app)
+                adm_session.admin = True
                 return web.seeother("/")
 
             else:
                 return render.login("Failed")
         else:
             return render.login("Please Input email and password")
+
+class Signout():
+    def GET(self):
+        # serviceHelper.delete_adm_session(adm_session)
+        adm_session.kill()
+        return web.seeother("/login")
+
 
 #TODO
 class AdminService():

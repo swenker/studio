@@ -54,14 +54,15 @@ class ServiceConfig():
 
         self.img_ttl = float(configparser.get("img", "ttl"))
 
-
-
         self.ctcode_portfolio = configparser.get("web", "ctcode_portfolio")
         self.ctcode_service = configparser.get("web", "ctcode_service")
         self.ctcode_school = configparser.get("web", "ctcode_school")
         self.ctcode_news = configparser.get("web", "ctcode_news")
         self.ctcode_article = configparser.get("web", "ctcode_article")
 
+        self.mail_from_address = configparser.get("mail","from_address")
+        self.mail_to_address = configparser.get("mail","to_address")
+        self.mail_smtp_host = configparser.get("mail","smtp_host")
 
 
 
