@@ -53,24 +53,29 @@ $def with(rlist,total)
             </div>
             <!-- /.row -->
             <div class="row">
-    $for i in range(0,len(rlist)):
+        $for i in range(0,total):
 
-        $ order=rlist[i]
-                <div class="col-lg-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            order
-                        </div>
-                        <div class="panel-body">
-                            $order.title &nbsp; $order.total_limit &nbsp; $order.edit_limit
-                        </div>
-                        <div class="panel-footer" align="right">
-                             &nbsp;<!--<a href="delete_article?id=">Delete</a>-->
+            $ order=rlist[i]
+                    <div class="col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                $order.title &nbsp; [$order.dtcreate]
+                            </div>
+                            <div class="panel-body">
+                                用  户: $order.uid <br/>
+                                价  格: $order.price <br/>
+                                总张数: $order.total_limit <br/>
+                                精  修: $order.edit_limit
+                            </div>
+                            <div class="panel-footer" align="right">
+                                 <!--&nbsp;<a href="delete_article?id=">Delete</a>-->
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- /.col-lg-4 -->
-            </div>
+                    <!-- /.col-lg-4 -->
+
+
+      </div>
 
                  <!-- /.col-lg-12 -->
 

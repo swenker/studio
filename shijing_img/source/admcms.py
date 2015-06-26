@@ -41,7 +41,9 @@ urls = ("/adminsvc", "AdminService",
         "/refresh","RefreshHomePage",
         "/orders", "ListOrders",
         "/loadfolder","LoadFolder",
-        "/signout", "Signout"
+        "/signout", "Signout",
+        "/listimgs/(\d+)", "ListOrderImages",
+        "/okimgs/(\d+)", "ListSelectedImages"
         )
 
 config = service_config.config
@@ -52,8 +54,7 @@ t_globals = {
 }
 
 #print web.config.debug #default is True
-web.config.debug = False
-#print web.config.debug
+# web.config.debug = False
 app = web.application(urls, globals())
 
 render = web.template.render("templates/adm", globals=t_globals)
@@ -64,11 +65,11 @@ cmsService = cms_service.cmsService
 
 serviceHelper = ServiceHelper()
 adm_session = serviceHelper.init_adm_session(web,app)
-
+web.config.session_parameters['timeout'] = 8000
 
 def my_loadhook():
     request_uri = web.ctx.environ.get('REQUEST_URI')
-    print adm_session.get('admin')
+    # print adm_session.get('admin')
     if not adm_session.get('admin') and request_uri != '/p/adm/login':
         web.seeother('/login')
 
@@ -392,3 +393,16 @@ class ListOrders():
         return render.order_list(rlist, len(rlist))
 
 
+class ListOrderImages():
+    "List all images of for the order"
+    def GET(self,oid):
+
+        rlist = cmsService.list_order_imgs(int(oid))
+        # print len(rlist)
+        return render.img_list_select(rlist, len(rlist),oid)
+
+class ListSelectedImages():
+    def GET(self,oid):
+        rlist = cmsService.list_selected_imgs(int(oid))
+
+        return render.img_select_result(rlist, len(rlist),oid)

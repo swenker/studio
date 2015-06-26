@@ -562,11 +562,11 @@ class CmsService:
         pass
 
     def compose_order(self, r):
-        order = Order(r['id'])
+        order = Order(r['uid'])
+        order.oid = r['id']
         order.title = r['title']
-        order.uid = r['uid']
-        order.total_limit = r['total_limit']
-        order.edit_list = r['edit_limit']
+        # order.total_limit = r['total_limit']
+        # order.edit_limit = r['edit_limit']
         order.price = r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
@@ -618,7 +618,6 @@ class CmsService:
         result = db.query(sqls, vars={'oid': oid})
 
         rlist = []
-
         if result:
             for r in result:
                 img = self.compose_image(r, True)

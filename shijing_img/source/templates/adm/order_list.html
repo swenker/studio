@@ -45,7 +45,7 @@ $def with(rlist,total)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">订单列表</h3>
+                    <h3 class="page-header">订单列表&nbsp;  Create Order</h3>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -66,7 +66,8 @@ $def with(rlist,total)
                             精  修: $order.edit_limit
                         </div>
                         <div class="panel-footer" align="right">
-                             <!--&nbsp;<a href="delete_article?id=">Delete</a>-->
+                             <a href="/p/adm/listimgs/$order.oid">查看上传的照片</a>
+                             &nbsp; <a href="/p/adm/okimgs/$order.oid">查看选片结果</a>
                         </div>
                     </div>
                 </div>
@@ -74,6 +75,7 @@ $def with(rlist,total)
 
 
    </div>
+
    </div>
         <!-- /#page-wrapper -->
 
