@@ -9,6 +9,12 @@
 5.content on right side
 
 
+2015-07-02
+1.logo
+2.right side -- random select pic from gallery?
+3.place order?
+4.prepare pictures for gallery
+
 
 
 

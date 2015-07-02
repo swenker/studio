@@ -102,7 +102,6 @@ class LoginService():
 
 class Signout():
     def GET(self):
-        # serviceHelper.delete_adm_session(adm_session)
         adm_session.kill()
         return web.seeother("/login")
 
@@ -141,7 +140,6 @@ class SaveArticle():
 
         serviceHelper.generateIndexHtml()
 
-        # return render.common("OK")
         web.seeother('list_article?ctcode='+params.ctcode[0])
 
 

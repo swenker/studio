@@ -20,7 +20,7 @@ urls = (
         "/news", "News",
         "/service", "Service",
         "/all","ListAllForHomePage",
-        "/list_imgs", "ListImages"
+        "/gallery", "AllGallery"
 )
 
 app = web.application(urls, globals())
@@ -186,11 +186,26 @@ class ListAllForHomePage():
 
         rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
 
-        return serviceHelper.to_jsonstr(ListWrapper(rlist))
-
-
 
 class ListImages():
     def GET(self):
         params = web.input(np=0, kw=None,aid=None)
-        return None
+
+        start= 0
+        nfetch=4
+        acode = 'hg'
+
+        plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
+
+        return serviceHelper.to_jsonstr(ListWrapper(plist))
+
+class AllGallery():
+    def GET(self):
+        start= 0
+        nfetch=16
+        acode = 'hg'
+
+        # cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
+        plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
+
+        return render.all_gallery(plist,ptotal)
