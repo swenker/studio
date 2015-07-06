@@ -143,7 +143,7 @@ class SaveArticle():
         web.seeother('list_article?ctcode='+params.ctcode[0])
 
 
-_EVERY_PAGE = 5
+_EVERY_PAGE = config.nevery_page
 
 
 class ListEditArticles():

@@ -23,7 +23,8 @@ urls = (
         "/service", "Service",
         "/all","ListAllForHomePage",
         "/rpic","RandomPic",
-        "/gallery", "AllGallery"
+        "/gallery", "AllGallery",
+        "/yy", "Yuyue"
 )
 
 app = web.application(urls, globals())
@@ -40,7 +41,7 @@ cmsService = cms_service.cmsService
 
 serviceHelper = ServiceHelper()
 
-_EVERY_PAGE = 10
+_EVERY_PAGE = config.nevery_page
 
 
 class HomePage():
@@ -192,11 +193,11 @@ class ListAllForHomePage():
 
 class RandomPic():
     def GET(self):
-        start= random.randint(0,10)
+        start= random.randint(0, 10)
         nfetch=4
         acode = 'hg'
 
-        plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
+        plist,ptotal = cmsService.get_album_imglist(acode, start, nfetch)
 
         return serviceHelper.to_jsonstr(ListWrapper(plist,total_count=len(plist)))
 
@@ -207,7 +208,14 @@ class AllGallery():
         acode = 'hg'
 
         # cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
-        plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
+        plist,ptotal = cmsService.get_album_imglist(acode,start, nfetch)
 
-        return render.all_gallery(plist,ptotal)
+        return render.all_gallery(plist, ptotal)
+
+class Yuyue():
+    def GET(self):
+        return render.yuyue()
+
+    def POST(self):
+        params = web.input()
 
