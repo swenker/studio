@@ -54,7 +54,7 @@ t_globals = {
 }
 
 #print web.config.debug #default is True
-# web.config.debug = False
+web.config.debug = False
 app = web.application(urls, globals())
 
 render = web.template.render("templates/adm", globals=t_globals)
@@ -143,7 +143,7 @@ class SaveArticle():
         web.seeother('list_article?ctcode='+params.ctcode[0])
 
 
-_EVERY_PAGE = 10
+_EVERY_PAGE = 5
 
 
 class ListEditArticles():
@@ -348,17 +348,18 @@ class SelectImages:
 
 class SelectCover:
     def GET(self):
+        local_every_page = _EVERY_PAGE * 1
         params = web.input(np=0,acode='ac')
 
         npages = int(params.np)
-        start = npages * _EVERY_PAGE
-        nfetch = _EVERY_PAGE
+        start = npages * local_every_page
+        nfetch = local_every_page
 
         acode = params.acode
 
         rlist, total = cmsService.get_album_imglist(acode,start, nfetch)
 
-        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+        total_pages = (total + local_every_page - 1) / local_every_page
 
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.img_cover_selector(rlist, total, total_pages,npages)

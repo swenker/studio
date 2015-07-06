@@ -10,7 +10,6 @@ $def with(article_meta, article_content)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
-<!--<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>-->
 <script src="/site/js/jquery-1.7.min.js"></script>
 <script src="/site/js/jquery.easing.1.3.js"></script>
 <!--[if lt IE 9]>
@@ -60,6 +59,15 @@ $def with(article_meta, article_content)
       </div>
       <div class="col-13">
 
+
+        <script src="/jslib/shijing.js"> </script>
+        <script>
+                imgBaseURL = "${service_config.img_url}";
+                randomPic();
+        </script>
+        <div id="right_img">
+
+        </div>
         <!-- start one unit -->
 <!--
         <h2 class="h2 p2">Featured news:</h2>

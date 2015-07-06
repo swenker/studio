@@ -109,9 +109,11 @@ $def with(article_meta,article_content)
                 <div class="col-lg-12">
                     <div class="panel panel-default">
 
+<!--
                         <div class="panel-heading">
                             Basic Form Elements
                         </div>
+-->
 
                         <div class="panel-body">
                             <div class="row">
@@ -123,31 +125,35 @@ $def with(article_meta,article_content)
                                            $if article_meta.cid:
                                                <input type="hidden" name="cid" id="cid" value="$article_meta.cid">
 
-                                        <div class="form-group">
-                                            <label>标题</label>
-                                            <input class="form-control" name="title" id="title" size="40" maxlength="80"> &nbsp;&nbsp;<label>发布时间</label>
-                                            <input  placeholder="2015-06-10" value="" name="dtpub" id="dtpub">
+                                        <div class="form-group  ">
+                                            <label for="title">标题</label>
+                                            <input name="title" id="title" size="40" maxlength="80"> &nbsp;&nbsp;
+                                        <!--</div>
+                                        <div class="form-group col-xs-2">-->
+                                            <label for="dtpub">发布时间</label>
+                                            <input   placeholder="2015-06-10" value="" size="10" name="dtpub" id="dtpub">
                                             <!--<p class="help-block">Example block-level help text here.</p>-->
                                         </div>
                                         <div class="form-group">
-                                            <label>来源</label>
-                                            <input   placeholder="Enter text" value="yinyushijing.cn" name="source" id="source">
-                                            &nbsp;&nbsp;<label>作者</label>
-                                            <input  placeholder="Enter text" value="市井影像" name="author" id="author">
+                                            <label for="source">来源</label>
+                                            <input   placeholder="Enter text" value="yinyushijing.cn" size="20" name="source" id="source">
+                                            &nbsp;&nbsp;<label for="author">作者</label>
+                                            <input  placeholder="Enter text" value="市井影像" size="15" name="author" id="author">
+
+                                            <label for="cms_category">Category</label><select id="cms_category" name="ctcode"></select>
+
                                         </div>
 
                                         <div class="form-group">
-                                            <label>封面</label>
+                                            <label for="cover">封面</label>
                                             <img id='img_cover' src="" width="160">  &nbsp;&nbsp;
                                             <input value="" name="cover" id="cover" size="20" readonly>
                                             <button type="button"
                                                     onclick="return window.open('/p/adm/select_cover','_cover','menubar=1,resizable=1,width=950,height=580,scrollbars=1')">Select</button>
-                                            <br>
-                                            <label>Category</label><select id="cms_category" name="ctcode"></select>
                                         </div>
 
                                        <div class="form-group">
-                                            <label>摘要</label>
+                                            <label for="brief">摘要</label>
                                             <textarea  name="brief" id="brief" rows="3" cols="60">
                                               $if article_meta and article_meta.brief:
                                                 $article_meta.brief
@@ -155,7 +161,7 @@ $def with(article_meta,article_content)
                                         </div>
 
                                         <div class="form-group">
-                                            <label>正文</label>
+                                            <label for="content">正文</label>
                                             <textarea name="content" class="form-control" rows="10" id="content">
                                             $if article_meta and article_content and article_content.content:
                                                 $article_content.content

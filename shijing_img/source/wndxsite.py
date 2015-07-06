@@ -1,6 +1,7 @@
 __author__ = 'wenjusun'
 
 import cgi
+import random
 import web
 
 from cms.cms_model import Image
@@ -8,6 +9,7 @@ from cms import cms_service
 from cms import service_config
 from wshelper import ServiceHelper
 from wshelper import ListWrapper
+
 
 
 
@@ -20,6 +22,7 @@ urls = (
         "/news", "News",
         "/service", "Service",
         "/all","ListAllForHomePage",
+        "/rpic","RandomPic",
         "/gallery", "AllGallery"
 )
 
@@ -187,17 +190,15 @@ class ListAllForHomePage():
         rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
 
 
-class ListImages():
+class RandomPic():
     def GET(self):
-        params = web.input(np=0, kw=None,aid=None)
-
-        start= 0
+        start= random.randint(0,10)
         nfetch=4
         acode = 'hg'
 
         plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
 
-        return serviceHelper.to_jsonstr(ListWrapper(plist))
+        return serviceHelper.to_jsonstr(ListWrapper(plist,total_count=len(plist)))
 
 class AllGallery():
     def GET(self):
@@ -209,3 +210,4 @@ class AllGallery():
         plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
 
         return render.all_gallery(plist,ptotal)
+
