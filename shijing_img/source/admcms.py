@@ -405,3 +405,6 @@ class ListSelectedImages():
         rlist = cmsService.list_selected_imgs(int(oid))
 
         return render.img_select_result(rlist, len(rlist),oid)
+
+class ListPreorder():
+    def GET(self):

@@ -21,6 +21,8 @@ TABLE_SITE_USER = 'site_user'
 TABLE_SITE_ORDER = 'site_order'
 TABLE_ORDER_IMG = 'site_order_img'
 
+TABLE_PREORDER = 'site_preorder'
+
 decimal.getcontext().prec = 2
 config = service_config.config
 logger = config.getlogger("CmsService")
@@ -587,6 +589,16 @@ class CmsService:
 
         return user
 
+    def compose_preorder(self,r):
+        preorder = Preorder(r['id'])
+        preorder.status = r['status']
+        preorder.mobile = r['mobile']
+        preorder.age = r['age']
+        preorder.genre = r['genre']
+        preorder.utitle = r['utitle']
+        preorder.pdate = r['pdate']
+        preorder.bdesc = r['bdesc']
+
 
     def list_orders(self, uid=None):
         sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
@@ -678,6 +690,30 @@ class CmsService:
         except Error,e:
             logger.error("Failed to send notification email:"+subject)
             return False
+
+    def create_preorder(self,preorder):
+        sqls = 'INSERT INTO '+TABLE_PREORDER+'(utitle,mobile,genre,age,bdesc,pdate)values($utitle,$mobile,$genre,$age,$bdesc,$pdate)'
+
+        db.query(sqls,vars = {'utitle':preorder.utitle,'mobile':preorder.mobile,'genre':preorder.genre,'age':preorder.age,'bdesc':preorder.bdesc,'pdate':preorder.pdate})
+
+    def to_order(self,preorder):
+        "convert a preorder to order"
+
+    def list_preorder(self,status):
+        sqls = 'SELECT * FROM '+TABLE_PREORDER
+        if status:
+            sqls += " WHERE status=$status"
+
+        result = db.query(sqls, vars={'status': status})
+
+        rlist = []
+
+        if result:
+            for r in result:
+                preorder = self.compose_preorder(r)
+                rlist.append(preorder)
+
+        return rlist
 
 
 cmsService = CmsService()

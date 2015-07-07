@@ -117,13 +117,17 @@ $def with(img_list,total,total_pages,npages)
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading" align="right">
-                    共 $total_pages 页,
-
+                  <ul class="pagination pagination-sm">
+                    <!--共 total_pages 页,-->
+                    $ css_class = ''
                     $for np in range(0,total_pages):
                         $if np == npages:
-                             ${np+1}
+                            $ css_class ='class="active"'
                         $else:
-                            <a href="/p/adm/select_imgs?np=0">${np+1}</a>
+                            $ css_class =''
+
+                        <li $:css_class><a href="/p/adm/select_imgs?np=$np">${np+1}</a></li>
+                  </ul>
                 </div>
 
 

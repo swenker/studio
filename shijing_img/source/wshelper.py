@@ -263,6 +263,18 @@ class ServiceHelper():
     def to_jsonstr(self,obj):
         return json.dumps(obj.__dict__, cls=cms_model.ComplexEncoder)
 
+    def compose_preorder(self,params):
+        preorder = cms_model.Preorder()
+        preorder.pdate = params.pdate
+        preorder.age = int(params.age)
+        preorder.bdesc = params.bdesc
+        preorder.genre = params.genre
+        preorder.mobile = params.mobile
+        preorder.utitle = params.utitle
+
+        return preorder
+
+
 class ListWrapper:
     def __init__(self, rlist, total_count=0, total_pages=0):
         self.rlist = rlist

@@ -192,7 +192,25 @@ class SiteUser:
     def jsonable(self):
         return self.__dict__
 
+class Preorder():
+    def __init__(self,oid=None):
+        self.oid = oid
+        self.status = 1
+        self.utitle = ''
+        self.genre = 0
+        self.mobile = ''
+        self.bdesc = ''
+        self.pdate = ''
+        self.age = 0
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
 
 
 class ComplexEncoder(json.JSONEncoder):

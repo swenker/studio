@@ -107,3 +107,14 @@ INSERT INTO `cms_album`(`title`,`code`)VALUES('home-banner','hb');
 INSERT INTO `cms_album`(`title`,`code`)VALUES('home-gallery','hg');
 INSERT INTO `cms_album`(`title`,`code`)VALUES('order-all','oa');
 
+CREATE TABLE IF NOT EXISTS `site_preorder`(
+ `id` INT(9) NOT NULL,
+ `utitle` VARCHAR(30) DEFAULT NULL,
+ `pdate` CHAR(10),
+ `genre` TINYINT(1),
+ `age`   TINYINT(2),
+ `bdesc` VARCHAR(200),
+ `mobile` varchar(20),
+ `status` TINYINT(1) DEFAULT 1,
+ PRIMARY KEY(`yid`)
+)ENGINE=Innodb DEFAULT CHARSET=utf8;

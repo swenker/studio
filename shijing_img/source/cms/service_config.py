@@ -31,7 +31,7 @@ class ServiceConfig():
         self.passwd = configparser.get('db', 'passwd')
 
         self.web_base = configparser.get("web", "web_base")
-        self.nevery_page = configparser.get("web","nevery_page")
+        self.nevery_page = int(configparser.get("web","nevery_page"))
 
         self.img_store = configparser.get("img", "store")
         self.img_save_path = configparser.get("img", "save_path")
