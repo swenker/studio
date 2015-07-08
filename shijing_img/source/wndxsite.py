@@ -217,8 +217,8 @@ class Yuyue():
         return render.yuyue()
 
     def POST(self):
-        params = web.input(age=0)
-        preorder = serviceHelper.compose_preorder(web.input())
+        params = web.input(age=0,genre=1,pdate=None)
+        preorder = serviceHelper.compose_preorder(params)
         cmsService.create_preorder(preorder)
-        return render.common("failed:" + str(id))
+        return render.common("OK")
 

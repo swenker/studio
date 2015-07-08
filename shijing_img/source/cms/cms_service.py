@@ -598,7 +598,9 @@ class CmsService:
         preorder.utitle = r['utitle']
         preorder.pdate = r['pdate']
         preorder.bdesc = r['bdesc']
+        preorder.dtcreate = r['dtcreate']
 
+        return preorder
 
     def list_orders(self, uid=None):
         sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '

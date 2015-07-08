@@ -1,4 +1,4 @@
-$def with(rlist,total)
+$def with(rlist)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +45,7 @@ $def with(rlist,total)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">订单列表&nbsp;  Create Order</h3>
+                    <h3 class="page-header">预约列表</h3>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -53,21 +53,21 @@ $def with(rlist,total)
             <div class="row">
     $for i in range(0,len(rlist)):
 
-        $ order=rlist[i]
+        $ porder=rlist[i]
                 <div class="col-lg-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            $order.title &nbsp; [$order.dtcreate]
+                            $porder.utitle &nbsp; [$porder.dtcreate]
                         </div>
                         <div class="panel-body">
-                            用  户: $order.uid <br/>
-                            价  格: $order.price <br/>
-                            总张数: $order.total_limit <br/>
-                            精  修: $order.edit_limit
+                            手机号:   $porder.mobile<br/>
+                            拍摄日期:  $porder.pdate <br/>
+                            年龄:     $porder.age <br/>
+                            说明:     $porder.bdesc
                         </div>
                         <div class="panel-footer" align="right">
-                             <a href="/p/adm/listimgs/$order.oid">查看上传的照片</a>
-                             &nbsp; <a href="/p/adm/okimgs/$order.oid">查看选片结果</a>
+                             <a href="/p/adm/listimgs/">转为订单</a>
+                             &nbsp; <a href="/p/adm/okimgs/">删除</a>
                         </div>
                     </div>
                 </div>

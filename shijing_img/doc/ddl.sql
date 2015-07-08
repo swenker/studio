@@ -108,13 +108,14 @@ INSERT INTO `cms_album`(`title`,`code`)VALUES('home-gallery','hg');
 INSERT INTO `cms_album`(`title`,`code`)VALUES('order-all','oa');
 
 CREATE TABLE IF NOT EXISTS `site_preorder`(
- `id` INT(9) NOT NULL,
+ `id` INT(9) NOT NULL AUTO_INCREMENT,
  `utitle` VARCHAR(30) DEFAULT NULL,
  `pdate` CHAR(10),
  `genre` TINYINT(1),
  `age`   TINYINT(2),
  `bdesc` VARCHAR(200),
  `mobile` varchar(20),
+ `dtcreate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `status` TINYINT(1) DEFAULT 1,
- PRIMARY KEY(`yid`)
+ PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;

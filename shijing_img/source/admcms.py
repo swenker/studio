@@ -43,7 +43,8 @@ urls = ("/adminsvc", "AdminService",
         "/loadfolder","LoadFolder",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
-        "/okimgs/(\d+)", "ListSelectedImages"
+        "/okimgs/(\d+)", "ListSelectedImages",
+        "/yy", "ListPreorder"
         )
 
 config = service_config.config
@@ -408,3 +409,5 @@ class ListSelectedImages():
 
 class ListPreorder():
     def GET(self):
+        rlist = cmsService.list_preorder(1)
+        return render.yuyue_list(rlist)

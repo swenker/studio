@@ -202,6 +202,7 @@ class Preorder():
         self.bdesc = ''
         self.pdate = ''
         self.age = 0
+        self.dtcreate = None
 
     def __repr__(self):
         return self.__str__()
