@@ -110,6 +110,9 @@ class TestCmsService():
         from cms import batch_image_handler
         batch_image_handler.load_local_folder(aid,folder,orderid)
 
+    def test_delete_preorder(self):
+        cmsService.delete_preorder(2)
+
 
 def abc():
     print "abc"
@@ -125,6 +128,7 @@ if __name__ == '__main__':
 
     # tcs.test_time_conversion()
 
-    tcs.test_batch_image()
+    # tcs.test_batch_image()
+    tcs.test_delete_preorder()
 
 

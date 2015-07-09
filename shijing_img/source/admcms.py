@@ -44,7 +44,8 @@ urls = ("/adminsvc", "AdminService",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
-        "/yy", "ListPreorder"
+        "/yy", "ListPreorder",
+        "/yydelete/(\d+)", "DeletePreorder"
         )
 
 config = service_config.config
@@ -276,7 +277,7 @@ class UploadImage:
                     imgmeta.title,imgmeta.file = serviceHelper.store(image_data)
                     cmsService.create_img(imgmeta)
                     return render.common("OK")
-                except Error,e:
+                except StandardError,e:
                     return render.common("Failed:"+e)
 
         except ValueError:
@@ -409,5 +410,12 @@ class ListSelectedImages():
 
 class ListPreorder():
     def GET(self):
-        rlist = cmsService.list_preorder(1)
+        status = 1
+        rlist = cmsService.list_preorder(status)
         return render.yuyue_list(rlist)
+
+class DeletePreorder():
+    def GET(self,oid):
+
+        cmsService.delete_preorder(int(oid))
+        return  render.common("deleted")

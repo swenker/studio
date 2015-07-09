@@ -689,7 +689,7 @@ class CmsService:
             web.sendmail(from_address,to_address,subject,message_body)
             logger.info("Mail sent to :"+to_address)
             return True
-        except Error,e:
+        except StandardError,e:
             logger.error("Failed to send notification email:"+subject)
             return False
 
@@ -700,6 +700,7 @@ class CmsService:
 
     def to_order(self,preorder):
         "convert a preorder to order"
+
 
     def list_preorder(self,status):
         sqls = 'SELECT * FROM '+TABLE_PREORDER
@@ -716,6 +717,11 @@ class CmsService:
                 rlist.append(preorder)
 
         return rlist
+
+    def delete_preorder(self,oid):
+        sqls = "DELETE FROM "+TABLE_PREORDER + " WHERE id=$id"
+        db.query(sqls,vars={'id':oid})
+
 
 
 cmsService = CmsService()
