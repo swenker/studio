@@ -113,6 +113,25 @@ class TestCmsService():
     def test_delete_preorder(self):
         cmsService.delete_preorder(2)
 
+    def test_save_order(self):
+        order = Order(1)
+        order.title = "test title"
+        order.edit_limit= 40
+        order.total_limit = 120
+        order.price=999.00
+        order.remark = 'remark'
+        order.venue = 'venue'
+        order.dttake = '2015-08-22'
+
+        print cmsService.save_order(order)
+
+        order.oid = 2
+
+        cmsService.save_order(order)
+
+    def test_list_order(self):
+        cmsService.list_orders()
+
 
 def abc():
     print "abc"
@@ -129,6 +148,9 @@ if __name__ == '__main__':
     # tcs.test_time_conversion()
 
     # tcs.test_batch_image()
-    tcs.test_delete_preorder()
+    # tcs.test_delete_preorder()
+
+    # tcs.test_save_order()
+    tcs.test_list_order()
 
 

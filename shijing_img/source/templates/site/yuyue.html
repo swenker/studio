@@ -61,12 +61,12 @@
                                         <fieldset>
                                             <div class="form-group">
                                                 <label for="utitle">称呼</label>
-                                                <input class="form-control" id="utitle" placeholder="怎么称呼您" name="utitle" type="text" value="" size="20">
+                                                <input class="form-control" id="utitle" placeholder="怎么称呼您" name="utitle" type="text" value="" size="20" required="true">
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="mobile">手机号</label>
-                                                <input class="form-control" id="mobile" placeholder="手机号" name="mobile" type="text" >
+                                                <input class="form-control" id="mobile" placeholder="手机号" name="mobile" type="text" required="true" >
                                             </div>
 
 <!--
@@ -75,17 +75,17 @@
                                                 <input class="form-control" id="genre_m" name="mobile" type="radio" >
                                             </div>
 -->
-                                            <div class="form-group">
-                                                <label for="bdesc">宝宝信息</label>
-                                                <input class="form-control" id="bdesc" placeholder="" name="bdesc" type="text" >
-                                            </div>
-
-                                            <div class="form-group">
+                                             <div class="form-group">
                                                 <label for="pdate">拍摄日期</label>
-                                                <input class="form-control" id="pdate" name="pdate" type="text">(yyyy-MM-dd)
+                                                <input class="form-control" id="pdate" name="pdate" type="text" required="true">(yyyy-MM-dd)
                                                 <!--TODO-->
                                                 <!--<a href="#" class="btn btn-xsm"><span class="glyphicon glyphicon-calendar"></span></a>-->
                                             </div>
+                                           <div class="form-group">
+                                                <label for="bdesc">宝宝信息</label>
+                                                <input class="form-control" id="bdesc" placeholder="" name="bdesc" type="text" required="true">
+                                            </div>
+
 
                                             <input class="form-control" type="submit" value="Now">
                                         </fieldset>

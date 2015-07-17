@@ -163,6 +163,8 @@ class Order:
         self.edit_limit = 30
         self.price=999.00
         self.status = 1
+        self.venue = ''
+        self.dttake = ''
 
     def __repr__(self):
         return self.__str__()

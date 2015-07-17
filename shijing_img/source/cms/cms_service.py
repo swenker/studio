@@ -567,8 +567,8 @@ class CmsService:
         order = Order(r['uid'])
         order.oid = r['id']
         order.title = r['title']
-        # order.total_limit = r['total_limit']
-        # order.edit_limit = r['edit_limit']
+        order.total_limit = r['total_limit']
+        order.edit_limit = r['edit_limit']
         order.price = r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
@@ -576,6 +576,8 @@ class CmsService:
 
         order.remark = r['remark']
         order.status = r['status']
+        order.venue = r['venue']
+        order.dttake = r['dttake']
 
         return order
 
@@ -601,6 +603,60 @@ class CmsService:
         preorder.dtcreate = r['dtcreate']
 
         return preorder
+
+
+    def save_order(self,order):
+        if not order:
+            return
+        vars = {}
+        if order.oid:
+            sqls = "UPDATE %s SET uid=$uid,price=$price,venue=$venue,remark=$remark,title=$title,total_limit=$total_limit," \
+                   "edit_limit=$edit_limit,dttake=$dttake WHERE id=$oid" % TABLE_SITE_ORDER
+
+            vars={'uid':order.uid,'price':order.price,'venue':order.venue,'remark':order.remark,'title':order.title,
+                  'total_limit':order.total_limit,'edit_limit':order.edit_limit,'dttake':order.dttake,'oid':order.oid}
+
+        else:
+            sqls = "INSERT INTO %s(uid,price,venue,remark,title,total_limit,edit_limit,dttake)VALUES($uid,$price,$venue,$remark," \
+                   "$title,$total_limit,$edit_limit,$dttake)" % TABLE_SITE_ORDER
+
+            vars={'uid':order.uid,'price':order.price,'venue':order.venue,'remark':order.remark,'title':order.title,
+                  'total_limit':order.total_limit,'edit_limit':order.edit_limit,'dttake':order.dttake}
+
+        db.query(sqls,vars)
+
+        if not order.oid:
+            result = db.query("select LAST_INSERT_ID() AS mid ")
+            mid = -1
+            if result:
+                mid = result[0]['mid']
+
+            return mid
+
+        return order.oid
+
+    def load_order(self,oid):
+        if not oid:
+            return
+
+        sqls = "SELECT * FROM %s WHERE id=$oid" % TABLE_SITE_ORDER
+
+        result = db.query(sqls,vars = {'oid':oid})
+        if result:
+            order = self.compose_order(result[0])
+
+            return order
+
+        return None
+
+    def delete_order(self,oid):
+        if not oid:
+            return
+
+        sqls = "DELETE  FROM %s WHERE id=$oid" % TABLE_SITE_ORDER
+
+        db.query(sqls,vars = {'oid':oid})
+
 
     def list_orders(self, uid=None):
         sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '

@@ -40,6 +40,8 @@ urls = ("/adminsvc", "AdminService",
         "/select_cover", "SelectCover",
         "/refresh","RefreshHomePage",
         "/orders", "ListOrders",
+        "/order/form","HandlerOrderForm",
+        "/order/delete","DeleteOrder",
         "/loadfolder","LoadFolder",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
@@ -419,3 +421,33 @@ class DeletePreorder():
 
         cmsService.delete_preorder(int(oid))
         return  render.common("deleted")
+
+class HandlerOrderForm():
+    def GET(self):
+        params = web.input(oid=None)
+        oid = params.oid
+        order = None
+        if oid:
+            order = cmsService.load_order(int(oid))
+
+        return render.order_form(order)
+
+    def POST(self):
+        params = web.input(oid=None,dtcomplete=None)
+
+        order = serviceHelper.compose_order(params)
+        oid = cmsService.save_order(order)
+
+        return render.common("Order Saved,<a href='?oid="+str(oid)+"'>return</a>")
+
+class DeleteOrder():
+    def GET(self):
+        params = web.input(oid=None)
+        ops_result = "OK"
+        if(params.oid):
+            cmsService.delete_order(int(params.oid))
+
+        else:
+            ops_result = "id is needed"
+
+        return render.common(ops_result)

@@ -54,7 +54,7 @@ $def with(rlist,total)
     $for i in range(0,len(rlist)):
 
         $ order=rlist[i]
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             $order.title &nbsp; [$order.dtcreate]
@@ -66,8 +66,10 @@ $def with(rlist,total)
                             精  修: $order.edit_limit
                         </div>
                         <div class="panel-footer" align="right">
-                             <a href="/p/adm/listimgs/$order.oid">查看上传的照片</a>
-                             &nbsp; <a href="/p/adm/okimgs/$order.oid">查看选片结果</a>
+                             <a href="/p/adm/order/form?oid=$order.oid">修改</a>&nbsp;
+                             <a href="/p/adm/order/delete?oid=$order.oid">删除</a>&nbsp;
+                             <a href="/p/adm/listimgs/$order.oid">查看上传的照片</a>&nbsp;
+                              <a href="/p/adm/okimgs/$order.oid">查看选片结果</a>
                         </div>
                     </div>
                 </div>

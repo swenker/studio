@@ -63,11 +63,13 @@ CREATE TABLE IF NOT EXISTS `site_order`(
  `dtupdate` TIMESTAMP NOT NULL DEFAULT 0,
  `dtcomplete` TIMESTAMP NOT NULL DEFAULT 0,
  `price` DECIMAL(7,2) DEFAULT 0,
- `remark` VARCHAR(50),
+ `remark` VARCHAR(100),
  `title` VARCHAR(50),
  `total_limit` INT(4),
  `edit_limit` INT(4),
  `status` TINYINT(1) DEFAULT 1,
+ `venue` VARCHAR(20),
+ `dttake` VARCHAR(10),
   PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;
 

@@ -273,6 +273,24 @@ class ServiceHelper():
         preorder.utitle = params.utitle
 
         return preorder
+    
+    def compose_order(self, params):
+        
+        order = cms_model.Order(params.uid)
+        if(params.oid):
+            order.oid = int(params.oid)
+
+        order.title = params.title
+        order.total_limit = int(params.total_limit)
+        order.edit_limit = int(params.edit_limit)
+        order.price = params.price
+        order.dtcomplete = params.dtcomplete
+
+        order.remark = params.remark
+        order.venue = params.venue
+        order.dttake = params.dttake
+        
+        return order
 
 
 class ListWrapper:

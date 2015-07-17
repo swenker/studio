@@ -1,0 +1,172 @@
+$def with(order)
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+            Order
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+
+          //Jquery datepicker
+          $$(function() {
+                $$( "#dttake" ).datepicker();
+                $$( "#dttake" ).datepicker("option", "dateFormat","yy-mm-dd");
+          });
+
+
+
+          $if order:
+               $$(document).ready(function(){
+                   $$('#title').val('$order.title');
+                   $$('#uid').val('$order.uid');
+                   $$('#venue').val('$order.venue');
+                   $$('#dttake').val('$order.dttake');
+                   $$('#remark').val('$order.remark');
+                   $$('#total_limit').val('$order.total_limit');
+                   $$('#edit_limit').val('$order.edit_limit');
+                   $$('#price').val('$order.price');
+               });
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/adm/adm_nav.html");
+            </script>
+        </div>
+
+        <!-- Navigation ends here -->
+
+        <div id="page-wrapper">
+<!--            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">图文编辑</h3>
+                </div>
+            </div>
+-->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+
+
+                        <div class="panel-heading">
+                            订单信息
+                        </div>
+
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <form role="form" action="/p/adm/order/form" method="post">
+                                          $if order:
+                                               <input type="hidden" name="oid" id="oid" value="$order.oid">
+
+                                        <div class="form-group  ">
+                                            <label for="title">标题</label>
+                                            <input name="title" id="title" size="40" maxlength="80"> &nbsp;&nbsp;
+
+                                            <label for="uid">用户</label>
+                                            <input   placeholder="" value="" size="10" name="uid" id="uid">
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="venue">拍摄地点</label>
+                                            <input   placeholder="" value="" size="20" name="venue" id="venue">
+                                            &nbsp;&nbsp;
+                                            <label for="dttake">拍摄时间</label>
+                                            <input   placeholder="2015-06-10" value="" size="10" name="dttake" id="dttake">
+                                            <!--<a href="#" class="btn btn-xsm"><span class="glyphicon glyphicon-calendar"></span></a>-->
+                                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="price">价格</label>
+                                            <input   placeholder="999.00" value="" size="10" name="price" id="price">
+
+                                            &nbsp;&nbsp;<label for="total_limit">总张数</label>
+                                            <input  placeholder="120" value="" size="5" name="total_limit" id="total_limit">
+
+                                            &nbsp;&nbsp;<label for="edit_limit">精修张数</label>
+                                            <input  placeholder="30" value="" size="5" name="edit_limit" id="edit_limit">
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <label for="remark">备注</label>
+                                            <input name="remark" id="remark" size="40" maxlength="100"> &nbsp;&nbsp;
+
+                                        </div>
+
+                                        <button type="submit" class="btn btn-default">保存</button>
+                                        <button type="reset" class="btn btn-default">重置</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <!-- The right side here has been deleted -->
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/adm/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/adm/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
