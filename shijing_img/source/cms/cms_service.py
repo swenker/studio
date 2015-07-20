@@ -582,7 +582,8 @@ class CmsService:
         return order
 
     def compose_siteuser(self, r):
-        user = SiteUser(r['id'])
+        user = SiteUser()
+        user.oid = r['id']
         user.status = r['status']
         user.passwd = r['passwd']
         user.email = r['email']
@@ -777,6 +778,23 @@ class CmsService:
     def delete_preorder(self,oid):
         sqls = "DELETE FROM "+TABLE_PREORDER + " WHERE id=$id"
         db.query(sqls,vars={'id':oid})
+
+
+    def create_siteuser(self,siteuser):
+        sqls = "INSERT INTO %s( email,passwd ,nickname,mobile)VALUES($email,$passwd,$nickname,$mobile)" %TABLE_SITE_USER
+        db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile})
+
+        result = db.query("select LAST_INSERT_ID() AS mid ")
+        mid = -1
+        if result:
+            mid = result[0]['mid']
+        return mid
+
+    def update_porder_status(self,oid,uid,status):
+        sqls = "UPDATE %s SET status=$status,uid=$uid WHERE id=$oid" %TABLE_PREORDER
+
+        db.query(sqls,vars={'oid':oid,'uid':uid,'status':status})
+
 
 
 

@@ -21,6 +21,9 @@ $def with(rlist)
 
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,10 +31,47 @@ $def with(rlist)
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+
+
+    <script>
+
+        function createUserFromPorder(mobile,poid){
+            var aurl= '/p/adm/siteuser/new?source=yy&mobile='+mobile+'&poid='+poid;
+            $$.getJSON(aurl)
+            .done(
+                function(data){
+                    console.log(data.status);
+                    $$('#create_user').attr('class','btn disabled');
+                })
+                .fail(
+                    function(jqxhr,textStatus,error){
+                        var err = textStatus + "," + error;
+                        console.log( "Request Failed:" + err );
+                    }
+                );
+
+            $$("#dialog").dialog({width:400,
+                show: {
+                    effect: "blind",
+                    duration: 100
+                },
+                hide: {
+                    effect: "blind",
+                    duration: 100
+                }
+            });
+
+
+
+        }
+    </script>
 </head>
 
 <body>
+
+    <div id="dialog" title="" style="display:none">
+        <p>Hello</p>
+    </div>
 
     <div id="wrapper">
 
@@ -66,8 +106,12 @@ $def with(rlist)
                             说明:     $porder.bdesc
                         </div>
                         <div class="panel-footer" align="right">
-                             <a href="/p/adm/listimgs/">转为订单</a>
-                             &nbsp; <a href="/p/adm/yydelete/$preorder.oid">删除</a>
+                              $ create_class='btn active'
+                              $if porder.status>1:
+                              $    create_class = 'btn disabled'
+                             <a id="create_user" class="$create_class" href="javascript:createUserFromPorder('$porder.mobile','$porder.oid')">创建用户</a>
+                             <a class="btn active" href="/p/adm/order/form?porder=true&utitle=$porder.utitle&dttake=$porder.pdate&remark=$porder.bdesc">转为订单</a>
+                             &nbsp; <a class="btn active" href="/p/adm/yydelete/$porder.oid">删除</a>
                         </div>
                     </div>
                 </div>
@@ -82,8 +126,6 @@ $def with(rlist)
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery Version 1.11.0 -->
-    <script src="/adm/js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/adm/js/bootstrap.min.js"></script>

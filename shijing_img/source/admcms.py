@@ -47,7 +47,8 @@ urls = ("/adminsvc", "AdminService",
         "/listimgs/(\d+)", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
         "/yy", "ListPreorder",
-        "/yydelete/(\d+)", "DeletePreorder"
+        "/yydelete/(\d+)", "DeletePreorder",
+        "/siteuser/new","SiteUserHandler"
         )
 
 config = service_config.config
@@ -412,7 +413,7 @@ class ListSelectedImages():
 
 class ListPreorder():
     def GET(self):
-        status = 1
+        status = None
         rlist = cmsService.list_preorder(status)
         return render.yuyue_list(rlist)
 
@@ -424,11 +425,24 @@ class DeletePreorder():
 
 class HandlerOrderForm():
     def GET(self):
-        params = web.input(oid=None)
+        params = web.input(oid=None,porder=None)
         oid = params.oid
         order = None
         if oid:
             order = cmsService.load_order(int(oid))
+        else:
+            porder = params.porder
+            print params
+            if porder:
+                order = cms_model.Order(None)
+                order.dttake = params.dttake
+                order.remark = params.remark
+                order.title = params.utitle
+
+                order.price = 999.00
+                order.total_limit = 120
+                order.edit_limit = 30
+
 
         return render.order_form(order)
 
@@ -451,3 +465,19 @@ class DeleteOrder():
             ops_result = "id is needed"
 
         return render.common(ops_result)
+
+
+class SiteUserHandler():
+    def GET(self):
+        params = web.input()
+        mobile = params.mobile
+        poid = int(params.poid)
+        siteuser = cms_model.SiteUser(passwd='abcd1234',mobile=mobile)
+        siteuser.email=''
+
+        try:
+            uid = cmsService.create_siteuser(siteuser)
+            cmsService.update_porder_status(poid,uid,2)
+            return "{\"status\":\"OK\"}"
+        except BaseException,e:
+            return e

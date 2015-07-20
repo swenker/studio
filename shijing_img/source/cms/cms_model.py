@@ -176,7 +176,7 @@ class Order:
         return self.__dict__
 
 class SiteUser:
-    def __init__(self,uid,email=None, passwd = None, nickname = None, mobile=None, status=1 ):
+    def __init__(self,uid=None,email=None, passwd = None, nickname = None, mobile=None, status=1 ):
         self.oid = uid
         self.email = email
         self.nickname = nickname
@@ -205,6 +205,7 @@ class Preorder():
         self.pdate = ''
         self.age = 0
         self.dtcreate = None
+        self.uid = None
 
     def __repr__(self):
         return self.__str__()
