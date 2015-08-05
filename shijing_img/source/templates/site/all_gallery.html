@@ -62,41 +62,20 @@ $$(document)
 </div>
 <!--==============================content================================-->
 <section id="content">
-  <div class="page3-row1 pad-2 tabs">
-    <div class="col-8">
-      <h2 class="h2 p2">Categories:</h2>
-      <ul class="list-1 nav">
-        <li class="selected"><a href="#tab-1">Fashion</a></li>
-        <li><a href="#tab-2">Animals</a></li>
-        <li><a href="#tab-3">Landscapes</a></li>
-        <li><a href="#tab-4">Sport</a></li>
-        <li><a href="#tab-5">Portrait</a></li>
-        <li><a href="#tab-6">Wedding</a></li>
-        <li><a href="#tab-7">Urban</a></li>
-      </ul>
-    </div>
-    <div class="col-9">
+  <div class="page3-row1 pad-2">
+    <div class="col-18">
       <h3 class="h3-2">Fashion:</h3>
-      <div id="tab-1" class="tab-content gallery-photo">
         <div class="inner">
-          <ul id="mycarousel-1" class="jcarousel-skin-tango">
               $if plist:
-                  $ final_len = ptotal-ptotal%4
-                  $for i in range(0,final_len,4):
-                     $ img0 = plist[i]
-                     $ img1 = plist[i+1]
-                     $ img2 = plist[i+2]
-                     $ img3 = plist[i+3]
+                  $ p_everyline = 5
+                  $ p_endline = (ptotal+p_everyline-1)/p_everyline
+                  $
+                  $for i in range(0,p_endline,1):
+                       $for j in range(i*5,ptotal%p_everyline==0 ?(i+1)*p_everyline : ptotal ,1)
+                           $ img = plist[j]
+                           <a class="plus" href="${service_config.img_url + img.large}"><img src="${service_config.img_url + img.thumbnail}" alt=""  width="205" height="114"></a>                        <a class="plus" href="${service_config.img_url + img1.large}"><img src="${service_config.img_url + img1.thumbnail}" alt="" width="205" height="114"></a>
 
-                    <li><a class="plus" href="${service_config.img_url + img0.large}"><img src="${service_config.img_url + img0.thumbnail}" alt=""  width="205" height="114"></a>                        <a class="plus" href="${service_config.img_url + img1.large}"><img src="${service_config.img_url + img1.thumbnail}" alt="" width="205" height="114"></a>
-                        <a class="plus" href="${service_config.img_url + img2.large}"><img src="${service_config.img_url + img2.thumbnail}" alt="" width="205" height="114"></a>                        <a class="plus" href="${service_config.img_url + img3.large}"><img src="${service_config.img_url + img3.thumbnail}" alt="" width="205" height="114"></a>
-                    </li>
-
-          </ul>
         </div>
-      </div>
-
-
 
     </div>
   </div>

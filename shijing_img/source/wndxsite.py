@@ -222,3 +222,12 @@ class Yuyue():
         cmsService.create_preorder(preorder)
         return render.common("OK")
 
+
+class SearchArticles():
+    def GET(self):
+        params = web.input()
+        kw = params.kw
+
+
+
+

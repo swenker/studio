@@ -223,6 +223,53 @@ class CmsService:
 
         return rlist, total
 
+    def search_articles(self, start, nfetch,kw=None):
+        """list articles meta without content  """
+        sql_total = "SELECT COUNT(*) as total FROM cms_article_meta "
+
+        sqls = "SELECT id,title,subtitle,author,source,dtpub,dtupdate,dtcreate,cover,brief,cid,status,ctid FROM %s WHERE status=1" % (
+            TABLE_ARTICLE_META)
+
+        has_condition = False
+
+        if kw:
+            sqls += " AND "
+            sql_total += " AND "
+
+            sqlwhere = " title LIKE '%s' OR brief LIKE '%s" % (kw, kw)
+
+            sqls += sqlwhere
+            sql_total += sqlwhere
+
+        sqls += " ORDER BY dtpub desc,dtcreate desc "
+
+        sqls += " LIMIT $start,$nfetch"
+
+        total = 0
+
+        result = db.query(sql_total)
+
+        if result:
+            total = result[0]['total']
+
+        if kw:
+
+            result = db.query(sqls, vars={'keywords': kw, 'start': start, 'nfetch': nfetch})
+
+        else:
+
+            result = db.query(sqls, vars={'start': start, 'nfetch': nfetch})
+
+        rlist = []
+
+        if result:
+            for r in result:
+                article_meta = self.compose_article_meta(r)
+                #print article_meta
+                rlist.append(article_meta)
+
+        return rlist, total
+
 
     def get_article(self, oid):
         sqls = "SELECT m.id AS id,m.title AS title,m.subtitle AS subtitle,m.author AS author,m.source AS source,m.dtpub AS dtpub," \

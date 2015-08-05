@@ -508,6 +508,11 @@ ul.menu li a:hover, ul.menu li.current a {
 	width:700px;
 	margin-right:79px;
 }
+.col-18 {
+	float:left;
+	width:1024px;
+	margin-right:0px;
+}
 
 /* Lightbox image */
 .lightbox-image {
