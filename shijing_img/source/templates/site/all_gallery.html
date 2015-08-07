@@ -67,13 +67,19 @@ $$(document)
       <h3 class="h3-2">Fashion:</h3>
         <div class="inner">
               $if plist:
-                  $ p_everyline = 5
-                  $ p_endline = (ptotal+p_everyline-1)/p_everyline
-                  $
+                  $ P_EVERYLINE = 5
+                  $ p_endline = (ptotal+P_EVERYLINE-1)/P_EVERYLINE
+
                   $for i in range(0,p_endline,1):
-                       $for j in range(i*5,ptotal%p_everyline==0 ?(i+1)*p_everyline : ptotal ,1)
+                       $ mod_result = ptotal % P_EVERYLINE
+                       $ loop_end = ptotal
+                     abc:$loop_end
+                       $if mod_result == 0:
+                       $    loop_end = (i+1) * P_EVERYLINE
+            
+                      $for j in range(i*5, loop_end ,1):
                            $ img = plist[j]
-                           <a class="plus" href="${service_config.img_url + img.large}"><img src="${service_config.img_url + img.thumbnail}" alt=""  width="205" height="114"></a>                        <a class="plus" href="${service_config.img_url + img1.large}"><img src="${service_config.img_url + img1.thumbnail}" alt="" width="205" height="114"></a>
+                           <a class="plus" href="${service_config.img_url + img.large}"><img src="${service_config.img_url + img.thumbnail}" alt=""  width="205" height="114"></a>
 
         </div>
 
