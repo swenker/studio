@@ -2,18 +2,19 @@ $def with(plist,ptotal)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Paris Clark | Portfolio |$ptotal</title>
+<title>萌宝大本营|$ptotal</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/skin-2.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/site/css/jquery.fancybox-1.3.4.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/site/css/tabs.css">
+<!--<link rel="stylesheet" type="text/css" media="screen" href="/site/css/tabs.css">-->
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/slider.css">
 <script src="/site/js/jquery-1.7.min.js"></script>
 <script src="/site/js/jquery.easing.1.3.js"></script>
 <script src="/site/js/jquery.jcarousel.min.js"></script>
 <script src="/site/js/jquery.fancybox-1.3.4.pack.js"></script>
-<script src="/site/js/tabs.js"></script>
+<!--<script src="/site/js/tabs.js"></script>-->
 <script>
 $$(document)
     .ready(function () {
@@ -55,7 +56,7 @@ $$(document)
           <li><a href="/p/site/news">活动</a></li>
 
         </ul>
-        <h1><a href="/p/site/home"><img src="/site/images/logo.png" alt=""></a></h1>
+        <h1><a href="/"><img src="/site/images/logo.png" alt=""></a></h1>
       </nav>
     </div>
   </div>
@@ -64,23 +65,28 @@ $$(document)
 <section id="content">
   <div class="page3-row1 pad-2">
     <div class="col-18">
-      <h3 class="h3-2">Fashion:</h3>
+        <h3 class="h3-2">萌宝大本营:</h3>
         <div class="inner">
               $if plist:
-                  $ P_EVERYLINE = 5
-                  $ p_endline = (ptotal+P_EVERYLINE-1)/P_EVERYLINE
-
+                  $ current_total=len(plist)
+                  $ P_EVERYLINE = 4
+                  $ p_endline = (current_total + P_EVERYLINE-1)/P_EVERYLINE
                   $for i in range(0,p_endline,1):
-                       $ mod_result = ptotal % P_EVERYLINE
-                       $ loop_end = ptotal
-                     abc:$loop_end
-                       $if mod_result == 0:
-                       $    loop_end = (i+1) * P_EVERYLINE
-            
-                      $for j in range(i*5, loop_end ,1):
+                       $ mod_result = current_total % P_EVERYLINE
+                       $ loop_end = (i+1) * P_EVERYLINE
+                        $if mod_result != 0 and i == p_endline-1:
+                        $    loop_end = current_total
+
+                       $for j in range(i*P_EVERYLINE, loop_end ,1):
                            $ img = plist[j]
                            <a class="plus" href="${service_config.img_url + img.large}"><img src="${service_config.img_url + img.thumbnail}" alt=""  width="205" height="114"></a>
 
+        </div>
+        <div class="extra-wrap pagination">
+              $ N_FETCH = 10
+              $ npage = (ptotal + N_FETCH-1)/N_FETCH
+              $for i in range(0,npage,1):
+                   <a class="pagination" href="?start=${i*N_FETCH}&nfetch=$N_FETCH">$i</a>
         </div>
 
     </div>

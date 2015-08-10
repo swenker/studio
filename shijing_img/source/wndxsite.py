@@ -203,8 +203,10 @@ class RandomPic():
 
 class AllGallery():
     def GET(self):
-        start= 0
-        nfetch=16
+        params  = web.input(start=0,nfetch=100)
+        start= int(params.start)
+        #TODO larger? pagination?
+        nfetch=int(params.nfetch)
         acode = 'hg'
 
         # cmsService.get_album_imglist(acode,start,nfetch,itype=Image.IMG_TYPE_HOME_GALLERY)
