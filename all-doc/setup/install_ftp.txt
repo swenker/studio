@@ -1,0 +1,17 @@
+install ftp 
+
+1.Install vsftpd  
+(The first two letters of vsftpd stand for "very secure" and the program was built to have strongest protection against possible FTP vulnerabilities.)
+
+yum install vsftpd
+
+2.Configure VSFTP
+vi /etc/vsftpd/vsftpd.conf
+
+   anonymous_enable=NO
+
+3.
+ service vsftpd restart
+ chkconfig vsftpd on
+ 
+https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-on-centos-6--2
