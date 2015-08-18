@@ -1,0 +1,85 @@
+$def with(article_list,total,total_pages,npages)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Search</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/reset.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/style.css">
+<!--<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>-->
+<script src="/site/js/jquery-1.7.min.js"></script>
+<script src="/site/js/jquery.easing.1.3.js"></script>
+<!--[if lt IE 9]>
+<script src="/site/js/html5.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="/site/css/ie.css">
+<![endif]-->
+</head>
+<body>
+<!--==============================header=================================-->
+<div class="header">
+  <div>
+    <div class="subpages-nav">
+      <nav>
+        <ul class="menu">
+          <li class="li-none"><a href="/">首页</a></li>
+          <li><a href="/p/site/portfolio">套系报价</a></li>
+          <li><a href="/p/site/service">服务流程</a></li>
+          <li class="li-left li-none current"><a href="/p/site/la">作品展示</a></li>
+          <li><a href="/p/site/sc">摄影学苑</a></li>
+          <li><a href="/p/site/news">活动</a></li>
+
+        </ul>
+        <h1><a href="/"><img src="/site/images/logo.png" alt=""></a></h1>
+      </nav>
+    </div>
+  </div>
+</div>
+<!--==============================content================================-->
+<section id="content">
+  <div class="pad-1">
+    <div class="page4-row1">
+
+      <div class="col-12">
+        <h2 class="h2 p2">Search Result</h2>
+
+    $for i in range(0,len(article_list)):
+        $ article=article_list[i]
+        <div class="wrap bot-2">
+          <div style="padding:5px">
+            <a href="/p/site/ga/$article.oid" class="link"><strong class="upper">$article.title </strong></a> <br/>
+          </div>
+          <div class="extra-wrap">
+            <p>
+              <a href="/p/site/ga/$article.oid"  ><img src="${service_config.img_url+'/thumb'+article.cover}"  width="160" alt=""></a>
+              <br><br>
+              $article.brief ......</p>
+            <a href="/p/site/ga/$article.oid" class="link-1 link-1-pad">Read more</a> <br/><br/>
+          </div>
+        </div>
+    <!--end of article list-->
+
+      </div>
+      <div class="col-13">
+
+        <script src="/jslib/shijing.js"> </script>
+        <script>
+                imgBaseURL = "${service_config.img_url}";
+                randomPic();
+        </script>
+        <div id="right_img">
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<!--==============================footer=================================-->
+<footer>
+    <span><strong>Copyrights © yinyushijing.cn </strong> All rights reseorved <br> 京ICP备15014181号 </span>
+</footer>
+</body>
+</html>
