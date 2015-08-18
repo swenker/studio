@@ -609,8 +609,18 @@ last|awk -F ' ' '{print $1}'|sort -u
 
 只要设置了acl，就是那个setacl设置的，后面将是一个加(+)号
 
+-----------------------------------------
 useradd -p $(perl -e'print crypt("Msccbj", "ccsm")')  username
+useradd -d /home/dummy -g idiots -m -p $(echo "P4sSw0rD" | openssl passwd -1 -stdin) dummy
 
+openssl passwd -1 -salt SOMETHING  PASSWORD
+
+change SOMETHING anything to salt the hash (<16 chars)
+PASSWORD is your desired password
+
+useradd -p 'PASSWD HASH'  username
+i.e. $1$452370$YvbAdOdlXkfvOqCG9P/Zi.  should be enclosed by ''
+-------------------------------------
 
 vsftpd http://slacksite.com/other/ftp.html
 
@@ -658,6 +668,8 @@ specify config for user to sudo in visudo:
 mscc    ALL = NOPASSWD: /sbin/service tomcat7 start,/sbin/service tomcat7 stop
 mscc    ALL = NOPASSWD: /sbin/service redis start , /sbin/service redis stop 
 
+!!!It's important.
+visudo -c  检查sudoers文件语法
 
 
 yum groupinstall "X Window System"
