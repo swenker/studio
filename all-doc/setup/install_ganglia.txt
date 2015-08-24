@@ -1,12 +1,17 @@
-ganglia
+ganglia installation
+server:
 one gweb
-one gmetad
-multi gmond.[hosts abc（hsflowd） -> host d's gmond]
-gmonds-> gmetad [gmetad gets data from gmond by data source configuration]
+one gmetad [gweb -->gmetad ->gmond ->hsflow(gmond)] [gmetad gets data from gmond by data source configuration]
+one gmond.
+
+client:
 gmond on client can be replaced by hsflowd
+[centos]one hsflowd[not use gmond any more] 
+[windows]
+
 
 通过自动yum安装的版本太低，不支持sflow，所以需要从源码安装，安装后配置文件用的路径是在/usr/local/etc下。
-源码是包含所有，
+而源码包含所有
 
 配置方面：
 如果gmetad需要从多个cluster收集数据，那么需要在 gmetad.conf中加入
@@ -46,19 +51,22 @@ gmond 没有收到hsflowd的node状态---没有其他host列表 ,一般都是防
 -A INPUT -i eth0 -p udp -m udp --dport 6343 -j ACCEPT
 
 hsflowd
+http://blog.sflow.com/2010/10/installing-host-sflow-on-linux-server.html
 should use unicast
 
-if gmond is installed from source,the config path is in :/usr/local/etc ,
+if gmond is installed from source,the config path is in :/usr/local/etc , it does not exist if it is installed from source.
+  so gmond -t >gmond.conf will generate it.
 if installed from yum,  /etc/ganglia/gmond.conf
 /usr/local/sbin/gmond
 
 1.install && basics:
 download the package and install,some extra dependent should be installed.
-apr apr-devel lconfuse libconfuse-devel expat expat-devel pcre pcre-devel zlib zlib-devel
+apr apr-devel lconfuse libconfuse-devel expat expat-devel pcre pcre-devel zlib zlib-devel rrdtool rrdtool-devel
 
 ./configure will complains this.
 if configure is ok,you will get the feedback .
 
+configure --with-gmetad
 [gmond] --data collection and it will report data to gmetad. 
 some of the networks forbid broadcast,so unicast can be used.
 it use multicase by default.
@@ -67,6 +75,7 @@ if gmond serves as a monitor client:
 open /etc/ganglia/gmond.conf and add host=your central collector and comment out other m-cast line.
 gmond -d 10 
 
+========================
 [gmetad] (the Ganglia Meta Daemon) is the service that collects metric data from other
 gmetad and gmond sources and stores their state to disk in RRD format.
 #sudo yum install ganglia-gmetad
@@ -75,9 +84,13 @@ ganglia-gmetad will be always installed on the same server with web.
 
 ganglia web 
 sudo yum -y install ganglia-gmond ganglia-gmetad  ganglia-web
+--------------------------------------------------------
+there is readme in the folder.
+edit Makefile 
+cp apache.conf /etc/httpd/conf.d/ganglia.conf
+make install
 
-[问题，从source如何安装这几个]
-restart httpd
+service restart httpd
 
 
 cluster: consists of hosts[cluster peers have the save multicast address] 
@@ -92,12 +105,17 @@ check gmetad
 telnet 127.0.0.1 8652
 telnet 127.0.0.1 8649
 
-/
 /cluster-name
 
 deaf node
 mute node
 
+vist web console:
+There was an error collecting ganglia data (127.0.0.1:8652): fsockopen error: Permission denied
+
+getenforce :enforcing
+setenforce 0 
+refresh page.
 
 07.Graphite:
   a tool to display data.
@@ -161,6 +179,10 @@ default=`/usr/local/etc/gmetad.conf')
 https://github.com/ganglia
 
 thereis a setuid =nobody ,this should the same the owner of /var/lib/ganglia/rrds
+
+RRDs directory '/var/lib/ganglia/rrds' is not readable.
+mkdir -p /var/lib/ganglia/rrds
+
 
 web 3.6 just copy file but can not be opened?
 1.ganglia-web config:
@@ -249,8 +271,5 @@ Arguments can be passed to the sFlow module as system properties:
 sflow.hostname: optionally assign a "hostname" to identify the virtual machine. Choose a naming strategy that is helpful in identifying virtual machine instances, for example: "hadoop.node1" etc. The hostname is exported in the sFlow host_descr structure. 
 sflow.uuid: optionally assign a UUID to the virtual machine so that it can be uniquely identified. The UUID is exported in the sFlow host_descr structure.
 sflow.dsindex: uniquely identifies the data source associated with this virtual machine on this server. The dsindex number only needs to be set if more than one virtual machine is running on the server. For virtual machines offering network services, use TCP/UDP port number associated with the service as the dsindex, otherwise, use numbers in the range 65536-99999 to avoid clashes with other sFlow agents on the server.
-
-
-how to?
 
 
