@@ -8,21 +8,22 @@ cacti: deprecated.
 http://www.cacti.net/download_cacti.php
 http://docs.cacti.net/
 
+
+https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/quickstart-fedora.html
+There will be an README in the source root which will show you how to get started.
 server:
 ---------------------
 nagios core
 sudo su -
 #yum -y install httpd openssl openssl-devel ssl php gcc glibc glibc-common gd gd-devel net-snmp
-[verified in ali]#yum -y install httpd php
 if php is not installed httpd will complain permission issue.
 
 libssl-dev 
   
-#useradd -d /data/nagios -m nagios
+#useradd -m nagios
 #passwd nagios [nagios]
 #groupadd nagcmd
-[root@dev001 ~]# usermod -a -G nagcmd nagios
-[root@dev001 ~]# usermod -a -G nagcmd apache
+[root@dev001 ~]# usermod -a -G nagcmd nagios && usermod -a -G nagcmd apache
 
 nagios:wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.5.0.tar.gz
 nagios plugin: wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz
@@ -33,20 +34,20 @@ NDOUtils is deprecated. use ganglia.
 #cd nagios
 #./configure --with-command-group=nagcmd
 
-make all
-make install
-make install-init
-make install-config
-make install-commandmode
-make install-webconf
+make all 
+make install && make install-init && make install-config && make install-commandmode && make install-webconf
+
+make install-exfoliation && make install-classicui
 
 cp -R contrib/eventhandlers/ /usr/local/nagios/libexec/
 chown -R nagios:nagios /usr/local/nagios/libexec/eventhandlers
 
 vi /usr/local/nagios/etc/objects/contacts.cfg email有多个，可以用,隔开
 
-htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin   
+Create a nagiosadmin account for logging into the Nagios web interface. Remember the password you assign to this account - you'll need it later.
+htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
 
+[moni.321]
 service httpd restart
 
 ====plugin:
