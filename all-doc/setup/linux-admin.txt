@@ -193,9 +193,6 @@ mail:
 修改/etc/mail.rc)
 set from=fromUser@domain.com smtp=smtp.domain.com
 set smtp-auth-user=username smtp-auth-password=passwordset smtp-auth=login
- 
- /etc/postfix/mail.cf protocols=ipv4
-
 
 mail -s "test" msgates@126.com <content.txt 其中-s后面的是邮件标题，user@sohu.com是收件人地址，content.txt里面是邮件正文
 mail -s "test" swenker@126.com <content.txt
@@ -203,7 +200,11 @@ mail -s "test" swenker@126.com <content.txt
 
 sendmail "test send mail" swenker@126.com <README
 
-用自带服务：
+sendmail: fatal: parameter inet_interfaces: no local interface found for ::1
+i solved this by setting in /etc/postfix/main.cf
+
+inet_protocols = ipv4
+inet_interfaces = all 
 
 当postfix启动以后，发邮件都能成功，不需要做额外的配置。
 
