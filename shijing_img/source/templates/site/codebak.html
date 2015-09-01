@@ -1,0 +1,11 @@
+
+
+
+pagination
+
+        <div >
+              $ N_FETCH = 10
+              $ npage = (ptotal + N_FETCH-1)/N_FETCH
+              $for i in range(0,npage,1):
+                   <a href="?start=${i*N_FETCH}&nfetch=$N_FETCH">$i</a>
+        </div>
