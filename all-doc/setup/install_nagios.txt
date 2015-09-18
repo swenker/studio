@@ -1,20 +1,30 @@
-nagios &cacti:
-according to :
-C:\Users\samsung\Downloads\nagios-coredocs\3x\en\quickstart-fedora.html
-execute the following steps using root 
-
-
-cacti: deprecated.
-http://www.cacti.net/download_cacti.php
-http://docs.cacti.net/
-
-
+nagios 
+--------------------------------------------------------------------------------------------
+https://www.digitalocean.com/community/tutorials/how-to-install-nagios-4-and-monitor-your-servers-on-centos-7
 https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/quickstart-fedora.html
+
+centos 7 is a little different with centos6
+
+--nagios core  
+--nagios plugin 
+--nrpe: contain NRPE and check_nrpe
+
+Server:Nagios core,nagios plugin,nrpe (check_nrpe)
+Client: nrpe(Daemon),nagios plugin
+
+download the above from nagios.org and http://sourceforge.net/projects/nagios/files/nrpe-2.x/
+for centos7,please use nrpe-2.15
+
+
+--------------------------------------------------------------------------------------------
+
 There will be an README in the source root which will show you how to get started.
-server:
+
+==server:
 ---------------------
 nagios core
 sudo su -
+
 #yum -y install httpd openssl openssl-devel ssl php gcc glibc glibc-common gd gd-devel net-snmp
 if php is not installed httpd will complain permission issue.
 
@@ -26,9 +36,7 @@ libssl-dev
 [root@dev001 ~]# usermod -a -G nagcmd nagios && usermod -a -G nagcmd apache
 
 nagios:wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.5.0.tar.gz
-nagios plugin: wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz
 
-NDOUtils is deprecated. use ganglia.
 
     
 #cd nagios
@@ -50,10 +58,10 @@ htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
 [moni.321]
 service httpd restart
 
-====plugin:
+===plugin:
 
-cd nagios-plugins-1.4.16
-./configure --with-nagios-user=nagios --with-nagios-group=nagios with-mysql
+cd nagios-plugins-X
+./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-mysql --with-openssl
           
 wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz && 
 chkconfig --add nrpe && chkconfig nrpe on && /bin/cp nrpe.cfg /etc/nagios/ && tar -xzf nagios-plugins-1.5.tar.gz && cd nagios-plugins-1.5 && ./configure --with-nagios-user=nagios --with-nagios-group=nagios && make && make install && service nrpe restart
@@ -76,8 +84,11 @@ chcon -R -t httpd_sys_content_t /usr/local/nagios/sbin/
 chcon -R -t httpd_sys_content_t /usr/local/nagios/share/
 
 
+==NRPE:
+./configure and make all will generate two files under src. check_nrpe and nrpe. copy check_nrpe to /usr/local/nagios/libexec manually
+
 ----------------------------
-install nagiosgraph:
+=== nagiosgraph:
 check README
 Redhat/Fedora/CentOS:
    yum -y install rrdtool, perl, perl-rrdtool, perl-GD,rrdtool-perl
@@ -90,7 +101,6 @@ rrd 目录必须让apache可读，+x权限（父目录也需要）
 Configuring Graphing and Display:add action_url for service.
 
 
-1.where to get the guide:
 
 
 --done.
@@ -102,10 +112,16 @@ client(hosts to be monitored):
 2.nrpe
 
 #yum --enablerepo=epel -y install nrpe  【do this on remote host】
+/usr/local/nagios/libexec/check_nrpe -H target 
+if no route to host : please check service.
+sudo systemctl start nrpe.service
+sudo systemctl enable nrpe.service
 
 #-------Deprecated
 #do this on nagios host:
 #wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz/download
+./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl 
+
 make all
 make install-plugin
 make install-daemon
@@ -119,7 +135,7 @@ chkconfig --add nrpe
 chkconfig nrpe on
 
  
-
+=======
 install check_NSclient ++ on windows:
 http://files.nsclient.org/stable/
 http://files.nsclient.org/stable/NSCP-0.4.1.101-x64.msi
@@ -130,7 +146,6 @@ install check_logfiles
 
 http://labs.consol.de/lang/en/nagios/check_logfiles/check_logfiles-beispielecheck_logfiles-examples/
 http://labs.consol.de/download/shinken-nagios-plugins/check_logfiles-3.5.3.2.tar.gz
-http://labs.consol.de/download/shinken-nagios-plugins/check_logfiles-3.5.3.2(2).zip
 
 ------------------
 check log.
@@ -152,32 +167,11 @@ add to /etc/nrpe.cfg command[check_logfiles]=/usr/local/nagios/libexec/check_log
 if some lib wasn't installed, please redo configure then make.
 
 
-./configure
-make install
-
 iptables -A INPUT -p tcp --dport 5666 -j ACCEPT
 
 
-install NPC 太不成熟了，表结构都有问题，
-[download npc-2.0.4.tar.gz from csdn]
-   tar -xzf npc-2.0.4.tar.gz
-   sudo mv npc /usr/share/cacti/site/plugins/
-   
-install it via admin site   
-Configure NDOUtils:[see nagios part]
-
-
----------------------------------------------------------------------------------
-
 Reference:
 ================================================================================
-install NRPE wget http://prdownloads.sourceforge.net/sourceforge/nagios/nrpe-2.14.tar.gz
-http://www.nagios.org/download/addons/
-http://nagiosplugins.org/man
-
-wget http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-3.4.1.tar.gz
-
-
 
 Creating sample config files in sample-config/ ...
 

@@ -5,9 +5,10 @@ one gmetad [gweb -->gmetad ->gmond ->hsflow(gmond)] [gmetad gets data from gmond
 one gmond.
 
 client:
-gmond on client can be replaced by hsflowd
+gmond on client can be replaced by hsflowd, hsflow will send data to remote gmond via udp 6343. 
 [centos]one hsflowd[not use gmond any more] 
 [windows]
+So the remote gmond.conf should disable multi cast and enable bind to it's ip. because most of the network will disable broadcast.
 
 
 通过自动yum安装的版本太低，不支持sflow，所以需要从源码安装，安装后配置文件用的路径是在/usr/local/etc下。

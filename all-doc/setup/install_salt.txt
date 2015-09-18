@@ -1,0 +1,27 @@
+setup salt :
+
+salt-master 
+salt-minion , minion--> master 
+Installation:
+get epel and install it.
+https://docs.saltstack.com/en/2014.7/topics/installation/rhel.html
+
+yum install salt-master
+yum install salt-minion
+
+Configuration:
+location: /etc/salt/[master|minion]
+master: change local bind interface/ipaddress
+minion: get the server of 'salt',I add new entry into /etc/hosts  ip   salt
+
+  Fingerpoint?
+  
+  salt-key -F master
+  
+  salt-call --local key.finger
+
+To accept the keys and allow the Minions to be controlled by the Master, again use the salt-key command:
+salt-key -A   # accept all ketys.
+
+
+  
