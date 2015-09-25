@@ -24,4 +24,22 @@ To accept the keys and allow the Minions to be controlled by the Master, again u
 salt-key -A   # accept all ketys.
 
 
-  
+usage:
+1.send commands from master to minion
+create and edit top files 
+sudo salt '*' state.highstate
+
+salt-master -d
+top file is located at :/srv/salt
+2.start minion on centos:
+salt-minion -d
+
+my tasks:
+1.how to push setup to all hosts
+2.how to push to some of the hosts
+3.env: files. hosts. users?
+
+
+
+ 
+ 

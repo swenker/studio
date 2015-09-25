@@ -1,0 +1,19 @@
+ntp
+
+yum -y install ntp
+this includes dameon
+
+NTP uses 123/UDP.
+iptables -A INPUT -m state --state NEW -m udp -p udp --dport 123 -j ACCEPT
+
+vim /etc/ntp.conf
+
+
+server xx.xxx prefer
+
+
+restrict 192.168.1.0 mask 255.255.255.0 
+
+ntpq -p  :used for debug.  network issue?
+
+
