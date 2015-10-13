@@ -41,6 +41,9 @@ cmsService = cms_service.cmsService
 serviceHelper = wshelper.ServiceHelper()
 session = serviceHelper.init_user_session(web,app)
 
+logger = config.getlogger()
+logger.info('usersite initialized')
+
 def my_loadhook():
     request_uri = web.ctx.environ.get('REQUEST_URI')
     if not session.get('uinfo') and request_uri != '/p/u/login':

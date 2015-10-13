@@ -17,6 +17,12 @@ class ServiceConfig():
             print "Attention:[%s] does not exist,the following path will be used:\n[%s]" % (
                 os.path.abspath(conf_file), os.path.abspath(confpath))
             print "------------------"
+        else:
+            print '------------------'
+            print '[%s],[%s]' %(os.path.abspath(conf_file), os.path.abspath(confpath))
+            print '------------------'
+
+
 
         logging.config.fileConfig(confpath + "/log.cfg")
 
@@ -73,11 +79,11 @@ class ServiceConfig():
         #return "dbn=%s, db=%s, host=%s, user=%s, passwd=%s" %(self.dbn,self.db,self.host,self.user,self.passwd)
         return self.__dict__.__repr__()
 
-    def getlogger(self, loggername="cms"):
+    def getlogger(self, loggername="CmsService"):
         return logging.getLogger(loggername)
 
 
 config = ServiceConfig("/var/shijing/conf")
 
-config.getlogger("ServiceConfig").info("Service Config loaded successfully..")
-config.getlogger("ServiceConfig").info(config)
+config.getlogger().info("Service Config loaded successfully..")
+config.getlogger().info(config)

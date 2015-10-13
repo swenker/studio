@@ -72,6 +72,10 @@ serviceHelper = ServiceHelper()
 adm_session = serviceHelper.init_adm_session(web,app)
 web.config.session_parameters['timeout'] = 8000
 
+logger = config.getlogger()
+logger.info('admincms initialized')
+
+
 def my_loadhook():
     request_uri = web.ctx.environ.get('REQUEST_URI')
     # print adm_session.get('admin')

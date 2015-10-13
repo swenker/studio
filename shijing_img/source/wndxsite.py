@@ -38,11 +38,13 @@ t_globals = {
 render = web.template.render("templates/site", globals=t_globals)
 
 cmsService = cms_service.cmsService
+logger = config.getlogger()
 
 serviceHelper = ServiceHelper()
 
 _EVERY_PAGE = config.nevery_page
 
+logger.info('wndxsite initialized')
 
 class HomePage():
     def GET(self):

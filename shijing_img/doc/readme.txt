@@ -43,7 +43,6 @@ issues encountered:
   not so easy to add it when using dropzone like framework?
   how to design image upload function?
 
-first step:upload without title
 
 db:refactor--using prepared statements instead of direct string assignments.
 
@@ -57,3 +56,5 @@ http://learn.jquery.com/using-jquery-core/selecting-elements/
 
 1.for convenience ,edit pages should be put into templates
 
+http://yinyushijing.cn
+http://yinyushijing.cn/

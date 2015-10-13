@@ -25,7 +25,7 @@ TABLE_PREORDER = 'site_preorder'
 
 decimal.getcontext().prec = 2
 config = service_config.config
-logger = config.getlogger("CmsService")
+logger = config.getlogger()
 
 #web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
 db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd)
