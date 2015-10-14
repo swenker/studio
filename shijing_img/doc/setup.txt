@@ -25,3 +25,12 @@ git clone git@github.com:swenker/studio.git
 config : /var/shijing/conf
 www: /var/shijing/www
 img  /var/shijing/img
+
+
+
+
+Application initialization:
+1.init folders:
+  /var/shijing/
+
+2.

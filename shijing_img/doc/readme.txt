@@ -1,4 +1,9 @@
 
+upload photo:
+1.convert img to small ones using cmd tool.
+2.put to /var/shijing/img/raw?
+3.click load on webpage.
+
 tips:
 ~/software/uwsgi-2.0.3/uwsgi web.ini
 

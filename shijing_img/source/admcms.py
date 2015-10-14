@@ -285,7 +285,7 @@ class UploadImage:
                     cmsService.create_img(imgmeta)
                     return render.common("OK")
                 except StandardError,e:
-                    return render.common("Failed:"+e)
+                    return render.common("Failed:"+e.message)
 
         except ValueError:
             return "File Limit is 1MB."
