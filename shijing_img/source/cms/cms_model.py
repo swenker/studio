@@ -183,6 +183,7 @@ class SiteUser:
         self.passwd = passwd
         self.mobile = mobile
         self.status = status
+        self.dtcreate = None
 
 
     def __repr__(self):

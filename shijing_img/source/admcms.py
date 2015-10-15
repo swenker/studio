@@ -48,7 +48,8 @@ urls = ("/adminsvc", "AdminService",
         "/okimgs/(\d+)", "ListSelectedImages",
         "/yy", "ListPreorder",
         "/yydelete/(\d+)", "DeletePreorder",
-        "/siteuser/new","SiteUserHandler"
+        "/siteuser/new","SiteUserHandler",
+        "/siteuser/list","SiteUserList"
         )
 
 config = service_config.config
@@ -384,9 +385,9 @@ class LoadFolder():
 
         orderid = int(params.orderid)
 
-        counter = batch_image_handler.load_local_folder(folder,cms_service.album_map.get('oa').oid,orderid)
+        counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
-        return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %counter,orderid)
+        return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %(counter,orderid))
 
 class ListOrders():
     def GET(self):
@@ -483,5 +484,13 @@ class SiteUserHandler():
             uid = cmsService.create_siteuser(siteuser)
             cmsService.update_porder_status(poid,uid,2)
             return "{\"status\":\"OK\"}"
+        except BaseException,e:
+            return e
+
+class SiteUserList():
+    def GET(self):
+        try:
+            rlist = cmsService.list_siteuser()
+            return render.siteuser_list(rlist)
         except BaseException,e:
             return e

@@ -829,7 +829,7 @@ class CmsService:
 
     def create_siteuser(self,siteuser):
         sqls = "INSERT INTO %s( email,passwd ,nickname,mobile)VALUES($email,$passwd,$nickname,$mobile)" %TABLE_SITE_USER
-        db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile})
+        db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile,'dtcreate':get_timenow()})
 
         result = db.query("select LAST_INSERT_ID() AS mid ")
         mid = -1
@@ -841,6 +841,26 @@ class CmsService:
         sqls = "UPDATE %s SET status=$status,uid=$uid WHERE id=$oid" %TABLE_PREORDER
 
         db.query(sqls,vars={'oid':oid,'uid':uid,'status':status})
+
+    def list_siteuser(self):
+        sqls = "SELECT * FROM %s ORDER BY id" %TABLE_SITE_USER
+        result = db.query(sqls)
+        if result:
+            user_list = []
+            for r in result:
+                suser = SiteUser()
+                suser.oid = r['id']
+                suser.mobile = r['mobile']
+                suser.email = r['email']
+                suser.nickname = r['nickname']
+                suser.status = r['status']
+                suser.dtcreate = r['dtcreate']
+                user_list.append(suser)
+
+            return user_list
+
+
+
 
 
 

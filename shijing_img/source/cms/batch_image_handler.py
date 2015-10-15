@@ -21,6 +21,7 @@ class LocalFileScanner():
         pass
 
     def scan(self,relative_folder):
+        logger.info(relative_folder)
         full_path = config.img_save_path+"/raw"+relative_folder
         # files = glob.glob(full_path+"/*.jpg")
         files = glob.glob(full_path+"/*")
