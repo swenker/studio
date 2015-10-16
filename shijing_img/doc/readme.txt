@@ -37,11 +37,6 @@ steps:
 
 choose a html editor
 
-features design:
-------------------------
-1.cms
-2.statistics
-
 issues encountered:
 1.what to be primary key? why the id is odds? it's due to db configuration.
 2.title field for image or not when upload?

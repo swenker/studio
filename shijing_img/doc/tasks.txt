@@ -15,6 +15,12 @@
 3.place order?
 4.prepare pictures for gallery
 
+2015-10-16
+1.logo
+2.userlist->user's orderlist->order info->picture list
+3.add user by admin
+4.add order for user
+
 
 
 
