@@ -49,7 +49,8 @@ urls = ("/adminsvc", "AdminService",
         "/yy", "ListPreorder",
         "/yydelete/(\d+)", "DeletePreorder",
         "/siteuser/new","SiteUserHandler",
-        "/siteuser/list","SiteUserList"
+        "/siteuser/list","SiteUserList",
+        "/download_selectresult/(d+)","DownloadSelectResult"
         )
 
 config = service_config.config
@@ -87,7 +88,7 @@ def my_unloadhook():
     #print "my unload hook"
     pass
 
-app.add_processor(web.loadhook(my_loadhook))
+#app.add_processor(web.loadhook(my_loadhook))
 app.add_processor(web.unloadhook(my_unloadhook))
 
 
@@ -492,5 +493,27 @@ class SiteUserList():
         try:
             rlist = cmsService.list_siteuser()
             return render.siteuser_list(rlist)
+        except BaseException,e:
+            return e
+
+
+class DownloadSelectResult():
+    def GET(self,oid):
+        try:
+
+            rlist = cmsService.list_selected_imgs(int(oid))
+            selected_filenames=[]
+            for i in range(0,len(rlist)):
+               img=rlist[i]
+               img_filename = img.file.split('/')[-1]
+               selected_filenames.append(img_filename)
+
+            selected_content = " ".join(selected_filenames)
+
+            #set http response header here
+            web.header("content-disposition", 'attachment; filename="' + 'selected_'+str(oid)+'"')
+            web.header("content-length",str(len(selected_content)))
+
+
         except BaseException,e:
             return e
