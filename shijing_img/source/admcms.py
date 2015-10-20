@@ -513,7 +513,7 @@ class DownloadSelectResult():
             #set http response header here
             web.header("content-disposition", 'attachment; filename="' + 'selected_'+str(oid)+'"')
             web.header("content-length",str(len(selected_content)))
-
+            return selected_content
 
         except BaseException,e:
             return e
