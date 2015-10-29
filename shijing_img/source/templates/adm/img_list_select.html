@@ -112,7 +112,9 @@ $def with(rlist,total,oid)
                     <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" height="120" align="center"/>
                     </a>
                 </div>
-                <div class="panel-footer" align="right">$img_filename&nbsp;&nbsp;<input id="ck_$img.oid" type="checkbox" $checked disabled></div>
+                <div class="panel-footer" align="right">$img_filename&nbsp;&nbsp;<input id="ck_$img.oid" type="checkbox" $checked disabled>
+                &nbsp; <a class="btn active" href="/p/adm/imgdelete/$img.oid">删除</a>
+                </div>
             </div>
         </div>
     </div>
