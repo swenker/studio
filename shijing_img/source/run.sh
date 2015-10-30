@@ -1,0 +1,1 @@
+nohup uwsgi prod_adm_site.ini &

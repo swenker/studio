@@ -859,9 +859,15 @@ class CmsService:
 
             return user_list
 
+    def update_order_statue(self,oid,status):
+        if not oid or oid<1:
+            logger.warn("Invalid order id "+str(oid))
 
+        sqls = "UPDATE %s SET status=$status WHERE id=$oid" % TABLE_SITE_ORDER
 
+        db.query(sqls,vars={'oid':oid,'status':status})
 
+        logger.info("order %d status updated to %d" %(oid,status))
 
 
 

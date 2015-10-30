@@ -151,6 +151,13 @@ class Comment:
         return self.__dict__
 
 class Order:
+    ORDER_SELECTING=1
+    ORDER_SELECTED=3
+    ORDER_DELIVERING=5
+    ORDER_COMPLETED=7
+    ORDER_CANCEL=9
+
+
     def __init__(self,uid):
         self.oid = 0
         self.title = ''

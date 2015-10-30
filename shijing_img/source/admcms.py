@@ -50,7 +50,8 @@ urls = ("/adminsvc", "AdminService",
         "/yydelete/(\d+)", "DeletePreorder",
         "/siteuser/new","SiteUserHandler",
         "/siteuser/list","SiteUserList",
-        "/download_simglist/(\d+)","DownloadSelectedImageResult"
+        "/download_simglist/(\d+)","DownloadSelectedImageResult",
+        "/order/status","ChangeOrderStatus"
         )
 
 config = service_config.config
@@ -386,6 +387,7 @@ class LoadFolder():
 
         orderid = int(params.orderid)
 
+        #TODO using new thread? how to update web view?
         counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
         return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %(counter,orderid))
@@ -516,3 +518,16 @@ class DownloadSelectedImageResult():
 
         except BaseException,e:
             return e
+
+class ChangeOrderStatus():
+    def GET(self):
+        params = web.input()
+
+        oid = int(params.oid)
+        status = int(params.status)
+
+        cmsService.update_order_statue(oid,status)
+        
+
+
+
