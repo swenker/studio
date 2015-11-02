@@ -526,8 +526,8 @@ class ChangeOrderStatus():
         oid = int(params.oid)
         status = int(params.status)
 
-        cmsService.update_order_statue(oid,status)
-        
+        cmsService.update_order_status(oid,status)
+
 
 
 

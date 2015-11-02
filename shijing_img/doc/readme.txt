@@ -58,3 +58,7 @@ http://learn.jquery.com/using-jquery-core/selecting-elements/
 
 http://yinyushijing.cn
 http://yinyushijing.cn/
+
+
+implementation rules:
+log info are recorded in service layer instead of controller [action?]

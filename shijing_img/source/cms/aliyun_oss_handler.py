@@ -5,7 +5,8 @@ import service_config
 import time
 
 bucket_name = "simage"
-oss_host="oss-cn-beijing.aliyuncs.com"
+#oss_host="oss-cn-beijing.aliyuncs.com"
+oss_host="oss-cn-beijing-internal.aliyuncs.com"
 appid="MKD6WfLZOSq03lKl"
 appkey="brNGbHQjtKE1SQ4mDuPuPEO4nc0lJB"
 

@@ -775,8 +775,10 @@ class CmsService:
                 if user.status == 1:
                     if user.passwd == md5(passwd):
                         user.passwd=None
+                        logger.info("%s logged in" %user.mobile)
                         return user, 'OK'
                 else:
+                    logger.info("%s status is abnormal:%d" %(user.mobile,user.status))
                     return user.status, 'status'
 
         logger.warn("NotFoundUser:%s" % mobile)
@@ -859,15 +861,18 @@ class CmsService:
 
             return user_list
 
-    def update_order_statue(self,oid,status):
-        if not oid or oid<1:
-            logger.warn("Invalid order id "+str(oid))
+    def update_order_status(self,oid,status):
+        try:
+            if not oid or oid<1:
+                logger.warn("Invalid order id "+str(oid))
 
-        sqls = "UPDATE %s SET status=$status WHERE id=$oid" % TABLE_SITE_ORDER
+            sqls = "UPDATE %s SET status=$status WHERE id=$oid" % TABLE_SITE_ORDER
 
-        db.query(sqls,vars={'oid':oid,'status':status})
+            db.query(sqls,vars={'oid':oid,'status':status})
 
-        logger.info("order %d status updated to %d" %(oid,status))
+            logger.info("order %d status updated to %d" %(oid,status))
+        except BaseException,e:
+            logger.error("Failed to update order %d status to %d,due to :%s" %(oid,status,e))
 
 
 
