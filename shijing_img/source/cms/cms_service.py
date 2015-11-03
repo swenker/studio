@@ -6,6 +6,7 @@ import web
 from backend_service_helper import *
 from cms_model import *
 from aliyun_oss_handler import *
+import string_tool
 
 
 TABLE_ARTICLE_META = "cms_article_meta"
@@ -28,7 +29,7 @@ config = service_config.config
 logger = config.getlogger()
 
 #web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
-db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd)
+db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=string_tool.decrypt(config.passwd))
 
 album_map = {}
 category_map = {}
