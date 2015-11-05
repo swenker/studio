@@ -51,7 +51,8 @@ urls = ("/adminsvc", "AdminService",
         "/siteuser/new","SiteUserHandler",
         "/siteuser/list","SiteUserList",
         "/download_simglist/(\d+)","DownloadSelectedImageResult",
-        "/order/status","ChangeOrderStatus"
+        "/order/status","ChangeOrderStatus",
+        "/order/imgcover/(\d+)","GetOrderImageCover"
         )
 
 config = service_config.config
@@ -527,6 +528,14 @@ class ChangeOrderStatus():
         status = int(params.status)
 
         cmsService.update_order_status(oid,status)
+
+class GetOrderImageCover():
+    def GET(self,oid):
+        img = cmsService.get_order_imgcover(oid)
+        if img:
+            return img.file
+        else:
+            return ""
 
 
 

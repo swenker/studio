@@ -730,7 +730,6 @@ class CmsService:
         db.query(sqls, vars={'orderid': orderid, 'iid': iid})
 
 
-    #TODO
     def list_order_imgs(self, oid, status=1):
         sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc '
 
@@ -744,6 +743,18 @@ class CmsService:
                     rlist.append(img)
 
         return rlist
+
+    def get_order_imgcover(self, oid):
+        sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc limit 1'
+
+        result = db.query(sqls, vars={'oid': oid})
+
+        if result:
+            for r in result:
+                img = self.compose_image(r, True)
+                if img:
+                    return img
+
 
     #TODO
     def list_selected_imgs(self, oid):

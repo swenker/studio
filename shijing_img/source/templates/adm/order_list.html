@@ -60,17 +60,20 @@ $def with(rlist,total)
                             $order.title &nbsp; [$order.dtcreate]
                         </div>
                         <div class="panel-body">
-                            用  户: $order.uid <br/>
+                            <img id="img_${order.oid}" width="100" align="right">
+                            订单ID: $order.oid <br/>
+                            用户ID: $order.uid <br/>
                             价  格: $order.price <br/>
-                            总张数: $order.total_limit <br/>
-                            精  修: $order.edit_limit
+                            拍摄地: $order.venue <br/>
+                            总张数: $order.total_limit&nbsp;&nbsp;精  修: $order.edit_limit
+
                         </div>
                         <div class="panel-footer" align="right">
-                             <a class="btn active" href="/p/adm/order/form?oid=$order.oid">状态管理</a>&nbsp;
+                             <!--class="btn active" --><a href="/p/adm/order/form?oid=$order.oid">状态管理</a>&nbsp;
                              <a href="/p/adm/order/form?oid=$order.oid">修改</a>&nbsp;
                              <a href="/p/adm/order/delete?oid=$order.oid">删除</a>&nbsp;
-                             <a href="/p/adm/listimgs/$order.oid">查看上传的照片</a>&nbsp;
-                              <a href="/p/adm/okimgs/$order.oid">查看选片结果</a>
+                             <a href="/p/adm/listimgs/$order.oid">所有照片</a>&nbsp;
+                             <a href="/p/adm/okimgs/$order.oid">选片结果</a>
                         </div>
                     </div>
                 </div>
@@ -86,7 +89,7 @@ $def with(rlist,total)
     <!-- /#wrapper -->
 
     <!-- jQuery Version 1.11.0 -->
-    <script src="/adm/js/jquery-1.11.0.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/adm/js/bootstrap.min.js"></script>
@@ -97,6 +100,29 @@ $def with(rlist,total)
     <!-- Custom Theme JavaScript -->
     <script src="/adm/js/sb-admin-2.js"></script>
 
+    <script>
+        function getImagePath(oid){
+            imgPath=''
+            $$.ajax({
+                type: "GET",
+                url: '/p/adm/order/imgcover/'+oid,
+                async: false,
+                success : function(data) {
+                    imgPath = data;
+                }
+            });
+            return imgPath;
+        }
+        $$(document).ready(function(){
+               for(i=0;i<${len(rlist)};i++){
+                   orderId=eval(i);
+                   imgPath=getImagePath(orderId);
+                   if(imgPath!=''){
+                       $$("#img_"+orderId).attr("src","${service_config.img_url +"/thumb"}"+imgPath);
+                   }
+               }
+        });
+    </script>
 </body>
 
 </html>

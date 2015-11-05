@@ -22,5 +22,11 @@
 4.add order for user
 
 
-
+2015-11-05
+1.send mail when new photo is uploaded,u pan is send out and so on.
+2.set avatar for user
+3.lock order status
+4.prepare articles for Sheyingxueyuan.
+5.get an image for order
+6.large pic for phone users to select instead of view new img?
 
