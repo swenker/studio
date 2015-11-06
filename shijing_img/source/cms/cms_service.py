@@ -29,7 +29,7 @@ config = service_config.config
 logger = config.getlogger()
 
 #web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
-db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=string_tool.decrypt(config.passwd))
+db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=string_tool.decrypt(config.passwd,config.passwd_padding))
 
 album_map = {}
 category_map = {}

@@ -27,8 +27,8 @@ def encrypt(raw_msg, salt=SECURITY_SALT):
     return base64_encoded
 
 
-def decrypt(encrypted_msg, salt=SECURITY_SALT):
-    padding = salt
+def decrypt(encrypted_msg,end):
+    padding = SECURITY_SALT[:end]
     base64_decoded = base64.decodestring(encrypted_msg)
 
     # print "b64:%d" % len(base64_decoded)

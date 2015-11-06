@@ -88,9 +88,6 @@ $def with(rlist,total)
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery Version 1.11.0 -->
-    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="/adm/js/bootstrap.min.js"></script>
 
@@ -114,7 +111,7 @@ $def with(rlist,total)
             return imgPath;
         }
         $$(document).ready(function(){
-               for(i=0;i<${len(rlist)};i++){
+               for(i=1;i<=${len(rlist)};i++){
                    orderId=eval(i);
                    imgPath=getImagePath(orderId);
                    if(imgPath!=''){

@@ -35,6 +35,7 @@ class ServiceConfig():
         self.db = configparser.get('db', 'db')
         self.user = configparser.get('db', 'user')
         self.passwd = configparser.get('db', 'passwd')
+        self.passwd_padding = int(configparser.get('db', 'passwd.padding'))
 
         self.web_base = configparser.get("web", "web_base")
         self.nevery_page = int(configparser.get("web","nevery_page"))
