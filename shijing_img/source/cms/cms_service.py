@@ -777,6 +777,27 @@ class CmsService:
 
         db.query(sqls, vars={'status': status, 'iid': iid})
 
+    def get_siteuser(self,uid):
+        sqls = 'SELECT id,mobile,nickname,email,status,dtcreate FROM %s WHERE id=$uid' % TABLE_SITE_USER
+        result = db.query(sqls,vars={'uid':uid})
+        if result:
+            user = SiteUser()
+            for r in result:
+                user.oid = r['id']
+                user.status = r['status']
+                user.email = r['email']
+                user.nickname = r['nickname']
+                user.mobile = r['mobile']
+                user.dtcreate = r['dtcreate']
+
+            return user
+
+    def save_siteuser(self,**userinfo):
+        sqls = "UPDATE %s SET email=$email,nickname=$nickname,mobile=$mobile,status=$status WHERE id=$uid" % TABLE_SITE_USER
+        db.query(sqls, vars=userinfo)
+
+        logger.info("user:%s saved" %(userinfo))
+
     def site_user_login(self, mobile, passwd):
         sqls = 'select * from %s where mobile=$mobile' % TABLE_SITE_USER
         result = db.query(sqls, vars={'table': TABLE_SITE_USER, 'mobile': mobile})

@@ -50,6 +50,8 @@ urls = ("/adminsvc", "AdminService",
         "/yydelete/(\d+)", "DeletePreorder",
         "/siteuser/new","SiteUserHandler",
         "/siteuser/list","SiteUserList",
+        "/siteuser/save","SaveSiteUser",
+        "/siteuser/(\d+)","GetSiteUser",
         "/download_simglist/(\d+)","DownloadSelectedImageResult",
         "/order/status","ChangeOrderStatus",
         "/order/imgcover/(\d+)","GetOrderImageCover"
@@ -498,6 +500,26 @@ class SiteUserList():
             return render.siteuser_list(rlist)
         except BaseException,e:
             return e
+
+class GetSiteUser():
+    def GET(self,uid):
+        user = cmsService.get_siteuser(int(uid))
+
+        return render.siteuser_form(user)
+
+class SaveSiteUser():
+    def POST(self):
+        # try:
+        params = web.input()
+
+        # cmsService.save_user({'uid':int(params.id),'email':params.email,'nickname':params.nickname,'mobile':params.mobile,'status':int(params.status)})
+
+        cmsService.save_siteuser(uid=int(params.id),email=params.email,nickname=params.nickname,mobile=params.mobile,status=int(params.status))
+
+        return render.common('Saved OK:%d' %params.uid)
+        # except BaseException ,e:
+            #return e
+
 
 
 class DownloadSelectedImageResult():

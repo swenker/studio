@@ -29,4 +29,6 @@
 4.prepare articles for Sheyingxueyuan.
 5.get an image for order
 6.large pic for phone users to select instead of view new img?
+7.web form to update user info
+8.mobile should be identical
 

@@ -1,0 +1,136 @@
+$def with(user)
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+            用户信息
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+
+          $if user:
+               $$(document).ready(function(){
+                   $$('#mobile').val('$user.mobile');
+                   $$('#email').val('$user.email');
+                   $$('#nickname').val('$user.nickname');
+                   $$('#status').val('$user.status');
+               });
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/adm/adm_nav.html");
+            </script>
+        </div>
+
+        <!-- Navigation ends here -->
+
+        <div id="page-wrapper">
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            用户信息 : $user.oid
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <form role="form" action="/p/adm/siteuser/save" method="post">
+                                          $if user:
+                                               <input type="hidden" name="id" id="id" value="$user.oid">
+
+                                        <div class="form-group  ">
+                                            <label for="mobile">手机</label>
+                                            <input name="mobile" id="mobile" size="20" maxlength="11" required="true"> &nbsp;&nbsp;
+                                            <label for="nickname">称呼</label>
+                                            <input name="nickname"  placeholder="" value="" size="20"  id="nickname" maxlength="50">
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="email">email</label>
+                                            <input type="email"  placeholder="" value="" size="40" maxlength="60" name="email" id="email">
+                                            &nbsp;&nbsp;
+                                            $if user:
+                                                <label for="dtcreate">创建时间</label><span id="dtcreate">$user.dtcreate</span>
+
+                                        </div>
+
+
+                                        <div class="form-group  ">
+                                            <label for="status">状态</label>
+                                            <input name="status" id="status" size="40" maxlength="1"> &nbsp;&nbsp;
+
+                                        </div>
+
+                                        <button type="submit" class="btn btn-default">保存</button>
+                                        <button type="reset" class="btn btn-default">重置</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/adm/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/adm/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
