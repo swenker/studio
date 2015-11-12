@@ -39,16 +39,18 @@ def decrypt(encrypted_msg,end):
 
     decoded = DecodeAES(cipher, base64_decoded)
 
+    print padding+";"+decoded
     return decoded
 
 
 if __name__ == '__main__':
     # encred = encrypt('shijing_09a')
-    encred = encrypt('shijing_09a')
+    # encred = encrypt('shijing_09a')
+    encred = encrypt('shijing09')
 
     print encred
 
-    print decrypt(encred)
+    print decrypt(encred,7)
 
 
 

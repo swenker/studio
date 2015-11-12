@@ -65,6 +65,16 @@ def test_python():
     print "Done"
 
 
+def list_arguments(*params):
+    print params
+
+def dict_arguments(**params):
+    # print alist
+    print params
+
 
 if __name__ =='__main__':
-    test_python()
+    # test_python()
+    # list_arguments(1,2,3) #workable
+
+    dict_arguments(**{'a':1,'b':2})

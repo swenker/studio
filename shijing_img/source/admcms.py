@@ -512,11 +512,9 @@ class SaveSiteUser():
         # try:
         params = web.input()
 
-        # cmsService.save_user({'uid':int(params.id),'email':params.email,'nickname':params.nickname,'mobile':params.mobile,'status':int(params.status)})
+        cmsService.save_siteuser(**{'uid':int(params.id),'email':params.email,'nickname':params.nickname,'mobile':params.mobile,'status':int(params.status)})
 
-        cmsService.save_siteuser(uid=int(params.id),email=params.email,nickname=params.nickname,mobile=params.mobile,status=int(params.status))
-
-        return render.common('Saved OK:%d' %params.uid)
+        return render.common('Saved OK:%s' %params.id)
         # except BaseException ,e:
             #return e
 

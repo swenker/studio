@@ -133,6 +133,10 @@ class TestCmsService():
         cmsService.list_orders()
 
 
+    def test_save_siteuser(self):
+        params = {'uid':'1','email':'abc@abc.com','nickname':'Katy','mobile':'1860120','status':'1'}
+        cmsService.save_siteuser(**params)
+
 def abc():
     print "abc"
 
@@ -151,6 +155,8 @@ if __name__ == '__main__':
     # tcs.test_delete_preorder()
 
     # tcs.test_save_order()
-    tcs.test_list_order()
+    # tcs.test_list_order()
+
+    tcs.test_save_siteuser()
 
 

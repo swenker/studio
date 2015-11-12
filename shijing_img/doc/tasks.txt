@@ -27,8 +27,8 @@
 2.set avatar for user
 3.lock order status
 4.prepare articles for Sheyingxueyuan.
-5.get an image for order
+5.get an image for order  -done
 6.large pic for phone users to select instead of view new img?
-7.web form to update user info
+7.web form to update user info -done
 8.mobile should be identical
 
