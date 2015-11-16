@@ -28,6 +28,9 @@ $def with(article_meta,article_content)
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet">
+
     <script>
 
         data_url = "/p/adm/list_category";
@@ -115,6 +118,15 @@ $def with(article_meta,article_content)
                         </div>
 -->
 
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script>
+  $$(function() {
+    $$( "#dtpub" ).datepicker({
+        dateFormat: "yy-mm-dd"
+      }
+    );
+  });
+  </script>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-11">
@@ -127,7 +139,7 @@ $def with(article_meta,article_content)
 
                                         <div class="form-group  ">
                                             <label for="title">标题</label>
-                                            <input name="title" id="title" size="40" maxlength="80"> &nbsp;&nbsp;
+                                            <input name="title" id="title" size="40" maxlength="80"> (20字以内)&nbsp;&nbsp;
                                         <!--</div>
                                         <div class="form-group col-xs-2">-->
                                             <label for="dtpub">发布时间</label>
@@ -153,7 +165,7 @@ $def with(article_meta,article_content)
                                         </div>
 
                                        <div class="form-group">
-                                            <label for="brief">摘要</label>
+                                            <label for="brief">摘要(100字以内)</label>
                                             <textarea  name="brief" id="brief" rows="3" cols="60">
                                               $if article_meta and article_meta.brief:
                                                 $article_meta.brief
