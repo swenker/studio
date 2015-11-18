@@ -806,10 +806,13 @@ class CmsService:
             for r in result:
                 user = self.compose_siteuser(r)
                 if user.status == 1:
+                    # logger.info("passwd=%s, %s",user.passwd,md5(passwd))
                     if user.passwd == md5(passwd):
                         user.passwd=None
                         logger.info("%s logged in" %user.mobile)
                         return user, 'OK'
+                    else:
+                        logger.info("%s tried wrong passwd" %user.mobile)
                 else:
                     logger.info("%s status is abnormal:%d" %(user.mobile,user.status))
                     return user.status, 'status'
@@ -863,7 +866,7 @@ class CmsService:
 
 
     def create_siteuser(self,siteuser):
-        sqls = "INSERT INTO %s( email,passwd ,nickname,mobile)VALUES($email,$passwd,$nickname,$mobile)" %TABLE_SITE_USER
+        sqls = "INSERT INTO %s( email,passwd ,nickname,mobile,dtcreate)VALUES($email,$passwd,$nickname,$mobile,$dtcreate)" %TABLE_SITE_USER
         db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile,'dtcreate':get_timenow()})
 
         result = db.query("select LAST_INSERT_ID() AS mid ")
@@ -877,8 +880,12 @@ class CmsService:
 
         db.query(sqls,vars={'oid':oid,'uid':uid,'status':status})
 
-    def list_siteuser(self):
-        sqls = "SELECT * FROM %s ORDER BY id" %TABLE_SITE_USER
+    def list_siteuser(self,uid=None):
+        print uid
+        if uid:
+            sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER,uid)
+        else:
+            sqls = "SELECT * FROM %s ORDER BY id" %TABLE_SITE_USER
         result = db.query(sqls)
         if result:
             user_list = []
@@ -906,6 +913,22 @@ class CmsService:
             logger.info("order %d status updated to %d" %(oid,status))
         except BaseException,e:
             logger.error("Failed to update order %d status to %d,due to :%s" %(oid,status,e))
+
+    def get_total_siteuser(self):
+        sqls = "SELECT COUNT(*) as total FROM %s " % TABLE_SITE_USER
+
+        result = db.query(sqls)
+
+        if result:
+            return result[0]['total']
+
+    def get_total_order(self):
+        sqls = "SELECT COUNT(*) as total FROM %s " % TABLE_SITE_ORDER
+
+        result = db.query(sqls)
+
+        if result:
+            return result[0]['total']
 
 
 

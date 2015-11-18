@@ -90,7 +90,7 @@ class LoginService():
 
                     return web.seeother('/listimgs/'+str(order.oid))
                 else:
-                    return web.seeother('/home')
+                    return web.seeother('/orders')
             else:
                 return render.login("Failed:"+reason)
         else:
@@ -128,6 +128,9 @@ class ListOrders():
         uid = None
         if params.uid:
             uid = int(params.uid)
+        else:
+            userinfo=serviceHelper.get_user_session(session)
+            uid = userinfo.user.oid
 
         rlist = cmsService.list_orders(uid)
 
@@ -152,6 +155,3 @@ class ListSelectedImages():
         rlist = cmsService.list_selected_imgs(int(oid))
 
         return render.img_select_result(rlist, len(rlist))
-
-
-

@@ -21,7 +21,7 @@ $def with(rlist)
 
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
     <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
     <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
 
@@ -65,7 +65,7 @@ $def with(rlist)
     $for i in range(0,len(rlist)):
 
         $ suser =rlist[i]
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="panel panel-primary">
                         <div class="panel-body">
                             ID:    $suser.oid<br/>
@@ -76,9 +76,10 @@ $def with(rlist)
                             状态:   $suser.status
                         </div>
                         <div class="panel-footer" align="right">
-                             &nbsp; <a class="btn active" href="/p/adm/">删除</a>
-                             &nbsp; <a class="btn active" href="/p/adm/siteuser/${suser.oid}">修改用户信息</a>
-                             &nbsp; <a class="btn active" href="/p/adm/orders?uid=${suser.oid}">订单列表</a>
+                              <a class="btn active" href="/p/adm/">删除</a>
+                              <a class="btn active" href="/p/adm/siteuser/${suser.oid}">修改</a>
+                              <a class="btn active" href="/p/adm/orders?uid=${suser.oid}">查订单</a>
+                              <a class="btn active" href="/p/adm/order/form?uid=${suser.oid}">创建订单</a>
                         </div>
                     </div>
                 </div>

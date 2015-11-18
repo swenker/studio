@@ -62,23 +62,24 @@ $def with(rlist,total)
                         <div class="panel-body">
                             <img id="img_${order.oid}" width="100" align="right">
                             订单ID: $order.oid <br/>
-                            用户ID: $order.uid <br/>
+                            用户ID: $order.uid  <a class="btn active" href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a>
+                                                <a class="btn active" href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
                             价  格: $order.price <br/>
                             拍摄地: $order.venue <br/>
                             总张数: $order.total_limit&nbsp;&nbsp;精  修: $order.edit_limit
 
                         </div>
                         <div class="panel-footer" align="right">
-                             <!--class="btn active" --><a href="/p/adm/order/form?oid=$order.oid">状态管理</a>&nbsp;
-                             <a href="/p/adm/order/form?oid=$order.oid">修改</a>&nbsp;
-                             <a href="/p/adm/order/delete?oid=$order.oid">删除</a>&nbsp;
-                             <a href="/p/adm/listimgs/$order.oid">所有照片</a>&nbsp;
-                             <a href="/p/adm/okimgs/$order.oid">选片结果</a>
+                             <a  href="/p/adm/order/form?oid=$order.oid">状态管理</a>
+                             <a  href="/p/adm/order/form?oid=$order.oid">修改</a>
+                             <a  href="/p/adm/order/delete?oid=$order.oid">删除</a>
+                             <a  href="/p/adm/listimgs/$order.oid">所有照片</a>
+                             <a  href="/p/adm/okimgs/$order.oid">选片结果</a>
                         </div>
                     </div>
                 </div>
                 <!-- /.col-lg-4 -->
-
+<!--class="btn active"-->
 
    </div>
 

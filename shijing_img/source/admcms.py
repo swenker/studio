@@ -48,13 +48,16 @@ urls = ("/adminsvc", "AdminService",
         "/okimgs/(\d+)", "ListSelectedImages",
         "/yy", "ListPreorder",
         "/yydelete/(\d+)", "DeletePreorder",
-        "/siteuser/new","SiteUserHandler",
+        "/siteuser/createform","CreateSiteUserHandler",
+        "/siteuser/create","CreateSiteUserHandler",
+        "/siteuser/new","NewSiteUserHandler",
         "/siteuser/list","SiteUserList",
         "/siteuser/save","SaveSiteUser",
         "/siteuser/(\d+)","GetSiteUser",
         "/download_simglist/(\d+)","DownloadSelectedImageResult",
         "/order/status","ChangeOrderStatus",
-        "/order/imgcover/(\d+)","GetOrderImageCover"
+        "/order/imgcover/(\d+)","GetOrderImageCover",
+        "/total","TotalCounterHandler"
         )
 
 config = service_config.config
@@ -436,20 +439,23 @@ class DeletePreorder():
 
 class HandlerOrderForm():
     def GET(self):
-        params = web.input(oid=None,porder=None)
+        params = web.input(oid=None,porder=None,uid=None)
         oid = params.oid
         order = None
+        uid = params.uid
         if oid:
             order = cmsService.load_order(int(oid))
         else:
+            order = cms_model.Order(None)
             porder = params.porder
-            print params
+            # print params
             if porder:
-                order = cms_model.Order(None)
                 order.dttake = params.dttake
                 order.remark = params.remark
                 order.title = params.utitle
 
+            else:
+                order.uid = uid
                 order.price = 999.00
                 order.total_limit = 120
                 order.edit_limit = 30
@@ -477,8 +483,8 @@ class DeleteOrder():
 
         return render.common(ops_result)
 
-
-class SiteUserHandler():
+"Create user from pre-order"
+class NewSiteUserHandler():
     def GET(self):
         params = web.input()
         mobile = params.mobile
@@ -493,10 +499,30 @@ class SiteUserHandler():
         except BaseException,e:
             return e
 
+class CreateSiteUserHandler():
+
+    def GET(self):
+        return render.siteuser_form(None)
+
+    def POST(self):
+        params = web.input()
+        mobile = params.mobile
+        siteuser = cms_model.SiteUser(passwd='abcd1234',mobile=mobile,email=params.email,nickname=params.nickname)
+
+        try:
+            uid = cmsService.create_siteuser(siteuser)
+            return "{\"status\":\"OK\"}"
+        except BaseException,e:
+            return e
+
 class SiteUserList():
     def GET(self):
         try:
-            rlist = cmsService.list_siteuser()
+            params = web.input(uid=None)
+            uid = None
+            if params.uid:
+                uid = int(params.uid)
+            rlist = cmsService.list_siteuser(uid)
             return render.siteuser_list(rlist)
         except BaseException,e:
             return e
@@ -557,6 +583,18 @@ class GetOrderImageCover():
         else:
             return ""
 
+
+class TotalCounterHandler():
+    def GET(self):
+        params = web.input()
+        msg_type = params.msg_type
+
+        counter = 0
+        if 'user' == msg_type:
+            counter = cmsService.get_total_siteuser()
+
+        elif 'order' == msg_type:
+            counter = cmsService.get_total_order()
 
 
 
