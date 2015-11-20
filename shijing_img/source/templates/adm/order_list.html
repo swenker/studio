@@ -62,6 +62,7 @@ $def with(rlist,total)
                         <div class="panel-body">
                             <img id="img_${order.oid}" width="100" align="right">
                             订单ID: $order.oid <br/>
+                            订单状态: $order.status <br/>
                             用户ID: $order.uid  <a class="btn active" href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a>
                                                 <a class="btn active" href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
                             价  格: $order.price <br/>

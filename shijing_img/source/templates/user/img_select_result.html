@@ -1,4 +1,4 @@
-$def with(rlist,total)
+$def with(order_id,rlist,total)
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +23,8 @@ $def with(rlist,total)
     <!-- Custom Fonts -->
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
-    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <!--<script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>-->
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
     <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -98,7 +99,8 @@ $def with(rlist,total)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">选中的照片：共$total 张</h3> &nbsp;&nbsp;&nbsp; <a href="/p/u/confirm/">Submit </a>
+                    <h3 class="page-header">选中的照片：共$total 张</h3>
+                    <a class="btn active" href="/p/u/order/confirm_select/${order_id}">结束选片 </a>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

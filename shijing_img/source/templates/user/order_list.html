@@ -31,6 +31,8 @@ $def with(rlist,total)
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
+
 </head>
 
 <body>
@@ -40,7 +42,7 @@ $def with(rlist,total)
         <!-- Navigation -->
         <div id="admnav">
             <script>
-                ("#admnav").load("/site/user_nav.html");
+                $$("#admnav").load("/site/user_nav.html");
             </script>
         </div>
 
@@ -56,16 +58,22 @@ $def with(rlist,total)
         $for i in range(0,total):
 
             $ order=rlist[i]
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 $order.title &nbsp; [$order.dtcreate]
                             </div>
                             <div class="panel-body">
-                                用  户: $order.uid <br/>
+                                <!--用  户: $order.uid <br/>-->
+                                订单ID: $order.oid <br/>
+                                订单状态: $order.status <br/>
+                                拍摄地: $order.venue <br/>
                                 价  格: $order.price <br/>
                                 总张数: $order.total_limit <br/>
-                                精  修: $order.edit_limit
+                                精  修: $order.edit_limit<br/>
+                             <a  href="/p/u/listimgs/$order.oid">所有照片</a>
+                             <a  href="/p/u/okimgs/$order.oid">选片结果</a>
+
                             </div>
                             <div class="panel-footer" align="right">
                                  <!--&nbsp;<a href="delete_article?id=">Delete</a>-->
@@ -86,8 +94,6 @@ $def with(rlist,total)
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery Version 1.11.0 -->
-    <script src="/adm/js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/adm/js/bootstrap.min.js"></script>

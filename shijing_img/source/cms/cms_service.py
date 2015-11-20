@@ -725,6 +725,24 @@ class CmsService:
         return rlist
 
 
+    def list_orders_bystatus(self,status,uid=None):
+        sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
+
+        where_condition = 'WHERE status='+str(status)
+        if uid:
+            where_condition += ' AND uid=' + str(uid)
+        result = db.query((sqls % (TABLE_SITE_ORDER, where_condition)))
+
+        rlist = []
+
+        if result:
+            for r in result:
+                order = self.compose_order(r)
+                rlist.append(order)
+
+        return rlist
+
+
     def add_order_img(self, iid, orderid):
         sqls = 'INSERT INTO %s(oid,iid,status)VALUES($orderid,$iid,1)' % TABLE_ORDER_IMG
         db.query(sqls, vars={'orderid': orderid, 'iid': iid})
@@ -883,7 +901,7 @@ class CmsService:
     def list_siteuser(self,uid=None):
         print uid
         if uid:
-            sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER,uid)
+            sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER, uid)
         else:
             sqls = "SELECT * FROM %s ORDER BY id" %TABLE_SITE_USER
         result = db.query(sqls)

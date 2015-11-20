@@ -17,6 +17,7 @@ urls = (
         "/okimgs/(\d+)", "ListSelectedImages",
         "/upc/(\d+)", "UpdateChoice",
         "/order/(\d+)", "GetOrder",
+        "/order/confirm_select/(\d+)", "ConfirmOrderImageSelection",
         "/user/(\d+)", "GetUser"
 )
 
@@ -64,8 +65,7 @@ class UserInfo():
 
 class LoginService():
     def GET(self):
-        userinfo=session.get('uinfo')
-        # userinfo = session.uinfo
+        userinfo=serviceHelper.get_user_session(session)
         if not userinfo:
             return render.login('')
         else:
@@ -81,7 +81,7 @@ class LoginService():
             stat,reason = cmsService.site_user_login(mobile,passwd)
             if(reason=='OK'):
                 user = stat
-                orders = cmsService.list_orders(user.oid)
+                orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING,user.oid)
                 session.uinfo =UserInfo(user,None)
                 if orders:
                     order = orders[0]
@@ -123,14 +123,8 @@ class UpdateChoice():
 
 class ListOrders():
     def GET(self):
-        params = web.input(uid=None)
-
-        uid = None
-        if params.uid:
-            uid = int(params.uid)
-        else:
-            userinfo=serviceHelper.get_user_session(session)
-            uid = userinfo.user.oid
+        userinfo=serviceHelper.get_user_session(session)
+        uid = userinfo.user.oid
 
         rlist = cmsService.list_orders(uid)
 
@@ -146,7 +140,7 @@ class ListOrderImages():
 
         if userinfo:
             rlist = cmsService.list_order_imgs(int(oid))
-            return render.img_list_select(userinfo.order,rlist, len(rlist))
+            return render.img_list_select(oid,rlist, len(rlist))
         else:
             return render.common("<a href='/p/u/login'>please login</a>")
 
@@ -154,4 +148,11 @@ class ListSelectedImages():
     def GET(self,oid):
         rlist = cmsService.list_selected_imgs(int(oid))
 
-        return render.img_select_result(rlist, len(rlist))
+        return render.img_select_result(oid,rlist, len(rlist))
+
+
+class ConfirmOrderImageSelection():
+    def GET(self,oid):
+        cmsService.update_order_status(int(oid),cms_model.Order.ORDER_SELECTED)
+
+        return web.seeother('/orders')
