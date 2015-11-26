@@ -18,6 +18,8 @@ wget http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 No module named Crypto.Cipher
 sudo pip install pycrypto
 
+sudo pip install captcha
+
 You're seeing this error because you have web.config.debug set to True. Set that to False if you don't want to see this.
 git clone git@github.com:swenker/studio.git
 

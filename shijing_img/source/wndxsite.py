@@ -24,7 +24,8 @@ urls = (
         "/all","ListAllForHomePage",
         "/rpic","RandomPic",
         "/gallery", "AllGallery",
-        "/yy", "Yuyue"
+        "/yy", "Yuyue",
+        "/captcha","GenerateCaptch"
 )
 
 app = web.application(urls, globals())
@@ -233,5 +234,7 @@ class SearchArticles():
         kw = params.kw
 
 
+class GenerateCaptcha():
+    def GET(self):
 
-
+        return

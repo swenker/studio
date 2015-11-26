@@ -34,6 +34,6 @@
 
 2015-11-19
 1.login captcha
-2.GET to POST for data change modification
+2.Change GET to POST for data change modification
 3.UI --js does not work for mobile
-4.
+
