@@ -1,0 +1,42 @@
+Azure Powershell cmdlets:
+https://msdn.microsoft.com/en-us/library/azure/dn708504.aspx
+Add-AzureAccount
+
+worked----
+get-azurevm amp06-p-e-mmi -service cas1-pemmi| get-azureendpoint
+
+Add-AzureAccount -Environment AzureChinaCloud
+http://www.windowsazure.cn/documentation/articles/install-configure-powershell/
+对于在中国区使用powershell，您需要参考如下步骤：
+先在浏览器登录portal，然后 在powershell里运行
+请运行Get-AzurePublishSettingsFile -Environment "AzureChinaCloud" 来获取正确的publish settings文件。
+然后使用Import-AzurePublishSettingsFile filepath 导入。也可参考世纪互联官方文档：
+PS C:\Users\wenjusun> Import-AzurePublishSettingsFile -Environment AzureChinaCloud C:\ZZZZZ\0-sunwj\azure\A_020-11-30-2015-credentials.publishsettings
+
+http://www.windowsazure.cn/develop/other/developerdifferences/#_Toc359582708
+
+Get-AzureSubscription
+
+
+get-azurevm amp01-cas-d-mmi -service [cloud service name] cas01-d-mmi|get-azureendpoint
+
+get-azurevm amp01-cas-d-mmi -service cas01-d-mmi|get-azureendpoint
+
+
+Set-AzureLoadBalancedEndpoint -ServiceName cas1-pemmi -LBSetName cas1-e-443  –LoadBalancerDistribution "none"
+
+switch-AzureMode -name AzureResourceManager ---deprecated ones.
+https://msdn.microsoft.com/en-us/library/azure/mt270335.aspx
+https://msdn.microsoft.com/en-us/library/azure/mt589075.aspx
+
+-LoadBalancerDistribution<String>
+Specifies the load balancer distribution algorithm. Valid values are: 
+
+-- sourceIP. A two tuple affinity: Source IP, Destination IP 
+-- sourceIPProtocol. A three tuple affinity: Source IP, Destination IP, Protocol 
+-- none. A five tuple affinity: Source IP, Source Port, Destination IP, Destination Port, Protocol 
+
+The default value is none.
+Set-AzureLoadBalancedEndpoint -ServiceName cas01-d-mmi -LBSetName cas01-https  –LoadBalancerDistribution "none"
+
+get-azurevm amp01-cas-s-mmi -service ca-s-mmi|get-azureendpoint
