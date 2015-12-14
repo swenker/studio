@@ -37,3 +37,10 @@
 2.Change GET to POST for data change modification
 3.UI --js does not work for mobile
 
+2015-12-12
+1.login captcha
+2.gallery on homepage
+3.images for contents
+4.articles to be published
+5.logs rotating daily
+
