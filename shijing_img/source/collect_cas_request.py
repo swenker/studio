@@ -155,6 +155,7 @@ def statistics_result_to_file(login_requests,signup_requests,verify_user_request
 
     f.close()
 
+#def monthly_to_file()
 if __name__ == '__main__':
     print sys.argv
     print "statistics---:"+yesterday
