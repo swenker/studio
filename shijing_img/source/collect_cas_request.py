@@ -155,10 +155,40 @@ def statistics_result_to_file(login_requests,signup_requests,verify_user_request
 
     f.close()
 
-#def monthly_to_file()
+def bactch_to_file_nov(site):
+    month_nov='2015_11'
+    with open(month_nov,'w') as f:
+        for i in range(14,31):
+            day = str(i)
+            dt=month_nov+'_'+day
+            login_requests = count_login_requests(dt,site)
+            signup_requests = count_signup_requests(dt,site)
+            verify_user_requests = count_verify_user_requests(dt,site)
+
+            daystr = '2015-11-'+day
+            record = "%s,%d,%d,%d\n" %(daystr,login_requests,signup_requests,verify_user_requests)
+            f.write(record)
+
+def bactch_to_file(site):
+    month_dec='2015_12'
+    with open(month_dec,'w') as f:
+        for i in range(1,9):
+            day = str(i)
+            dt=month_dec+'_0'+day
+            login_requests = count_login_requests(dt,site)
+            signup_requests = count_signup_requests(dt,site)
+            verify_user_requests = count_verify_user_requests(dt,site)
+
+            daystr = '2015-12-0'+day
+            record = "%s,%d,%d,%d\n" %(daystr,login_requests,signup_requests,verify_user_requests)
+            f.write(record)
+
+
+
 if __name__ == '__main__':
     print sys.argv
     print "statistics---:"+yesterday
     # ssh_cmd(sys.argv[1])
     site=sys.argv[1]
-    count_all_requests(site)
+    # count_all_requests(site)
+    bactch_to_file(site)
