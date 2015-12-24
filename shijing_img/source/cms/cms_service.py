@@ -37,6 +37,8 @@ category_map = {}
 
 class CmsService:
     def __init__(self):
+        logger.info("===============CmsService start initialized ===============")
+
         album_list = self.get_album_list()
         for album in album_list:
             album_map[album.code] = album
@@ -47,6 +49,7 @@ class CmsService:
 
         logger.info(album_map)
         logger.info(category_map)
+        logger.info("===============CmsService initialized successfully===============")
 
     def new_article(self, article):
         if article and article.article_meta.oid > 0:

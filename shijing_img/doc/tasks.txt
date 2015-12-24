@@ -39,7 +39,7 @@
 
 2015-12-12
 1.login captcha
-2.gallery on homepage
+2.gallery on homepage --done
 3.images for contents
 4.articles to be published
 5.logs rotating daily
