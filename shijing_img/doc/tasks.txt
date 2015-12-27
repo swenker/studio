@@ -43,4 +43,6 @@
 3.images for contents
 4.articles to be published
 5.logs rotating daily
+6.delete related image when delete article and image ?
+
 

@@ -132,6 +132,7 @@ class CmsService:
             t.rollback()
 
 
+    #TODO delete related images
     def delete_article(self, oid, hard=False):
 
         if not hard:
@@ -143,7 +144,7 @@ class CmsService:
             sqls = "DELETE FROM %s WHERE id=$oid" % TABLE_ARTICLE_META
 
         db.query(sqls, vars={'oid': oid})
-
+        logger.info("articleId [%d] is deleted" % oid)
 
     def disable_article(self, oid):
 
@@ -151,12 +152,16 @@ class CmsService:
 
         db.query(sqls, vars={'status': 0, 'oid': oid})
 
+        logger.info("articleId [%d] is disabled" % oid)
+
 
     def enable_article(self, oid):
 
         sqls = "UPDATE %s SET `status`=$status where id=$oid" % TABLE_ARTICLE_META
 
         db.query(sqls, vars={'status': 1, 'oid': oid})
+
+        logger.info("articleId [%d] is enabled" % oid)
 
 
     def list_articles(self, start, nfetch, ctcode=None, query_in_title=None, status=None):
@@ -210,11 +215,9 @@ class CmsService:
 
         # logger.debug(sqls)
         if query_in_title:
-
             result = db.query(sqls, vars={'keywords': query_in_title, 'start': start, 'nfetch': nfetch})
 
         else:
-
             result = db.query(sqls, vars={'start': start, 'nfetch': nfetch})
 
         rlist = []
@@ -257,11 +260,9 @@ class CmsService:
             total = result[0]['total']
 
         if kw:
-
             result = db.query(sqls, vars={'keywords': kw, 'start': start, 'nfetch': nfetch})
 
         else:
-
             result = db.query(sqls, vars={'start': start, 'nfetch': nfetch})
 
         rlist = []
@@ -269,7 +270,6 @@ class CmsService:
         if result:
             for r in result:
                 article_meta = self.compose_article_meta(r)
-                #print article_meta
                 rlist.append(article_meta)
 
         return rlist, total
@@ -281,6 +281,7 @@ class CmsService:
                "FROM cms_article_meta m inner join cms_article_content c on m.cid=c.id where m.id=$oid"
 
         result = db.query(sqls, vars={'oid': oid})
+
         if result:
             r = result[0]
             article_meta = self.compose_article_meta(r)
@@ -338,21 +339,16 @@ class CmsService:
     def save_category(self, category):
 
         if category.oid and category.oid > 0:
-
             self.update_category(category)
 
         else:
-
             self.create_category(category)
 
     def create_category(self, category):
 
         sqls = "INSERT INTO %s(title,code,dtcreate,remark)VALUES($title,$code,$dtcreate,$remark) " % TABLE_CATEGORY
 
-        db.query(sqls,
-                 vars={'title': category.title, 'code': category.code, 'dtcreate': get_timenow(),
-                       'remark': category.remark}
-        )
+        db.query(sqls, vars={'title': category.title, 'code': category.code, 'dtcreate': get_timenow(), 'remark': category.remark} )
 
         logger.info("category %s created" % category)
 
@@ -360,27 +356,26 @@ class CmsService:
 
         sqls = "UPDATE %s SET title=$title,code=$code,remark=$remark WHERE id=$oid" % TABLE_CATEGORY
 
-        db.query(sqls,
-                 vars={'title': category.title, 'code': category.code, 'remark': category.remark, 'oid': category.oid}
-        )
+        db.query(sqls, vars={'title': category.title, 'code': category.code, 'remark': category.remark, 'oid': category.oid} )
 
         logger.info("category %s updated" % category)
 
     def delete_category(self, oid, hard=False):
 
         if not hard:
-
             sqls = "UPDATE %s SET `status`=%d where id=$oid" % (TABLE_CATEGORY, 2)
 
         else:
-
             sqls = "DELETE FROM %s WHERE id=$oid" % TABLE_CATEGORY
 
         db.query(sqls, vars={'oid': oid})
 
+        logger.info("catetory [%d] is deleted" % oid)
+
     def get_category(self, oid):
         sqls = "SELECT * FROM %s WHERE id=$oid" % TABLE_CATEGORY
         result = db.query(sqls, vars={'oid': oid})
+
         if result:
             r = result[0]
             cate = self.compose_category(r)
@@ -405,20 +400,16 @@ class CmsService:
     def save_album(self, album):
 
         if album.oid and album.oid > 0:
-
             self.update_album(album)
 
         else:
-
             self.create_album(album)
 
     def create_album(self, album):
 
         sqls = "INSERT INTO %s(title,dtcreate,remark)VALUES($title,$dtcreate,$remark) " % TABLE_ALBUM
 
-        db.query(sqls,
-                 vars={'title': album.title, 'dtcreate': get_timenow(), 'remark': album.remark}
-        )
+        db.query(sqls, vars={'title': album.title, 'dtcreate': get_timenow(), 'remark': album.remark} )
 
         logger.info("album %s created" % album)
 
@@ -426,9 +417,7 @@ class CmsService:
 
         sqls = "UPDATE %s SET title=$title,remark=$remark WHERE id=$oid" % TABLE_ALBUM
 
-        db.query(sqls,
-                 vars={'title': album.title, 'remark': album.remark, 'oid': album.oid}
-        )
+        db.query(sqls, vars={'title': album.title, 'remark': album.remark, 'oid': album.oid} )
 
         logger.info("album %s updated" % album)
 
@@ -438,17 +427,15 @@ class CmsService:
         try:
             sqls = "INSERT INTO %s(title,dtcreate,file,aid,itype)VALUES($title,$dtcreate,$file,$aid,$itype)" % TABLE_ALBUM_IMG
 
-            db.query(sqls,
-                     vars={'title': img.title, 'dtcreate': get_timenow(), 'file': img.file, 'aid': img.aid,
-                           'itype': img.itype}
-            )
+            db.query(sqls, vars={'title': img.title, 'dtcreate': get_timenow(), 'file': img.file, 'aid': img.aid, 'itype': img.itype} )
 
             result = db.query("select LAST_INSERT_ID() AS mid ")
             mid = -1
             if result:
                 mid = result[0]['mid']
-
+            logger.info("image [%d] is created" % mid)
             return mid
+
         except Exception, e:
             logger.exception("failed to create image:%s" % img, e)
 
@@ -458,9 +445,9 @@ class CmsService:
         try:
             sqls = "UPDATE %s SET title=$title WHERE id=$oid" % TABLE_ALBUM_IMG
 
-            db.query(sqls,
-                     vars={'title': title, 'oid': oid}
-            )
+            db.query(sqls, vars={'title': title, 'oid': oid} )
+
+            logger.info("image [%d] is updated with title:%s" % (oid,title) )
         except Exception, e:
             logger.exception("failed to update img:%d" % oid, exc_info=e)
 
@@ -471,9 +458,9 @@ class CmsService:
 
         try:
             for img in imglist:
-                sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES($title,$dtcreate,$file,$aid,$itype)" % (
-                    TABLE_ALBUM_IMG)
+                sqls = "INSERT INTO %s(title,dtcreate,file,aid)VALUES($title,$dtcreate,$file,$aid,$itype)" % ( TABLE_ALBUM_IMG)
                 vars = {'title': img.title, 'dtcreate': get_timenow(), 'file': img.file, 'aid': aid, 'itype': img.itype}
+
                 db.query(sqls, vars)
 
             t.commit()
@@ -488,16 +475,17 @@ class CmsService:
         if result:
             r = result[0]
             img = self.compose_image(r)
+
             return img
 
-
+    #TODO delete related images
     def delete_album(self, oid):
 
         sqls = "DELETE FROM %s WHERE id=$oid" % TABLE_ALBUM
 
         db.query(sqls, vars={'oid': oid})
 
-        logger.info("album %d is deleted" % oid)
+        logger.info("album [%d] is deleted" % oid)
 
 
     def delete_img(self, oid):
@@ -517,7 +505,7 @@ class CmsService:
 
         db.query(sqls, vars={'criteria': oid})
 
-        logger.info("img %s are deleted" % oid)
+        logger.info("image [%d] are deleted" % oid)
 
     def delete_imglist(self, idlist):
 
@@ -528,7 +516,7 @@ class CmsService:
 
         db.query(sqls, vars={'criteria': criteria})
 
-        logger.info("img %s are deleted" % criteria)
+        logger.info("image [%s] are deleted" % criteria)
 
 
     def get_album_list(self):
@@ -576,6 +564,7 @@ class CmsService:
         category.dtcreate = r['dtcreate']
         category.remark = r['remark']
         category.status = r['status']
+
         return category
 
     def compose_album(self, r):
@@ -584,6 +573,7 @@ class CmsService:
         album.remark = r['remark']
         album.status = r['status']
         album.code = r['code']
+
         return album
 
     def compose_image(self, r, ext_status=False):
@@ -624,7 +614,6 @@ class CmsService:
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
         order.dtcomplete = r['dtcomplete']
-
         order.remark = r['remark']
         order.status = r['status']
         order.venue = r['venue']
@@ -682,8 +671,11 @@ class CmsService:
             mid = -1
             if result:
                 mid = result[0]['mid']
+            logger.info("order [%d] is created" % mid)
 
             return mid
+
+        logger.info("order [%d] is updated" % order.oid)
 
         return order.oid
 
@@ -701,6 +693,7 @@ class CmsService:
 
         return None
 
+    #TODO marked as deleted instead of remove?
     def delete_order(self,oid):
         if not oid:
             return
@@ -708,6 +701,8 @@ class CmsService:
         sqls = "DELETE  FROM %s WHERE id=$oid" % TABLE_SITE_ORDER
 
         db.query(sqls,vars = {'oid':oid})
+
+        logger.info("order [%d] is deleted" % oid)
 
 
     def list_orders(self, uid=None):
@@ -817,7 +812,7 @@ class CmsService:
         sqls = "UPDATE %s SET email=$email,nickname=$nickname,mobile=$mobile,status=$status WHERE id=$uid" % TABLE_SITE_USER
         db.query(sqls, vars=userinfo)
 
-        logger.info("user:%s saved" %(userinfo))
+        logger.info("user:[%s] saved" %(userinfo))
 
     def site_user_login(self, mobile, passwd):
         sqls = 'select * from %s where mobile=$mobile' % TABLE_SITE_USER
@@ -830,12 +825,12 @@ class CmsService:
                     # logger.info("passwd=%s, %s",user.passwd,md5(passwd))
                     if user.passwd == md5(passwd):
                         user.passwd=None
-                        logger.info("%s logged in" %user.mobile)
+                        logger.info("user [%s] logged in" %user.mobile)
                         return user, 'OK'
                     else:
-                        logger.info("%s tried wrong passwd" %user.mobile)
+                        logger.info("user [%s] tried wrong passwd" %user.mobile)
                 else:
-                    logger.info("%s status is abnormal:%d" %(user.mobile,user.status))
+                    logger.info("user [%s] status is abnormal:%d" %(user.mobile,user.status))
                     return user.status, 'status'
 
         logger.warn("NotFoundUser:%s" % mobile)
@@ -884,6 +879,7 @@ class CmsService:
     def delete_preorder(self,oid):
         sqls = "DELETE FROM "+TABLE_PREORDER + " WHERE id=$id"
         db.query(sqls,vars={'id':oid})
+        logger.info("preorder [%d] is deleted" % oid)
 
 
     def create_siteuser(self,siteuser):
@@ -894,12 +890,18 @@ class CmsService:
         mid = -1
         if result:
             mid = result[0]['mid']
+
+        logger.info("user [%s] is created" % siteuser.mobile)
+
         return mid
 
     def update_porder_status(self,oid,uid,status):
         sqls = "UPDATE %s SET status=$status,uid=$uid WHERE id=$oid" %TABLE_PREORDER
 
         db.query(sqls,vars={'oid':oid,'uid':uid,'status':status})
+
+        logger.info("preorder [%d] is updated to [%d] by user [%d]" % (oid,status,uid) )
+
 
     def list_siteuser(self,uid=None):
         print uid
@@ -918,6 +920,7 @@ class CmsService:
                 suser.nickname = r['nickname']
                 suser.status = r['status']
                 suser.dtcreate = r['dtcreate']
+
                 user_list.append(suser)
 
             return user_list
@@ -931,9 +934,9 @@ class CmsService:
 
             db.query(sqls,vars={'oid':oid,'status':status})
 
-            logger.info("order %d status updated to %d" %(oid,status))
+            logger.info("order [%d] status updated to %d" %(oid,status))
         except BaseException,e:
-            logger.error("Failed to update order %d status to %d,due to :%s" %(oid,status,e))
+            logger.error("Failed to update order [%d] status to [%d],due to :%s" %(oid,status,e))
 
     def get_total_siteuser(self):
         sqls = "SELECT COUNT(*) as total FROM %s " % TABLE_SITE_USER
