@@ -76,8 +76,6 @@ class ServiceConfig():
 
 
     def __repr__(self):
-        # TODO
-        #return "dbn=%s, db=%s, host=%s, user=%s, passwd=%s" %(self.dbn,self.db,self.host,self.user,self.passwd)
         return self.__dict__.__repr__()
 
     def getlogger(self, loggername="CmsService"):

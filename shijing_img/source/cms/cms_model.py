@@ -111,19 +111,14 @@ class Image:
         self.oid = id
         self.aid = aid
         self.file = file
-
         self.thumbnail = ''
         self.medium = ''
         self.large = ''
         self.raw = ''
-
         #itype = 1,2,3  [1:common, 2,homepage-banner 3,homepage-gallery,4 for user]
         self.itype=1
-
         self.ext_status=1
-
         self.code = None
-
 
     def __repr__(self):
         return self.__str__()
@@ -156,7 +151,6 @@ class Order:
     ORDER_DELIVERING=5
     ORDER_COMPLETED=7
     ORDER_CANCEL=9
-
 
     def __init__(self,uid):
         self.oid = 0
@@ -191,7 +185,6 @@ class SiteUser:
         self.mobile = mobile
         self.status = status
         self.dtcreate = None
-
 
     def __repr__(self):
         return self.__str__()

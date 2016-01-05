@@ -85,9 +85,7 @@ class LoginService():
                 session.uinfo =UserInfo(user,None)
                 if orders:
                     order = orders[0]
-
                     session.uinfo = UserInfo(user,order)
-
                     return web.seeother('/listimgs/'+str(order.oid))
                 else:
                     return web.seeother('/orders')
@@ -107,6 +105,7 @@ class GetUser():
     def GET(self,uid):
         pass
 
+
 class GetOrder():
     def GET(self,oid):
         pass
@@ -121,6 +120,7 @@ class UpdateChoice():
         cmsService.update_user_choice(iid,status)
         return "{'result':'OK'}"
 
+
 class ListOrders():
     def GET(self):
         userinfo=serviceHelper.get_user_session(session)
@@ -131,11 +131,9 @@ class ListOrders():
         return render.order_list(rlist, len(rlist))
 
 
-
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
-
         userinfo=serviceHelper.get_user_session(session)
 
         if userinfo:
@@ -143,6 +141,7 @@ class ListOrderImages():
             return render.img_list_select(oid,rlist, len(rlist))
         else:
             return render.common("<a href='/p/u/login'>please login</a>")
+
 
 class ListSelectedImages():
     def GET(self,oid):

@@ -61,7 +61,6 @@ class HomePage():
         plist,ptotal = cmsService.get_album_imglist(acode,start,nfetch)
         return plist
     def get_all_articles(self):
-
         start = 0
         nfetch = 8
         ctcode = None
@@ -71,7 +70,6 @@ class HomePage():
 
 class Portfolio():
     def GET(self):
-
         ctcode = config.ctcode_portfolio
 
         rlist, total = cmsService.list_articles(0, 1,ctcode,None,status=str(1))
@@ -81,14 +79,12 @@ class Portfolio():
 
         if article:
             return render.portfolio(article.article_meta, article.article_content)
-
         else:
             return render.common("failed:" + str(id))
 
 class Service():
     def GET(self):
         params = web.input(np=0, kw=None)
-
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
@@ -108,7 +104,6 @@ class Service():
 class School():
     def GET(self):
         params = web.input(np=0, kw=None)
-
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
@@ -127,7 +122,6 @@ class School():
 class News():
     def GET(self):
         params = web.input(np=0, kw=None)
-
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
@@ -150,14 +144,12 @@ class GetArticle():
         article = cmsService.get_article(id)
         if article:
             return render.article(article.article_meta, article.article_content)
-
         else:
             return render.common("Not Found:" + str(id))
 
 class ListArticles():
     def GET(self):
         params = web.input(np=0, kw=None,ctcode= None)
-
         npages = int(params.np)
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
@@ -166,12 +158,10 @@ class ListArticles():
         if keyword:
             keyword = keyword.strip()
 
-
         if not params.ctcode:
             ctcode = config.ctcode_article
         else :
             ctcode = params.ctcode
-
 
         rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=keyword,status=str(1))
 
@@ -183,13 +173,11 @@ class ListArticles():
 class ListAllForHomePage():
     def GET(self):
         params = web.input(n=0)
-
         start = 0
         nfetch = 8
         if params.n :
             nfetch = int(params.n)
         ctcode = None
-
 
         rlist, total = cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
 

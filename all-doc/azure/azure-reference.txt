@@ -40,3 +40,4 @@ The default value is none.
 Set-AzureLoadBalancedEndpoint -ServiceName cas01-d-mmi -LBSetName cas01-https  –LoadBalancerDistribution "none"
 
 get-azurevm amp01-cas-s-mmi -service ca-s-mmi|get-azureendpoint
+

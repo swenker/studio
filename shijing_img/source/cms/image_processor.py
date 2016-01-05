@@ -42,13 +42,9 @@ class ImageProcessor():
     def add_watermark(self, img):
 
         watermark = Image.new('RGBA', img.size, (0, 0, 0, 0))
-
         wm_width,wm_height = watermark.size
-
         f_width, f_height = self.w_font_size
-
         draw = ImageDraw.Draw(watermark, 'RGBA')
-
         draw.text((wm_width-f_width-10, wm_height-f_height-20), self.text, font = self.w_font)
         watermark = watermark.rotate(self.angle,Image.BICUBIC)
         alpha = watermark.split()[3]
@@ -57,10 +53,8 @@ class ImageProcessor():
 
         return Image.composite(watermark, img, watermark)
 
-
     def thumbnail(self,inpath):
         width=config.img_thumb_width
-
         outpath = "/thumb"+inpath
         self.zoom(inpath,outpath,width)
 
@@ -68,7 +62,6 @@ class ImageProcessor():
 
     def medium(self,inpath):
         width=config.img_medium_height
-
         outpath = "/mid"+inpath
         self.zoom(inpath, outpath,width,water_mark=True)
 
@@ -76,7 +69,6 @@ class ImageProcessor():
 
     def large(self,inpath):
         width=config.img_large_width
-
         outpath = "/lar"+inpath
         self.zoom(inpath, outpath,width,water_mark=True)
 
@@ -86,27 +78,22 @@ class ImageProcessor():
         watermark_im = Image.open(config.img_save_path+"/"+"")
         w_width,w_height=watermark_im.size
         wbox = {'leftup':(0,0),'rightup':(0,0)}
-
         # woption={'leftup':(0,0),'rightup':(,0),'leftlow':(0,),'rightlow':(,)}
         im.paste(watermark_im,wbox)
 
     def zoom(self, inpath,outpath,width=0,height=0,water_mark=False):
-
         outfile = config.img_save_path+ outpath
-
         outfile_folder = outfile[0:outfile.rindex('/')]
         if not os.path.exists(outfile_folder):
             os.makedirs(outfile_folder)
 
         infile = config.img_save_path +'/raw'+ inpath
-
         im = Image.open(infile)
         om = im.copy()
-
         ox,oy = om.size
         n_size=width,int(float(width)/ox*oy)
-
         om.thumbnail(n_size,Image.ANTIALIAS)
+
         if water_mark:
             om=self.add_watermark(om)
 
@@ -134,7 +121,6 @@ def test_add_watermark():
     improcessor= ImageProcessor()
     infile = '/var/shijing/img'+"/raw/2015/05/13/0.jpeg"
     improcessor.add_watermark(Image.open(infile))
-
 
 
 if __name__=='__main__':

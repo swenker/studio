@@ -21,17 +21,7 @@ class ServiceHelper():
     def load_config(self):
         pass
 
-    def preview(self):
-        pass
-
-    def save(self, params):
-        pass
-
-    def publish(self):
-        pass
-
     def store(self, image):
-
         base_store_path = config.img_save_path
         imgpath = image.file.filename.replace('\\', '\\')
         imgname = imgpath.split('/')[-1]
@@ -54,13 +44,11 @@ class ServiceHelper():
             except OSError:
                 pass
 
-
         if not os.path.exists(large_full_store_dir):
             try:
                 os.makedirs(large_full_store_dir)
             except OSError:
                 pass
-
 
         if not os.path.exists(medium_full_store_dir):
             try:
@@ -76,7 +64,6 @@ class ServiceHelper():
 
         local_tmp_path_pattern = "%s/%s"
 
-
         fout = open((local_tmp_path_pattern%(raw_full_store_dir,imgname)), 'w')
         fout.write(image.file.file.read())
         fout.close()
@@ -88,6 +75,7 @@ class ServiceHelper():
 
         img_store = config.img_store
         if img_store == 'oss':
+            #TODO should this be catched or not?
             # upload_file_to_oss(raw_relative_dir+"/"+imgname,(local_tmp_path_pattern%(raw_full_store_dir,imgname)))
             upload_file_to_oss('img'+large_relative_dir+"/"+imgname,(local_tmp_path_pattern%(large_full_store_dir,imgname)))
             upload_file_to_oss('img'+medium_relative_dir+"/"+imgname,(local_tmp_path_pattern%(medium_full_store_dir,imgname)))
@@ -154,8 +142,9 @@ class ServiceHelper():
         return saved_path_list
 
 
-
+    #TODO gallery
     def generateIndexHtml(self):
+        "Generate the parsed html of homepage to reduce db calls by every visit"
         httpcon = httplib.HTTPConnection("localhost")
         httpcon.connect()
         httpcon.request("GET","/p/site/home")
@@ -166,7 +155,7 @@ class ServiceHelper():
             fout = open(out_html, 'w')
             fout.write(httpresp.read())
             fout.close()
-            logger.info("generated.")
+            logger.info("homepage generated.")
         else:
             logger.error("Failed to generate html :%d %s" %(httpresp.status,httpresp.reason))
         httpcon.close()
@@ -181,7 +170,6 @@ class ServiceHelper():
             article_meta.oid = -1
 
         article_meta.title = params.title
-
         article_meta.subtitle = params.subtitle
         article_meta.author = params.author
         article_meta.source = params.source
@@ -196,20 +184,16 @@ class ServiceHelper():
 
             if len(dtpub_input)==10:
                 dtpub_input += dtnow_str[10:]
-
             elif len(dtpub_input)<10:
                 dtpub_input = dtnow_str
-
             elif len(dtpub_input)>19:
                 dtpub_input = dtpub_input[:19]
         else:
             dtpub_input = dtnow_str
 
         article_meta.dtpub = datetime.strptime(dtpub_input, DATE_TIME_FORMAT)
-
         article_meta.brief = params.brief
         article_meta.status = 1
-
         article_content = cms_model.ArticleContent(params.content)
 
         if params.cid:
@@ -235,8 +219,10 @@ class ServiceHelper():
     def set_common_header(self,web):
         web.header('Content-Type','text/html; charset=UTF-8', unique=True)
 
+
     def init_adm_session(self,web,app):
         return web.session.Session(app, web.session.DiskStore('sessions/adm_users'), initializer={'admin': None})
+
 
     def init_user_session(self,web,app):
         return web.session.Session(app, web.session.DiskStore('sessions/site_users'), initializer={'uinfo': None})
@@ -250,18 +236,20 @@ class ServiceHelper():
             return None
 
 
-    def delete_adm_session(self,adm_session):
-        if adm_session.get('admin'):
-            adm_session['admin'] = None
-
-
-    def delete_user_session(self,web,app):
-        session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
-        session._load()
+    #TODO to delete
+    # def delete_adm_session(self,adm_session):
+    #     if adm_session.get('admin'):
+    #         adm_session['admin'] = None
+    #
+    #
+    # def delete_user_session(self,web,app):
+    #     session = web.session.Session(app, web.session.DiskStore('sessions/site_users'))
+    #     session._load()
 
 
     def to_jsonstr(self,obj):
         return json.dumps(obj.__dict__, cls=cms_model.ComplexEncoder)
+
 
     def compose_preorder(self,params):
         preorder = cms_model.Preorder()
@@ -273,9 +261,9 @@ class ServiceHelper():
         preorder.utitle = params.utitle
 
         return preorder
-    
+
+
     def compose_order(self, params):
-        
         order = cms_model.Order(params.uid)
         if(params.oid):
             order.oid = int(params.oid)
@@ -285,7 +273,6 @@ class ServiceHelper():
         order.edit_limit = int(params.edit_limit)
         order.price = params.price
         order.dtcomplete = params.dtcomplete
-
         order.remark = params.remark
         order.venue = params.venue
         order.dttake = params.dttake

@@ -62,6 +62,7 @@ urls = ("/adminsvc", "AdminService",
 
 config = service_config.config
 
+#Thus the variables can be used within pages.
 t_globals = {
     'datestr': web.datestr,
     'service_config':config
@@ -78,12 +79,13 @@ cgi.maxlen = config.img_size_limit * 1024 * 1024
 cmsService = cms_service.cmsService
 
 serviceHelper = ServiceHelper()
-adm_session = serviceHelper.init_adm_session(web,app)
+adm_session = serviceHelper.init_adm_session(web, app)
 web.config.session_parameters['timeout'] = 8000
 
 logger = config.getlogger()
 logger.info('admincms initialized')
 
+_EVERY_PAGE = config.nevery_page
 
 def my_loadhook():
     request_uri = web.ctx.environ.get('REQUEST_URI')
@@ -100,6 +102,7 @@ app.add_processor(web.unloadhook(my_unloadhook))
 
 
 class LoginService():
+    "Admin login handler"
     def GET(self):
         return render.login('')
 
@@ -108,12 +111,15 @@ class LoginService():
         email = params.email
         passwd = params.passwd
 
+        #TODO put into db
         if email and passwd:
             if email == 'abctest@126.com' and passwd=='onecase':
                 adm_session.admin = True
+                logger.info("[%s] logged in" % email)
                 return web.seeother("/")
 
             else:
+                logger.info("[%s] logged failed" % email)
                 return render.login("Failed")
         else:
             return render.login("Please Input email and password")
@@ -121,10 +127,12 @@ class LoginService():
 class Signout():
     def GET(self):
         adm_session.kill()
+        #TODO username
+        #logger.info("[%s] logged in" % adm_session.get)
         return web.seeother("/login")
 
 
-#TODO
+#TODO enable service manageable on web console
 class AdminService():
     def GET(self):
         action = web.input('uaction')
@@ -148,7 +156,6 @@ class NewArticle():
 
 class SaveArticle():
     def POST(self):
-
         params = web.input(subtitle=None,oid=None,cid=None,ctcode=[])
         if not params.oid:
             cmsService.new_article(serviceHelper.compose_article(params))
@@ -159,9 +166,6 @@ class SaveArticle():
         serviceHelper.generateIndexHtml()
 
         web.seeother('list_article?ctcode='+params.ctcode[0])
-
-
-_EVERY_PAGE = config.nevery_page
 
 
 class ListEditArticles():
@@ -186,7 +190,7 @@ class ListEditArticles():
         return render.article_list_edit(rlist, total, total_pages,npages,ctcode)
 
 
-# TODO
+# TODO implement this feature
 class PreviewArticle():
     def GET(self, id):
         article = cmsService.get_article(id)
@@ -210,6 +214,7 @@ class EditArticle():
         article = cmsService.get_article(id)
         if article:
             return render.article_form(article.article_meta, article.article_content)
+
         else:
             return render.common("failed:" + str(id))
 
@@ -260,20 +265,18 @@ class ListCategories():
         serviceHelper.set_common_header(web)
         return serviceHelper.to_jsonstr(ListWrapper(rlist))
 
+
 class ListAlbums():
     def GET(self):
-
         params = web.input(format=None)
         rlist = cms_service.album_map.values()
 
         if params.format and 'json'== params.format:
-
             serviceHelper.set_common_header(web)
             return serviceHelper.to_jsonstr(ListWrapper(rlist))
 
         else:
             return render.album_list_edit(rlist)
-
 
 
 class UploadImage:
@@ -354,7 +357,6 @@ class SelectImages:
         start = npages * _EVERY_PAGE
         nfetch = _EVERY_PAGE
 
-
         acode = params.acode
 
         rlist, total = cmsService.get_album_imglist(acode,start, nfetch)
@@ -382,9 +384,9 @@ class SelectCover:
         # return to_jsonstr(ListWrapper(rlist,total,total_pages))
         return render.img_cover_selector(rlist, total, total_pages,npages)
 
+
 class LoadFolder():
     def GET(self):
-
         return render.load_folder()
 
     def POST(self):
@@ -397,6 +399,7 @@ class LoadFolder():
         counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
         return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %(counter,orderid))
+
 
 class ListOrders():
     def GET(self):
@@ -414,16 +417,17 @@ class ListOrders():
 class ListOrderImages():
     "List all images of for the order"
     def GET(self,oid):
-
         rlist = cmsService.list_order_imgs(int(oid))
         # print len(rlist)
-        return render.img_list_select(rlist, len(rlist),oid)
+        return render.img_list_select(rlist, len(rlist), oid)
+
 
 class ListSelectedImages():
     def GET(self,oid):
         rlist = cmsService.list_selected_imgs(int(oid))
 
-        return render.img_select_result(rlist, len(rlist),oid)
+        return render.img_select_result(rlist, len(rlist), oid)
+
 
 class ListPreorder():
     def GET(self):
@@ -431,13 +435,14 @@ class ListPreorder():
         rlist = cmsService.list_preorder(status)
         return render.yuyue_list(rlist)
 
+
 class DeletePreorder():
     def GET(self,oid):
-
         cmsService.delete_preorder(int(oid))
         return  render.common("deleted")
 
-class HandlerOrderForm():
+
+class HandleOrderForm():
     def GET(self):
         params = web.input(oid=None,porder=None,uid=None)
         oid = params.oid
@@ -460,8 +465,8 @@ class HandlerOrderForm():
                 order.total_limit = 120
                 order.edit_limit = 30
 
-
         return render.order_form(order)
+
 
     def POST(self):
         params = web.input(oid=None,dtcomplete=None)
@@ -471,24 +476,27 @@ class HandlerOrderForm():
 
         return render.common("Order Saved,<a href='?oid="+str(oid)+"'>return</a>")
 
+
 class DeleteOrder():
     def GET(self):
         params = web.input(oid=None)
         ops_result = "OK"
+
         if(params.oid):
             cmsService.delete_order(int(params.oid))
-
         else:
             ops_result = "id is needed"
 
         return render.common(ops_result)
 
-"Create user from pre-order"
+
 class NewSiteUserHandler():
+    "Create user from pre-order"
     def GET(self):
         params = web.input()
         mobile = params.mobile
         poid = int(params.poid)
+
         siteuser = cms_model.SiteUser(passwd='abcd1234',mobile=mobile)
         siteuser.email=''
 
@@ -500,9 +508,9 @@ class NewSiteUserHandler():
             return e
 
 class CreateSiteUserHandler():
-
     def GET(self):
         return render.siteuser_form(None)
+
 
     def POST(self):
         params = web.input()
@@ -515,6 +523,7 @@ class CreateSiteUserHandler():
         except BaseException,e:
             return e
 
+
 class SiteUserList():
     def GET(self):
         try:
@@ -522,16 +531,18 @@ class SiteUserList():
             uid = None
             if params.uid:
                 uid = int(params.uid)
+
             rlist = cmsService.list_siteuser(uid)
             return render.siteuser_list(rlist)
         except BaseException,e:
             return e
 
+
 class GetSiteUser():
     def GET(self,uid):
         user = cmsService.get_siteuser(int(uid))
-
         return render.siteuser_form(user)
+
 
 class SaveSiteUser():
     def POST(self):
@@ -543,7 +554,6 @@ class SaveSiteUser():
         return render.common('Saved OK:%s' %params.id)
         # except BaseException ,e:
             #return e
-
 
 
 class DownloadSelectedImageResult():
@@ -569,11 +579,11 @@ class DownloadSelectedImageResult():
 class ChangeOrderStatus():
     def GET(self):
         params = web.input()
-
         oid = int(params.oid)
         status = int(params.status)
 
         cmsService.update_order_status(oid,status)
+
 
 class GetOrderImageCover():
     def GET(self,oid):
