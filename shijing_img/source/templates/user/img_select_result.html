@@ -77,6 +77,15 @@ $def with(order_id,rlist,total)
                 );
         }
 
+        function confirm_select(){
+            var result = confirm('是否确认？');
+            if(result){
+
+            }else{
+
+            }
+        }
+
     </script>
 </head>
 
@@ -100,7 +109,8 @@ $def with(order_id,rlist,total)
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header">选中的照片：共$total 张</h3>
-                    <a class="btn active" href="/p/u/order/confirm_select/${order_id}">结束选片 </a>
+                    <a class="btn active" href="/p/u/listimgs/${order_id}">继续选片</a> &nbsp;
+                    <!--<a class="btn active" href="/p/u/order/confirm_select/${order_id}" onclick="return confirm('选完了？')">结束选片 </a>-->
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

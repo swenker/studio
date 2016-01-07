@@ -6,7 +6,7 @@ import web
 from backend_service_helper import *
 from cms_model import *
 from aliyun_oss_handler import *
-import string_tool
+import cms_utils
 
 
 TABLE_ARTICLE_META = "cms_article_meta"
@@ -29,7 +29,7 @@ config = service_config.config
 logger = config.getlogger()
 
 #web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
-db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=string_tool.decrypt(config.passwd,config.passwd_padding))
+db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=cms_utils.decrypt(config.passwd,config.passwd_padding))
 
 album_map = {}
 category_map = {}
@@ -908,7 +908,7 @@ class CmsService:
         if uid:
             sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER, uid)
         else:
-            sqls = "SELECT * FROM %s ORDER BY id" %TABLE_SITE_USER
+            sqls = "SELECT * FROM %s ORDER BY id DESC " %TABLE_SITE_USER
         result = db.query(sqls)
         if result:
             user_list = []

@@ -65,8 +65,14 @@ $def with(rlist,total)
                             </div>
                             <div class="panel-body">
                                 <!--用  户: $order.uid <br/>-->
-                                订单ID: $order.oid <br/>
-                                订单状态: $order.status <br/>
+                                订单ID: <strong>$order.oid </strong><br/>
+                                       $ status=''
+                                订单状态:
+                                         $if order.status==1:
+                                             $ status = '待选片'
+                                         $elif order.status==3:
+                                             $ status = '已选片'
+                                         <strong>$status</strong> <br/>
                                 拍摄地: $order.venue <br/>
                                 价  格: $order.price <br/>
                                 总张数: $order.total_limit <br/>

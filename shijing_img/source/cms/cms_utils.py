@@ -42,6 +42,8 @@ def decrypt(encrypted_msg,end):
     print padding+";"+decoded
     return decoded
 
+def daystr(daytime):
+    return daytime.strftime("%Y-%m-%d")
 
 if __name__ == '__main__':
     # encred = encrypt('shijing_09a')

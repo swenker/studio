@@ -6,33 +6,35 @@ import web
 from cms import cms_model
 from cms import cms_service
 from cms import service_config
+from cms import cms_utils
+
 import wshelper
 
 urls = (
-        "/login", "LoginService",
-        "/logout", "LogoutService",
-        "", "LoginService",
-        "/orders", "ListOrders",
-        "/listimgs/(\d+)", "ListOrderImages",
-        "/okimgs/(\d+)", "ListSelectedImages",
-        "/upc/(\d+)", "UpdateChoice",
-        "/order/(\d+)", "GetOrder",
-        "/order/confirm_select/(\d+)", "ConfirmOrderImageSelection",
-        "/user/(\d+)", "GetUser"
+    "/login", "LoginService",
+    "/logout", "LogoutService",
+    "", "LoginService",
+    "/orders", "ListOrders",
+    "/listimgs/(\d+)", "ListOrderImages",
+    "/okimgs/(\d+)", "ListSelectedImages",
+    "/upc/(\d+)", "UpdateChoice",
+    "/order/(\d+)", "GetOrder",
+    "/order/confirm_select/(\d+)", "ConfirmOrderImageSelection",
+    "/user/(\d+)", "GetUser"
 )
 
 app = web.application(urls, globals())
-web.config.debug=False
+web.config.debug = False
 
-#web.config.session_parameters['timeout'] = 8000
+# web.config.session_parameters['timeout'] = 8000
 # web.config.session_parameters['ignore_change_ip'] = True
 print '---------------------------------------------------------------------------------------------------------------'
 
 config = service_config.config
 
 t_globals = {
-    'datestr': web.datestr,
-    'service_config':config
+    'daystr': cms_utils.daystr,
+    'service_config': config
 }
 
 render = web.template.render("templates/user", globals=t_globals)
@@ -40,10 +42,11 @@ render = web.template.render("templates/user", globals=t_globals)
 cmsService = cms_service.cmsService
 
 serviceHelper = wshelper.ServiceHelper()
-session = serviceHelper.init_user_session(web,app)
+session = serviceHelper.init_user_session(web, app)
 
 logger = config.getlogger()
 logger.info('usersite initialized')
+
 
 def my_loadhook():
     request_uri = web.ctx.environ.get('REQUEST_URI')
@@ -58,18 +61,26 @@ class Dashboard():
     def GET(self):
         return render.dashboard()
 
+
 class UserInfo():
-    def __init__(self,user,order):
+    def __init__(self, user):
         self.user = user
-        self.order = order
+        self.order = None
+        self.order_idlist = None
+
+    def is_order_owner(self, oid):
+        # print oid, self.order_idlist,
+        if self.order_idlist:
+            return self.order_idlist.count(oid) == 1
+
 
 class LoginService():
     def GET(self):
-        userinfo=serviceHelper.get_user_session(session)
+        userinfo = serviceHelper.get_user_session(session)
         if not userinfo:
             return render.login('')
         else:
-            return web.seeother('/listimgs/'+str(userinfo.order.oid))
+            return web.seeother('/listimgs/' + str(userinfo.order.oid))
 
     def POST(self):
         params = web.input()
@@ -78,21 +89,27 @@ class LoginService():
         passwd = params.passwd
 
         if mobile and passwd:
-            stat,reason = cmsService.site_user_login(mobile,passwd)
-            if(reason=='OK'):
+            stat, reason = cmsService.site_user_login(mobile, passwd)
+            if (reason == 'OK'):
                 user = stat
-                orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING,user.oid)
-                session.uinfo =UserInfo(user,None)
+                orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING, user.oid)
+
+                session.uinfo = UserInfo(user)
                 if orders:
-                    order = orders[0]
-                    session.uinfo = UserInfo(user,order)
-                    return web.seeother('/listimgs/'+str(order.oid))
+                    order_idlist = []
+                    for od in orders:
+                        order_idlist.append(od.oid)
+                    session.uinfo.order_idlist = order_idlist
+                    session.uinfo.order = orders[0]
+
+                    return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
                 else:
                     return web.seeother('/orders')
             else:
-                return render.login("Failed:"+reason)
+                return render.login("Failed:" + reason)
         else:
             return render.login("Please Input email and password")
+
 
 class LogoutService():
     def GET(self):
@@ -102,12 +119,12 @@ class LogoutService():
 
 
 class GetUser():
-    def GET(self,uid):
+    def GET(self, uid):
         pass
 
 
 class GetOrder():
-    def GET(self,oid):
+    def GET(self, oid):
         pass
 
 
@@ -117,13 +134,13 @@ class UpdateChoice():
         # oid = int(params.oid)
         status = int(params.status)
         # cmsService.update_user_choice(iid,oid,status)
-        cmsService.update_user_choice(iid,status)
+        cmsService.update_user_choice(iid, status)
         return "{'result':'OK'}"
 
 
 class ListOrders():
     def GET(self):
-        userinfo=serviceHelper.get_user_session(session)
+        userinfo = serviceHelper.get_user_session(session)
         uid = userinfo.user.oid
 
         rlist = cmsService.list_orders(uid)
@@ -133,25 +150,37 @@ class ListOrders():
 
 class ListOrderImages():
     "List all images of for the order"
-    def GET(self,oid):
-        userinfo=serviceHelper.get_user_session(session)
 
+    def GET(self, oid):
+        userinfo = serviceHelper.get_user_session(session)
+        i_oid = int(oid)
         if userinfo:
-            rlist = cmsService.list_order_imgs(int(oid))
-            return render.img_list_select(oid,rlist, len(rlist))
+            if userinfo.is_order_owner(i_oid):
+                rlist = cmsService.list_order_imgs(i_oid)
+                return render.img_list_select(oid, rlist, len(rlist))
+            else:
+                return render.common("Invalid request")
         else:
             return render.common("<a href='/p/u/login'>please login</a>")
 
 
 class ListSelectedImages():
-    def GET(self,oid):
-        rlist = cmsService.list_selected_imgs(int(oid))
+    def GET(self, oid):
+        userinfo = serviceHelper.get_user_session(session)
+        i_oid = int(oid)
+        if userinfo:
+            if userinfo.is_order_owner(i_oid):
+                rlist = cmsService.list_selected_imgs(i_oid)
+                return render.img_select_result(oid, rlist, len(rlist))
+            else:
+                return render.common("Invalid request")
+        else:
+            return render.common("<a href='/p/u/login'>please login</a>")
 
-        return render.img_select_result(oid,rlist, len(rlist))
 
 
 class ConfirmOrderImageSelection():
-    def GET(self,oid):
-        cmsService.update_order_status(int(oid),cms_model.Order.ORDER_SELECTED)
+    def GET(self, oid):
+        cmsService.update_order_status(int(oid), cms_model.Order.ORDER_SELECTED)
 
         return web.seeother('/orders')

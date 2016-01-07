@@ -10,6 +10,7 @@ from cms import cms_model
 from cms import cms_service
 from cms import service_config
 from cms import batch_image_handler
+from cms import cms_utils
 
 from wshelper import ServiceHelper
 from wshelper import ListWrapper
@@ -40,7 +41,7 @@ urls = ("/adminsvc", "AdminService",
         "/select_cover", "SelectCover",
         "/refresh","RefreshHomePage",
         "/orders", "ListOrders",
-        "/order/form","HandlerOrderForm",
+        "/order/form","HandleOrderForm",
         "/order/delete","DeleteOrder",
         "/loadfolder","LoadFolder",
         "/signout", "Signout",
@@ -65,6 +66,7 @@ config = service_config.config
 #Thus the variables can be used within pages.
 t_globals = {
     'datestr': web.datestr,
+    'daystr': cms_utils.daystr,
     'service_config':config
 }
 
