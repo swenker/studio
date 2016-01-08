@@ -61,10 +61,11 @@ $def with(rlist,total)
                     <div class="col-lg-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                $order.title &nbsp; [$order.dtcreate]
+                                $order.title &nbsp; [$daystr(order.dtcreate)]
                             </div>
                             <div class="panel-body">
                                 <!--用  户: $order.uid <br/>-->
+                                <img id="img_${order.oid}" width="100" align="right">
                                 订单ID: <strong>$order.oid </strong><br/>
                                        $ status=''
                                 订单状态:
@@ -109,6 +110,29 @@ $def with(rlist,total)
 
     <!-- Custom Theme JavaScript -->
     <script src="/adm/js/sb-admin-2.js"></script>
+    <script>
+        function getImagePath(oid){
+            imgPath=''
+            $$.ajax({
+                type: "GET",
+                url: '/p/u/order/imgcover/'+oid,
+                async: false,
+                success : function(data) {
+                    imgPath = data;
+                }
+            });
+            return imgPath;
+        }
+        $$(document).ready(function(){
+               for(i=1;i<=${len(rlist)};i++){
+                   orderId=eval(i);
+                   imgPath=getImagePath(orderId);
+                   if(imgPath!=''){
+                       $$("#img_"+orderId).attr("src","${service_config.img_url +"/thumb"}"+imgPath);
+                   }
+               }
+        });
+    </script>
 
 </body>
 

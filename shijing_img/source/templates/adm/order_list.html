@@ -60,9 +60,15 @@ $def with(rlist,total)
                         <div class="panel-body">
                             <img id="img_${order.oid}" width="100" align="right">
                             订单ID: <strong>$order.oid </strong><br/>
-                            订单状态: $order.status <br/>
-                            用户ID:<strong> $order.uid </strong>  <a class="btn active" href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a>
-                                                <a class="btn active" href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
+                            订单状态:
+                                         $if order.status==1:
+                                             $ status = '待选片'
+                                         $elif order.status==3:
+                                             $ status = '已选片'
+                                         <strong>$status</strong> <br/>
+
+                            用户ID:<strong> $order.uid </strong>  <a href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a> &nbsp;
+                                                <a href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
                             价  格: $order.price <br/>
                             拍摄地: </strong>$order.venue</strong> <br/>
                             总张数: $order.total_limit&nbsp;&nbsp;精  修: $order.edit_limit

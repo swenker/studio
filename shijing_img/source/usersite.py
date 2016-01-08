@@ -20,6 +20,7 @@ urls = (
     "/upc/(\d+)", "UpdateChoice",
     "/order/(\d+)", "GetOrder",
     "/order/confirm_select/(\d+)", "ConfirmOrderImageSelection",
+    "/order/imgcover/(\d+)","GetOrderImageCover",
     "/user/(\d+)", "GetUser"
 )
 
@@ -69,7 +70,7 @@ class UserInfo():
         self.order_idlist = None
 
     def is_order_owner(self, oid):
-        # print oid, self.order_idlist,
+        #logger.info(("=========%d====================&s========", oid, self.order_idlist))
         if self.order_idlist:
             return self.order_idlist.count(oid) == 1
 
@@ -92,15 +93,19 @@ class LoginService():
             stat, reason = cmsService.site_user_login(mobile, passwd)
             if (reason == 'OK'):
                 user = stat
-                orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING, user.oid)
+                # orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING, user.oid)
+                orders = cmsService.list_orders(user.oid)
 
                 session.uinfo = UserInfo(user)
+                selecting_order=None
                 if orders:
                     order_idlist = []
                     for od in orders:
                         order_idlist.append(od.oid)
+                        if od.status == cms_model.Order.ORDER_SELECTING:
+                            selecting_order=od
                     session.uinfo.order_idlist = order_idlist
-                    session.uinfo.order = orders[0]
+                    session.uinfo.order = selecting_order
 
                     return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
                 else:
@@ -178,9 +183,24 @@ class ListSelectedImages():
             return render.common("<a href='/p/u/login'>please login</a>")
 
 
+class GetOrderImageCover():
+    def GET(self,oid):
+        img = cmsService.get_order_imgcover(oid)
+        if img:
+            return img.file
+        else:
+            return ""
+
 
 class ConfirmOrderImageSelection():
     def GET(self, oid):
         cmsService.update_order_status(int(oid), cms_model.Order.ORDER_SELECTED)
 
         return web.seeother('/orders')
+
+
+class GetUserInfo():
+    def GET(self):
+        userinfo = serviceHelper.get_user_session(session)
+        if userinfo:
+            return "{'user':'"+userinfo.mobilef+"'}"
