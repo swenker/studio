@@ -43,11 +43,11 @@ $def with(order_id,rlist,total)
             $$("#dialog").dialog({width:390,
                 show: {
                 effect: "blind",
-                duration: 500
+                duration: 200
                 },
                 hide: {
                 effect: "blind",
-                duration: 500
+                duration: 200
                 }
             });
             $$(".ui-dialog-titlebar").hide();
@@ -125,8 +125,8 @@ $def with(order_id,rlist,total)
         <div class="col-lg-2">
             <div class="panel panel-info">
                 <div class="panel-body">
-                    <a href="javascript:showImage('$img.large')">
-                    <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" height="120" align="center"/>
+                    <a href="javascript:showImage('$img.medium')">
+                    <img id='img_$img.oid' src="${service_config.img_url+ img.medium}" height="120" align="center"/>
                     </a>
                 </div>
                 <div class="panel-footer" align="right"><input id="ck_$img.oid" type="checkbox" $checked onchange="updateChoice(this,'$img.oid')">
