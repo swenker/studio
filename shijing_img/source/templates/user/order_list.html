@@ -55,9 +55,11 @@ $def with(rlist,total)
             </div>
             <!-- /.row -->
             <div class="row">
+        $ order_id_list=''
         $for i in range(0,total):
 
             $ order=rlist[i]
+            $ order_id_list +=str(order.oid)+','
                     <div class="col-lg-3">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -123,9 +125,11 @@ $def with(rlist,total)
             });
             return imgPath;
         }
+        //$order_id_list
         $$(document).ready(function(){
-               for(i=1;i<=${len(rlist)};i++){
-                   orderId=eval(i);
+               for(order_id_list='${order_id_list}'.split(','),i=0;i<=order_id_list.length;i++){
+                   if(order_id_list[i]=='') continue;
+                   orderId=order_id_list[i];
                    imgPath=getImagePath(orderId);
                    if(imgPath!=''){
                        $$("#img_"+orderId).attr("src","${service_config.img_url +"/thumb"}"+imgPath);

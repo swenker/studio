@@ -35,7 +35,8 @@ config = service_config.config
 
 t_globals = {
     'daystr': cms_utils.daystr,
-    'service_config': config
+    'service_config': config,
+    'str': str
 }
 
 render = web.template.render("templates/user", globals=t_globals)
