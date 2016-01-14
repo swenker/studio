@@ -43,6 +43,7 @@ urls = ("/adminsvc", "AdminService",
         "/orders", "ListOrders",
         "/order/form","HandleOrderForm",
         "/order/delete","DeleteOrder",
+        "/order/(\d+)","GetOrder",
         "/loadfolder","LoadFolder",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
@@ -67,7 +68,8 @@ config = service_config.config
 t_globals = {
     'datestr': web.datestr,
     'daystr': cms_utils.daystr,
-    'service_config':config
+    'service_config':config,
+    'str':str
 }
 
 #print web.config.debug #default is True
@@ -490,6 +492,15 @@ class DeleteOrder():
             ops_result = "id is needed"
 
         return render.common(ops_result)
+
+class GetOrder():
+    def GET(self, oid):
+
+        order_id = int(oid)
+        order = cmsService.load_order(order_id)
+
+        # return '{"name":"'+order.title+'"}'
+        return order.title
 
 
 class NewSiteUserHandler():

@@ -14,6 +14,7 @@ urls = (
     "/login", "LoginService",
     "/logout", "LogoutService",
     "", "LoginService",
+    "/", "LoginService",
     "/orders", "ListOrders",
     "/listimgs/(\d+)", "ListOrderImages",
     "/okimgs/(\d+)", "ListSelectedImages",

@@ -25,8 +25,9 @@ $def with(rlist,total,oid)
     <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
-    <script language="JavaScript" src="/jslib/jquery/jquery-1.9.1.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
     <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <script language="JavaScript" src="/jslib/shijing.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -77,7 +78,7 @@ $def with(rlist,total,oid)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">照片 共 $total 张</h3>
+                    <h4 class="page-header"><script>getGetOrderName('$oid');</script>:共 $total 张照片</h4>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

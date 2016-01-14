@@ -125,9 +125,9 @@ $def with(rlist,total)
             });
             return imgPath;
         }
-        //$order_id_list
+
         $$(document).ready(function(){
-               for(order_id_list='${order_id_list}'.split(','),i=0;i<=order_id_list.length;i++){
+               for(order_id_list='${order_id_list}'.split(','),i=0;i<order_id_list.length;i++){
                    if(order_id_list[i]=='') continue;
                    orderId=order_id_list[i];
                    imgPath=getImagePath(orderId);

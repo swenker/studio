@@ -30,3 +30,17 @@ function appendImage(data){
 function randomPic(imgBaseURL){
     generateList('/p/site/rpic',appendImage);
 }
+
+function getGetOrderName(oid){
+    var orderName='';
+    $.ajax({
+        type: "GET",
+        url: '/p/adm/order/'+oid,
+        async: false,
+        success : function(data) {
+            orderName = data;
+        }
+    });
+
+    document.write(orderName);
+}
