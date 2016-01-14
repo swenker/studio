@@ -43,3 +43,6 @@ get-azurevm amp01-cas-s-mmi -service ca-s-mmi|get-azureendpoint
 get-azurevm amp01-cas-d-mmi -service cas01-d-mmi|get-azureendpoint
 
 get-azurevm gss01-gss-s-mmi -service gss-s-mmi |get-azureendpoint
+
+
+vm  无法重装，只能删除，重新创建。
