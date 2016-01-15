@@ -8,7 +8,8 @@ from cms import cms_service
 from cms import service_config
 from cms import cms_utils
 
-import wshelper
+from wshelper import ServiceHelper
+from wshelper import ListWrapper
 
 urls = (
     "/login", "LoginService",
@@ -17,6 +18,7 @@ urls = (
     "/", "LoginService",
     "/orders", "ListOrders",
     "/listimgs/(\d+)", "ListOrderImages",
+    "/listimgs2/(\d+)", "ListOrderImages2",
     "/okimgs/(\d+)", "ListSelectedImages",
     "/upc/(\d+)", "UpdateChoice",
     "/order/(\d+)", "GetOrder",
@@ -44,7 +46,7 @@ render = web.template.render("templates/user", globals=t_globals)
 
 cmsService = cms_service.cmsService
 
-serviceHelper = wshelper.ServiceHelper()
+serviceHelper = ServiceHelper()
 session = serviceHelper.init_user_session(web, app)
 
 logger = config.getlogger()
@@ -169,6 +171,18 @@ class ListOrderImages():
                 return render.common("Invalid request")
         else:
             return render.common("<a href='/p/u/login'>please login</a>")
+
+class ListOrderImages2():
+    "List all images of for the order"
+    def GET(self, oid):
+        i_oid = int(oid)
+        params = web.input()
+        start = int(params.start)
+        offset = int(params.offset)
+
+        rlist = cmsService.list_order_imgs_pagination(i_oid,start,offset)
+
+        return serviceHelper.to_jsonstr(ListWrapper(rlist))
 
 
 class ListSelectedImages():

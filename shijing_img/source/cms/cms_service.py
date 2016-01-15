@@ -760,6 +760,20 @@ class CmsService:
 
         return rlist
 
+    def list_order_imgs_pagination(self, oid, status=1,start=0,offset=50):
+        sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc limit $start,$offset '
+
+        result = db.query(sqls, vars={'oid': oid,'start':start,'offset':offset})
+
+        rlist = []
+        if result:
+            for r in result:
+                img = self.compose_image(r, True)
+                if img:
+                    rlist.append(img)
+
+        return rlist
+
     def get_order_imgcover(self, oid):
         sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc limit 1'
 
