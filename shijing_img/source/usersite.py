@@ -181,33 +181,19 @@ class ListOrderImages2():
         i_oid = int(oid)
         params = web.input()
         npages = int(params.np)
-
-        _EVERY_PAGE=2
+        _EVERY_PAGE=config.img_u_neverypage
         start = npages * _EVERY_PAGE
-        offset = int(params.offset)
 
-        rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=start,offset=offset)
-
+        rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=start,offset=_EVERY_PAGE)
         total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
 
         return serviceHelper.to_jsonstr(ListWrapper(rlist,total_count=total,total_pages=total_pages))
 
 class ListOrderImages2P():
-
-    "List all images of for the order"
+    "Initial request,only get the total pages counter"
     def GET(self, oid):
         i_oid = int(oid)
-        params = web.input()
-        npages = int(params.np)
-
-        _EVERY_PAGE=2
-        start = npages * _EVERY_PAGE
-        offset = int(params.offset)
-
         rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=0,offset=0)
-
-        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
-
         return render.img_list_select_p(total,oid)
 
 
