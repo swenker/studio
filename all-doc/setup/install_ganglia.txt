@@ -2,7 +2,7 @@ ganglia installation
 server:
 one gweb
 one gmetad [gweb -->gmetad ->gmond ->hsflow(gmond)] [gmetad gets data from gmond by data source configuration]
-one gmond.
+one gmond.--per cluster
 
 client:
 gmond on client can be replaced by hsflowd, hsflow will send data to remote gmond via udp 6343. 
@@ -10,17 +10,15 @@ gmond on client can be replaced by hsflowd, hsflow will send data to remote gmon
 [windows]
 So the remote gmond.conf should disable multi cast and enable bind to it's ip. because most of the network will disable broadcast.
 
-
-通过自动yum安装的版本太低，不支持sflow，所以需要从源码安装，安装后配置文件用的路径是在/usr/local/etc下。
-而源码包含所有
+从源码安装，安装后配置文件用的路径是在/usr/local/etc下。
 
 配置方面：
-如果gmetad需要从多个cluster收集数据，那么需要在 gmetad.conf中加入
+如果gmetad需要从多个cluster收集数据，那么需要在 gmetad.conf中加入多个datasource，
 data_source "cpp cluster" localhost
 data_source "hadoop cluster" nn-qasvc1.hadoop.mscc.cn
 data_source "rcms cluster" rmadmin.stsvc.mscc.cn
 
-每个数据源都是一个gmond(一个gmond可能收集了多个hsflowd提交的数据)，所以在data_source指向的gmond节点的配置文件gmond.conf中，无需指明host，因为是gmetad来获取。
+每个datasource上都是一个gmond(一个gmond可能收集了多个hsflowd提交的数据)，所以在data_source指向的gmond节点的配置文件gmond.conf中，无需指明gmeta的host，因为是gmetad来获取。
 gweb从gmetad获取数据。
 如果用gmond收集多个client的数据，则需要更改gmond.conf  delete gmond metrics and add the following:
 
@@ -184,12 +182,7 @@ thereis a setuid =nobody ,this should the same the owner of /var/lib/ganglia/rrd
 RRDs directory '/var/lib/ganglia/rrds' is not readable.
 mkdir -p /var/lib/ganglia/rrds
 
-
-web 3.6 just copy file but can not be opened?
-1.ganglia-web config:
-  conf_default.php
-  we can put conf.php with customized values to override the default ones.
-  change dwoo as 775
+2016-01-18:currently install using yum is the simple way.
 
 --------------------
 [root@lab01 etc]# cat /etc/httpd/conf.d/ganglia.conf

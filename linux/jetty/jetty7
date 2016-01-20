@@ -1,0 +1,81 @@
+#!/bin/sh
+#
+# Startup script for Jetty Web server
+#
+# (Automatically generated file, check puppet master to make changes)
+#
+# chkconfig: 345 80 14
+# description: Jetty Web Server
+# processname: jetty
+#
+. /etc/init.d/functions
+
+JETTY_USER=jetty
+JETTY_HOMELOC=/home/jetty/current
+
+RETVAL=0
+prog=jetty7.0.2.blur
+
+start() {
+	# Check if jetty already running
+        JETTY_COUNT=`ps auxww | grep "Djetty.home" | grep -v "grep" | wc -l`
+	if [ ${JETTY_COUNT} -gt 0 ]; then
+		echo_failure
+		echo -n "Jetty Process already running ..."
+		echo
+		return 1
+	fi
+
+	# Start jetty
+       	echo "Starting jetty..."
+       	daemon --user $JETTY_USER "$JETTY_HOMELOC/bin/jetty.sh start"
+       	RETVAL=$?
+       	echo_success
+	echo -n "Jetty started in normal mode"
+       	echo
+       	[ $RETVAL=0 ] && touch /var/lock/subsys/jetty7
+}
+
+stop() {
+        echo "Stopping jetty..."
+        daemon --user $JETTY_USER "$JETTY_HOMELOC/bin/jetty.sh stop"
+        RETVAL=$?
+        echo_success
+        echo -n "Tomcat stopped"
+	echo
+        [ $RETVAL=0 ] && rm -f /var/lock/subsys/jetty7
+}
+
+stacktrace() {
+	pid=`ps auxw | egrep jetty.xml | egrep -v egrep | awk '{print $2}'`
+	echo "Running thread dump.."
+	sudo -u jetty kill -3 $pid
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+	stacktrace
+        stop
+        ;;
+  restart)
+        stop
+        start
+        ;;
+  check)
+	echo "Checking jetty status..."
+	${JETTY_HOMELOC}/bin/jetty.sh check
+	RETVAL=$?
+	;;
+  stacktrace)
+	stacktrace
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|check|stacktrace}"
+	exit 1
+esac
+
+exit $RETVAL
+
