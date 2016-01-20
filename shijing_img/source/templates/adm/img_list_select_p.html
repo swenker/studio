@@ -1,0 +1,220 @@
+$def with(total,oid)
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>挑选照片</title>
+
+    <!-- Bootstrap Core CSS -->
+    <!--<link href="/adm/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/adm/css/bootstrap.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <!--<script language="JavaScript" src="/jslib/shijing.js"></script>-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script language="JavaScript">
+        var img_srv_url = '${service_config.img_url}';
+        var np=-1;
+        var offset=2;
+
+        function showList(){
+            np+=1;
+
+            var data_url = "/p/u/listimgs2/2?np="+np+"&offset="+offset;
+            $$.getJSON(data_url)
+            .done(
+                function(data){ //Data is a json object
+                $$.each( data,
+                    function(key,item){
+                        //alert(item);
+                    }
+                    );
+                    if(np>=data.total_pages-1){
+                        $$("#show_more").addClass("btn disabled");
+                    }
+                    addPhotosToTable(data);
+
+                })
+                .fail(
+                function(jqxhr,textStatus,error){
+                    var err = textStatus + "," + error;
+                    console.log( "Request Failed:" + err );
+                }
+                );
+        }
+
+
+        function addPhotosToTable(data){
+            var imgList = $$("#img_list");
+
+            for(i=0;i<data.rlist.length;i++){
+
+                var imgMeta = data.rlist[i];
+                var img_filename=imgMeta.file.split('/')[4];
+                var checked ='';
+                
+                if(imgMeta.ext_status==2)
+                    checked='checked';
+
+                var aimgDiv=$$("<div></div>");
+                aimgDiv.addClass("col-lg-2");
+
+                var panelInfoDiv=$$("<div></div>");
+                panelInfoDiv.addClass("panel panel-info");
+
+                var panelBodyDiv=$$("<div></div>");
+                panelBodyDiv.addClass("panel-body");
+                panelBodyDiv.append("<a href=\"javascript:showImage('"+imgMeta.medium+"')\">"+
+                "<img id='img_"+imgMeta.oid+"' src='"+img_srv_url + imgMeta.thumbnail+"' height='120' align='center'/></a>");
+
+                var panelFooterDiv=$$("<div></div>");
+                panelFooterDiv.addClass("panel-footer");
+                panelFooterDiv.attr("align","right");
+                panelFooterDiv.append(img_filename+"&nbsp;&nbsp;<input id='ck_"+imgMeta.oid+"' type='checkbox' "+checked+" disabled>"+
+                     "&nbsp; <a class='btn active' href='/p/adm/imgdelete/"+imgMeta.oid+"'>删除</a>");
+
+                panelBodyDiv.appendTo(panelInfoDiv);
+                panelFooterDiv.appendTo(panelInfoDiv);
+
+                panelInfoDiv.appendTo(aimgDiv);
+
+                aimgDiv.appendTo(imgList);
+            }
+
+        }
+
+        function showImage(url){
+            $$("#img_viewer").attr("src","${service_config.img_url}" +url);
+            $$("#img_viewer").attr("width","400");
+            $$("#dialog").dialog({width:450,
+                show: {
+                effect: "blind",
+                duration: 500
+                },
+                hide: {
+                effect: "blind",
+                duration: 500
+                }
+            });
+            $$(".ui-dialog-titlebar").hide();
+        }
+
+        function hideImage(){
+            $$("#dialog").dialog('close');
+        }
+
+        $$(document).ready(
+            showList()
+        );
+
+    </script>
+</head>
+
+<body>
+
+    <div id="dialog" title="" style="display:none">
+      <img id="img_viewer" src="" width="0" onclick="hideImage()">
+    </div>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/site/user_nav.html");
+            </script>
+        </div>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="page-header">:共 $total 张照片</h4>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" align="right">
+                             <a href="/p/adm/okimgs/${oid}"> 查看选片结果》》</a>
+                        </div>
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <!-- /.row -->
+            <div class="row" id="img_list">
+
+            </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">
+                     <a id="show_more" href="#" onclick="showList()"> 点击加载更多照片</a>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="right">
+                     <a href="/p/adm/okimgs/${oid}"> 查看选片结果》》</a>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/adm/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/adm/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

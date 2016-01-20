@@ -760,8 +760,20 @@ class CmsService:
 
         return rlist
 
-    def list_order_imgs_pagination(self, oid, status=1,start=0,offset=50):
-        sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc limit $start,$offset '
+    def list_order_imgs_pagination(self, oid, status=0,start=0,offset=50):
+        total = 0
+        status_condition =''
+        if status:
+            status_condition=" AND status="+status
+
+        sqls_total = 'SELECT count(*) as total FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid '+status_condition
+
+        result_total = db.query(sqls_total, vars={'oid': oid})
+        if result_total:
+            total = result_total[0]['total']
+
+        sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid '+status_condition+' ORDER BY a.dtcreate desc limit $start,$offset '
+
 
         result = db.query(sqls, vars={'oid': oid,'start':start,'offset':offset})
 
@@ -772,7 +784,7 @@ class CmsService:
                 if img:
                     rlist.append(img)
 
-        return rlist
+        return rlist,total
 
     def get_order_imgcover(self, oid):
         sqls = 'SELECT a.*,b.status FROM cms_album_img a RIGHT JOIN site_order_img b ON b.iid=a.id and a.itype=4 WHERE b.oid=$oid ORDER BY a.dtcreate desc limit 1'

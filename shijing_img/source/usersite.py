@@ -19,6 +19,7 @@ urls = (
     "/orders", "ListOrders",
     "/listimgs/(\d+)", "ListOrderImages",
     "/listimgs2/(\d+)", "ListOrderImages2",
+    "/listimgs2p/(\d+)", "ListOrderImages2P",
     "/okimgs/(\d+)", "ListSelectedImages",
     "/upc/(\d+)", "UpdateChoice",
     "/order/(\d+)", "GetOrder",
@@ -28,7 +29,8 @@ urls = (
 )
 
 app = web.application(urls, globals())
-web.config.debug = False
+# web.config.debug = False
+web.config.debug = True
 
 # web.config.session_parameters['timeout'] = 8000
 # web.config.session_parameters['ignore_change_ip'] = True
@@ -173,16 +175,40 @@ class ListOrderImages():
             return render.common("<a href='/p/u/login'>please login</a>")
 
 class ListOrderImages2():
+
     "List all images of for the order"
     def GET(self, oid):
         i_oid = int(oid)
         params = web.input()
-        start = int(params.start)
+        npages = int(params.np)
+
+        _EVERY_PAGE=2
+        start = npages * _EVERY_PAGE
         offset = int(params.offset)
 
-        rlist = cmsService.list_order_imgs_pagination(i_oid,start,offset)
+        rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=start,offset=offset)
 
-        return serviceHelper.to_jsonstr(ListWrapper(rlist))
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        return serviceHelper.to_jsonstr(ListWrapper(rlist,total_count=total,total_pages=total_pages))
+
+class ListOrderImages2P():
+
+    "List all images of for the order"
+    def GET(self, oid):
+        i_oid = int(oid)
+        params = web.input()
+        npages = int(params.np)
+
+        _EVERY_PAGE=2
+        start = npages * _EVERY_PAGE
+        offset = int(params.offset)
+
+        rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=0,offset=0)
+
+        total_pages = (total + _EVERY_PAGE - 1) / _EVERY_PAGE
+
+        return render.img_list_select_p(total,oid)
 
 
 class ListSelectedImages():
