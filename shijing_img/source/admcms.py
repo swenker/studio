@@ -73,7 +73,7 @@ t_globals = {
 }
 
 #print web.config.debug #default is True
-web.config.debug = False
+web.config.debug = config.web_debug
 app = web.application(urls, globals())
 
 render = web.template.render("templates/adm", globals=t_globals)

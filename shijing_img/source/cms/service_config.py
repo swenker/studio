@@ -37,6 +37,7 @@ class ServiceConfig():
         self.passwd = configparser.get('db', 'passwd')
         self.passwd_padding = int(configparser.get('db', 'passwd.padding'))
 
+        self.web_debug=configparser.getboolean('web','debug')
         self.web_base = configparser.get("web", "web_base")
         self.nevery_page = int(configparser.get("web","nevery_page"))
 

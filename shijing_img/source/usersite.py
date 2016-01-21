@@ -29,14 +29,16 @@ urls = (
 )
 
 app = web.application(urls, globals())
-# web.config.debug = False
-web.config.debug = True
-
-# web.config.session_parameters['timeout'] = 8000
-# web.config.session_parameters['ignore_change_ip'] = True
 print '---------------------------------------------------------------------------------------------------------------'
 
 config = service_config.config
+
+# web.config.debug = True
+web.config.debug = config.web_debug
+print  config.web_debug
+
+# web.config.session_parameters['timeout'] = 8000
+# web.config.session_parameters['ignore_change_ip'] = True
 
 t_globals = {
     'daystr': cms_utils.daystr,
