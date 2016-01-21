@@ -930,7 +930,7 @@ class CmsService:
 
 
     def list_siteuser(self,uid=None):
-        print uid
+        #print uid
         if uid:
             sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER, uid)
         else:
