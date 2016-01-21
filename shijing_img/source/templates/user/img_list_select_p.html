@@ -53,7 +53,7 @@ $def with(total,order_id)
                     }
                     );
                     if(np>=data.total_pages-1){
-                        $$("#show_more").addClass("btn disabled");
+                        $$("#show_more").text("已全部加载完毕").addClass("btn disabled");
                     }
                     addPhotosToTable(data);
 
