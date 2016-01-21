@@ -87,7 +87,8 @@ class LoginService():
         if not userinfo:
             return render.login('')
         else:
-            return web.seeother('/listimgs/' + str(userinfo.order.oid))
+            # return web.seeother('/listimgs/' + str(userinfo.order.oid))
+            return web.seeother('/listimgs2p/' + str(userinfo.order.oid))
 
     def POST(self):
         params = web.input()
@@ -113,7 +114,8 @@ class LoginService():
                     session.uinfo.order_idlist = order_idlist
                     session.uinfo.order = selecting_order
 
-                    return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
+                    #return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
+                    return web.seeother('/listimgs2p/' + str(session.uinfo.order.oid))
                 else:
                     return web.seeother('/orders')
             else:
