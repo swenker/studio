@@ -5,13 +5,14 @@
 
 . /etc/rc.d/init.d/functions
 
-CASS_HOME=/opt/cassandra
+CASS_HOME=/home/cassandra/apache-cassandra-2.1.12
+DSE_HOME=/home/cassandra/current
 CASS_BIN=$CASS_HOME/bin/cassandra
 CASS_LOG=/var/log/cassandra/cassandra.out
 CASS_USER="cassandra"
-CASS_PID=/var/run/cassandra/cassandra.pid
-CASS_CLI_ADDRESS=`cat $CASS_HOME/conf/cassandra.yaml|grep rpc_address|cut -d":" -f2`
-CASS_CLI_PORT=`cat $CASS_HOME/conf/cassandra.yaml|grep rpc_port|cut -d":" -f2`
+CASS_PID=/var/log/cassandra/cassandra.pid
+CASS_CLI_ADDRESS=`grep '^rpc_address' $CASS_HOME/conf/cassandra.yaml |cut -d":" -f2`
+CASS_CLI_PORT=`grep '^rpc_port' $CASS_HOME/conf/cassandra.yaml |cut -d":" -f2`
 prog=Cassandra
 
 if [ ! -f $CASS_BIN ]; then
@@ -27,7 +28,7 @@ start() {
   fi
   date
   echo -n $"Starting $prog: "
-  daemon --user $CASS_USER $CASS_BIN -p $CASS_PID >> $CASS_LOG 2>&1
+  daemon --user $CASS_USER $CASS_BIN cassandra -p $CASS_PID >> $CASS_LOG 2>&1
   nc -z $CASS_CLI_ADDRESS $CASS_CLI_PORT
   while [ $? -ne 0 ];do sleep 10;nc -z $CASS_CLI_ADDRESS $CASS_CLI_PORT;done
   RETVAL=$?
