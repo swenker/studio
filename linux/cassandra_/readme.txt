@@ -1,0 +1,1 @@
+cassandra is a script to start cassandra as a service
