@@ -19,6 +19,8 @@ TABLE_ALBUM = "cms_album"
 TABLE_ALBUM_IMG = "cms_album_img"
 
 TABLE_SITE_USER = 'site_user'
+TABLE_SITE_USER_PROFILE = 'site_user_profile'
+
 TABLE_SITE_ORDER = 'site_order'
 TABLE_ORDER_IMG = 'site_order_img'
 
@@ -51,6 +53,13 @@ class CmsService:
         logger.info(album_map)
         logger.info(category_map)
         logger.info("===============CmsService initialized successfully===============")
+
+    def get_last_id(self,db):
+        result = db.query("select LAST_INSERT_ID() AS mid ")
+        mid = -1
+        if result:
+            mid = result[0]['mid']
+        return mid
 
     def new_article(self, article):
         if article and article.article_meta.oid > 0:
@@ -833,11 +842,28 @@ class CmsService:
                 user.mobile = r['mobile']
                 user.dtcreate = r['dtcreate']
 
+                user.up = self.get_siteuser_profile(user.oid)
             return user
+
+    def get_siteuser_profile(self,uid):
+        sqls = 'SELECT address,birthday,remark FROM %s WHERE uid=$uid' % TABLE_SITE_USER_PROFILE
+        result = db.query(sqls,vars={'uid':uid})
+        if result:
+            sup = SiteUserProfile()
+            for r in result:
+                sup.uid = uid
+                sup.address = r['address']
+                sup.birthday = r['birthday']
+                sup.remark = r['remark']
+
+            return sup
 
     def save_siteuser(self,**userinfo):
         sqls = "UPDATE %s SET email=$email,nickname=$nickname,mobile=$mobile,status=$status WHERE id=$uid" % TABLE_SITE_USER
         db.query(sqls, vars=userinfo)
+
+        self.update_siteuser_profile(**userinfo)
+        # self.update_siteuser_profile(**sup)
 
         logger.info("user:[%s] saved" %(userinfo))
 
@@ -911,16 +937,62 @@ class CmsService:
 
     def create_siteuser(self,siteuser):
         sqls = "INSERT INTO %s( email,passwd ,nickname,mobile,dtcreate)VALUES($email,$passwd,$nickname,$mobile,$dtcreate)" %TABLE_SITE_USER
-        db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile,'dtcreate':get_timenow()})
 
-        result = db.query("select LAST_INSERT_ID() AS mid ")
-        mid = -1
-        if result:
-            mid = result[0]['mid']
+        t = db.transaction()
 
-        logger.info("user [%s] is created" % siteuser.mobile)
+        try:
+            db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile,'dtcreate':get_timenow()})
+
+            result = db.query("select LAST_INSERT_ID() AS mid ")
+            mid = -1
+            if result:
+                mid = result[0]['mid']
+            logger.info("user [%s] is created" % siteuser.mobile)
+
+            sup = siteuser.up
+            sup.uid = mid
+            self.create_siteuser_profile(sup)
+
+            t.commit()
+        except BaseException,exception:
+            logger.error("Failed to create site user :"+exception.message)
+            t.rollback()
 
         return mid
+
+    def create_siteuser_profile(self,siteuser_profile):
+        sqls = "INSERT INTO %s( uid,address,birthday,remark)VALUES($uid,$address,$birthday,$remark)" %TABLE_SITE_USER_PROFILE
+        db.query(sqls,vars = {'uid':siteuser_profile.uid,'address':siteuser_profile.address,'birthday':siteuser_profile.remark})
+
+        oid = self.get_last_id(db)
+        logger.info("user profile [%s] is created" % siteuser_profile.uid)
+
+        return oid
+
+    def update_siteuser_profile(self,**sup_info):
+        sqls = "UPDATE %s SET address=$address,birthday=$birthday,remark=$remark WHERE uid=$uid" % TABLE_SITE_USER_PROFILE
+        db.query(sqls, vars=sup_info)
+
+        # logger.info("user profile:[%s] saved" %(sup_info))
+
+    def delete_siteuser(self,uid):
+        sqls = "DELETE FROM %s WHERE id=$uid " % TABLE_SITE_USER
+        t = db.transaction()
+        try:
+
+            self.delete_siteuser_profile(uid)
+
+            db.query(sqls,vars={'uid':uid})
+            logger.info("user:[%d] deleted" % uid)
+
+            t.commit()
+        except BaseException,bexception:
+            logger.error("Failed to delete user:%d "+bexception.message %uid)
+
+    def delete_siteuser_profile(self,uid):
+        sqls = "DELETE FROM %s WHERE uid=$uid " % TABLE_SITE_USER_PROFILE
+        db.query(sqls,vars={'uid':uid})
+        logger.info("user profile:[%d] deleted" % uid)
 
     def update_porder_status(self,oid,uid,status):
         sqls = "UPDATE %s SET status=$status,uid=$uid WHERE id=$oid" %TABLE_PREORDER
@@ -947,7 +1019,7 @@ class CmsService:
                 suser.nickname = r['nickname']
                 suser.status = r['status']
                 suser.dtcreate = r['dtcreate']
-
+                suser.up = self.get_siteuser_profile(suser.oid)
                 user_list.append(suser)
 
             return user_list

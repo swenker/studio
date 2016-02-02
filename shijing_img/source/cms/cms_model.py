@@ -185,6 +185,7 @@ class SiteUser:
         self.mobile = mobile
         self.status = status
         self.dtcreate = None
+        self.up=SiteUserProfile()
 
     def __repr__(self):
         return self.__str__()
@@ -194,6 +195,23 @@ class SiteUser:
 
     def jsonable(self):
         return self.__dict__
+
+class SiteUserProfile:
+    def __init__(self):
+        self.oid=None
+        self.uid=None
+        self.address=None
+        self.birthday=None
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
+
 
 class Preorder():
     def __init__(self,oid=None):

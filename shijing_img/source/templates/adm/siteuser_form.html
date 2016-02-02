@@ -43,6 +43,9 @@ $def with(user)
                    $$('#email').val('$user.email');
                    $$('#nickname').val('$user.nickname');
                    $$('#status').val('$user.status');
+                   $$('#address').val('$user.up.address');
+                   $$('#birthday').val('$user.up.birthday');
+                   $$('#remark').val('$user.up.remark');
                });
     </script>
 
@@ -108,6 +111,23 @@ $def with(user)
                                         <div class="form-group  ">
                                             <label for="status">状态</label>
                                             <input name="status" id="status" size="40" maxlength="1" value="1"> &nbsp;&nbsp;
+
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <label for="address">地址</label>
+                                            <input name="address" id="address" size="40" maxlength="50" value=""> &nbsp;&nbsp;
+
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <label for="birthday">生日</label>
+                                            <input name="birthday" id="birthday" size="40" maxlength="10" value=""> &nbsp;&nbsp;
+
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label for="remark">备注</label>
+                                            <input name="remark" id="remark" size="40" maxlength="30" value=""> &nbsp;&nbsp;
 
                                         </div>
 

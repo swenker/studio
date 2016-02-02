@@ -512,6 +512,8 @@ class NewSiteUserHandler():
 
         siteuser = cms_model.SiteUser(passwd='abcd1234',mobile=mobile)
         siteuser.email=''
+        # siteuser.up.address = params.address
+        # siteuser.up.birthday = params.birthday
 
         try:
             uid = cmsService.create_siteuser(siteuser)
@@ -529,6 +531,9 @@ class CreateSiteUserHandler():
         params = web.input()
         mobile = params.mobile
         siteuser = cms_model.SiteUser(passwd='abcd1234',mobile=mobile,email=params.email,nickname=params.nickname)
+        siteuser.up.address = params.address
+        siteuser.up.birthday = params.birthday
+        siteuser.up.remark = params.remark
 
         try:
             uid = cmsService.create_siteuser(siteuser)
@@ -562,7 +567,8 @@ class SaveSiteUser():
         # try:
         params = web.input()
 
-        cmsService.save_siteuser(**{'uid':int(params.id),'email':params.email,'nickname':params.nickname,'mobile':params.mobile,'status':int(params.status)})
+        cmsService.save_siteuser(**{'uid':int(params.id),'email':params.email,'nickname':params.nickname,'mobile':params.mobile,'status':int(params.status)
+            ,'address':params.address,'birthday':params.birthday,'remark':params.remark})
 
         return render.common('Saved OK:%s' %params.id)
         # except BaseException ,e:

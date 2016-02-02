@@ -6,7 +6,8 @@ from datetime import datetime
 import time
 
 
-hosts=['amp02-p-e-mmi','amp03-p-e-mmi','amp04-p-e-mmi','amp05-p-e-mmi','amp06-p-e-mmi']
+#hosts=['amp02-p-e-mmi','amp03-p-e-mmi','amp04-p-e-mmi','amp05-p-e-mmi','amp06-p-e-mmi']
+hosts=['amp02-p-e-mmi','amp03-p-e-mmi']
 # hosts=['amp02-p-e-mmi']
 username='wenjusun'
 password='Motosunwj'
@@ -17,7 +18,9 @@ def yesterday_in_string():
 
     return datetime.fromtimestamp(yesterday_now).strftime("%Y_%m_%d")
 
-yesterday = yesterday_in_string()
+#specified_day = yesterday_in_string()
+
+specified_day=''
 
 def get_ssh_client(host,PORT):
     ssh = paramiko.SSHClient()
@@ -129,7 +132,7 @@ def count_login_requests(dt,site):
 
 def count_all_requests(site):
     # for i in range(9,10):
-    dt = yesterday
+    dt = specified_day
 
     login_requests = count_login_requests(dt,site)
     signup_requests = count_signup_requests(dt,site)
@@ -146,7 +149,7 @@ def count_all_requests(site):
     print ""
 
 def statistics_result_to_file(login_requests,signup_requests,verify_user_requests):
-    file_name = "cas_result_"+yesterday
+    file_name = "cas_result_"+specified_day
 
     with open(file_name,"w") as f:
         # f.write("login,signup,verify")
@@ -187,8 +190,9 @@ def bactch_to_file(site):
 
 if __name__ == '__main__':
     print sys.argv
-    print "statistics---:"+yesterday
+    print "statistics---:"+specified_day
     # ssh_cmd(sys.argv[1])
     site=sys.argv[1]
-    # count_all_requests(site)
-    bactch_to_file(site)
+    specified_day=sys.argv[2]
+    count_all_requests(site)
+    #bactch_to_file(site)

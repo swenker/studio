@@ -51,9 +51,17 @@ CREATE TABLE IF NOT EXISTS `site_user`(
 `email` varchar(60) not null,
 `passwd` varchar(64) not null,
 `nickname` varchar(50),
-`mobile` varchar(20),
+`mobile` varchar(20) UNIQUE,
 `status` TINYINT(1) DEFAULT 1,
 PRIMARY KEY(`id`)
+) ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `site_user_profile`(
+`uid` INT(9) NOT NULL,
+`birthday` CHAR(10),
+`address` VARCHAR(50),
+`remark` VARCHAR(50),
+  PRIMARY KEY(`uid`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `site_order`(

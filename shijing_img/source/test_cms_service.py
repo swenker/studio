@@ -137,6 +137,22 @@ class TestCmsService():
         params = {'uid':'1','email':'abc@abc.com','nickname':'Katy','mobile':'1860120','status':'1'}
         cmsService.save_siteuser(**params)
 
+
+    def test_create_siteuser_profile(self):
+        cmsService.create_siteuser_profile()
+
+    def test_delete_siteuser(self):
+        cmsService.delete_siteuser('3')
+
+    def test_update_siteuser_profile(self):
+        sup_info={'address':'wallstreet','birthday':'2014-01-10'}
+        cmsService.update_siteuser_profile(**sup_info)
+
+    def test_list_siteuser(self):
+        cmsService.list_siteuser()
+
+
+
 def abc():
     print "abc"
 
@@ -157,6 +173,15 @@ if __name__ == '__main__':
     # tcs.test_save_order()
     # tcs.test_list_order()
 
-    tcs.test_save_siteuser()
+    # tcs.test_save_siteuser()
+
+    from ConfigParser import ConfigParser
+    configParser = ConfigParser()
+    configParser.read('pwd.cfg')
+    # print configParser.get('deployer','azureuser')
+
+    tcs.test_list_siteuser()
+
+
 
 

@@ -68,12 +68,13 @@ $def with(rlist)
                 <div class="col-lg-3">
                     <div class="panel panel-primary">
                         <div class="panel-body">
-                            ID:    $suser.oid<br/>
-                            手机号: $suser.mobile<br/>
-                            称  呼: $suser.nickname<br/>
-                            日期:   $suser.dtcreate <br/>
+                            ID:    $suser.oid  &nbsp;&nbsp;&nbsp;&nbsp; 状态:<strong>$suser.status</strong><br/>
+                            称  呼: $suser.nickname &nbsp;&nbsp; <br/>
+                            手机号: <strong>$suser.mobile</strong><br/>
+                            日  期: $suser.dtcreate <br/>
                             email: $suser.email <br/>
-                            状态:   $suser.status
+                            地  址：$suser.up.address<br/>
+                            生  日：$suser.up.birthday<br/>
                         </div>
                         <div class="panel-footer" align="right">
                               <a  href="/p/adm/">删除</a>&nbsp;
