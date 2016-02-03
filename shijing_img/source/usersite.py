@@ -17,7 +17,7 @@ urls = (
     "", "LoginService",
     "/", "LoginService",
     "/orders", "ListOrders",
-    "/listimgs/(\d+)", "ListOrderImages",
+    # "/listimgs/(\d+)", "ListOrderImages",
     "/listimgs2/(\d+)", "ListOrderImages2",
     "/listimgs2p/(\d+)", "ListOrderImages2P",
     "/okimgs/(\d+)", "ListSelectedImages",
@@ -162,7 +162,7 @@ class ListOrders():
 
         return render.order_list(rlist, len(rlist))
 
-
+#Deprecated
 class ListOrderImages():
     "List all images of for the order"
 

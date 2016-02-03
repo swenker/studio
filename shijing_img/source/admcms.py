@@ -16,7 +16,7 @@ from wshelper import ServiceHelper
 from wshelper import ListWrapper
 
 
-
+#TODO move this to a config file or a separated file
 urls = ("/adminsvc", "AdminService",
         "", "Dashboard",
         "/", "Dashboard",
@@ -56,6 +56,8 @@ urls = ("/adminsvc", "AdminService",
         "/siteuser/list","SiteUserList",
         "/siteuser/save","SaveSiteUser",
         "/siteuser/(\d+)","GetSiteUser",
+        "/siteuser/delete/(\d+)","DeleteSiteUser",
+        "/siteuser/resetpwd/(\d+)","ResetSiteUserPassword",
         "/download_simglist/(\d+)","DownloadSelectedImageResult",
         "/order/status","ChangeOrderStatus",
         "/order/imgcover/(\d+)","GetOrderImageCover",
@@ -521,7 +523,7 @@ class NewSiteUserHandler():
             return "{\"status\":\"OK\"}"
         except BaseException,e:
             return e
-
+#TODO this needs to be optimized
 class CreateSiteUserHandler():
     def GET(self):
         return render.siteuser_form(None)
@@ -560,6 +562,20 @@ class GetSiteUser():
     def GET(self,uid):
         user = cmsService.get_siteuser(int(uid))
         return render.siteuser_form(user)
+
+class DeleteSiteUser():
+    def GET(self,uid):
+        cmsService.delete_siteuser(int(uid))
+        return web.seeother('/siteuser/list')
+
+#TODO
+class ResetSiteUserPassword():
+    def GET(self,uid):
+        return ""
+
+    def POST(self,uid):
+        cmsService.delete_siteuser(int(uid))
+        return web.seeother('/siteuser/list')
 
 
 class SaveSiteUser():
