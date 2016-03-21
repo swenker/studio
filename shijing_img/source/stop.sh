@@ -1,0 +1,1 @@
+ps -ef|grep uwsgi|awk '{print $2}'|sort -n|head -1|xargs kill -9
