@@ -1,0 +1,10 @@
+
+cqlsh:simplex> select * from songs where id=43546227-1c8e-46b1-bc8c-8fc5a2883bd8;
+
+[default@simplex] get songs[43546227-1c8e-46b1-bc8c-8fc5a2883bd8];
+UUID should be 16 or 0 bytes (36)
+InvalidRequestException(why:UUID should be 16 or 0 bytes (36))
+
+assume songs keys as lexicalUUID;
+get songs[43546227-1c8e-46b1-bc8c-8fc5a2883bd8];
+
