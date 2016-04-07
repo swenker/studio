@@ -47,7 +47,7 @@ $def with(article_meta, article_content)
         <h4 class="h4" align="right">$article_meta.author&nbsp;发表于&nbsp;$datestr(article_meta.dtcreate)</h4>
         <div class="wrap">
 
-          <img src="${service_config.img_url+'/thumb'+article_meta.cover}" width="600" alt="" >
+          <!--<img src="${service_config.img_url+'/thumb'+article_meta.cover}" width="600" alt="" >-->
           <div class="extra-wrap">
              $if article_content:
                  $:article_content.content
