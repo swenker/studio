@@ -33,12 +33,13 @@ urls = ("/adminsvc", "AdminService",
         # "/edit_category", "EditCategory",
         # "/delete_category", "DeleteCategory",
         "/album", "EditAlbum",
-        "/list_album", "ListAlbums",
-        "/upload_img", "UploadImage",
-        "/list_imgs", "ListImages",
-        "/delete_img", "DeleteImage",
-        "/select_imgs", "SelectImages",
-        "/select_cover", "SelectCover",
+        "/album/list", "ListAlbums",
+        "/img/upload", "UploadImage",
+        "/img/list", "ListImages",
+        "/img/delete", "DeleteImages",
+        "/img/move2newalbum", "MoveToNewAlbum",
+        "/img/select", "SelectImages",
+        "/img/cover/select", "SelectCover",
         "/refresh","RefreshHomePage",
         "/orders", "ListOrders",
         "/order/form","HandleOrderForm",
@@ -329,14 +330,24 @@ class UploadImage:
         except ValueError:
             return "File Limit is 1MB."
 
-class DeleteImage():
+class DeleteImages():
     "idlist=id separated by ,"
-    def GET(self):
-        idlist = web.input().id
-        cmsService.delete_img(idlist)
+    def POST(self):
+        idlist = web.input().idlist
+        if idlist and len(idlist)>1:
+            cmsService.delete_imglist(idlist)
 
-        return web.seeother("/list_imgs?aid=1")
+        return web.seeother("/img/list?aid=1")
 
+class MoveToNewAlbum():
+    def POST(self):
+        idlist = web.input().idlist
+        new_acode = web.input().nacode
+
+        if new_acode and idlist and len(idlist)>1:
+            cmsService.move_imglist_to_album(idlist,new_acode)
+
+        return web.seeother("/img/list?aid=1")
 
 class ListImages:
     def GET(self):

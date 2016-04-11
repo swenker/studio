@@ -35,7 +35,7 @@
 
         <script>
 
-            album_data_url = "/p/adm/list_album?format=json";
+            album_data_url = "/p/adm/album/list?format=json";
 
             function appendAlbumDataNode(data){
                 selectNode = $$("#cms_album");
@@ -94,7 +94,8 @@
                         <!--Image upload form goes here......-->
 
                         <div id="dropzone" class="panel panel-info">
-                            <form action="/p/adm/upload_img"
+                           <div class="panel-body">
+                            <form action="/p/adm/img/upload"
                               class="dropzone"
                               id="myAwesomeDropzone" enctype="multipart/form-data" method="GET">
 
@@ -107,6 +108,7 @@
                                 //    dictDefaultMessage:'Here'
                                 //};
                             </script>
+                           </div>
                         </div>
                     <!--</div>-->
 

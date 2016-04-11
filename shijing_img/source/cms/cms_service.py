@@ -517,16 +517,38 @@ class CmsService:
 
         logger.info("image [%d] are deleted" % oid)
 
+
+   #TODO to optimize the in style
     def delete_imglist(self, idlist):
 
-        #criteria = ",".join(idlist)
-        criteria = idlist
+        ialist=[]
+        for iid in idlist.split(','):
+            if iid:
+                ialist.append(int(iid))
 
-        sqls = "DELETE FROM %s WHERE id in ($criteria)" % TABLE_ALBUM_IMG
+        criteria=tuple(ialist)
+
+        sqls = "DELETE FROM %s WHERE id in $criteria" %( TABLE_ALBUM_IMG)
 
         db.query(sqls, vars={'criteria': criteria})
 
-        logger.info("image [%s] are deleted" % criteria)
+        logger.info("image [%s] are deleted" % idlist)
+
+
+    def move_imglist_to_album(self, idlist,new_acode):
+
+        ialist=[]
+        for iid in idlist.split(','):
+            if iid:
+                ialist.append(int(iid))
+
+        criteria=tuple(ialist)
+        new_aid = album_map.get(new_acode).oid
+        sqls = "UPDATE %s SET aid=$aid WHERE id in $criteria" % TABLE_ALBUM_IMG
+
+        db.query(sqls, vars={'aid':new_aid,'criteria': criteria})
+
+        logger.info("image [%s] are moved" % idlist)
 
 
     def get_album_list(self):
@@ -567,6 +589,37 @@ class CmsService:
                 rlist.append(img)
 
         return rlist, total
+
+
+    def get_random_pic(self,nfetch,itype=1):
+
+        sqls = "SELECT * FROM %s WHERE itype=$itype ORDER BY rand() LIMIT $nfetch " % TABLE_ALBUM_IMG
+
+        result = db.query(sqls, vars={ 'itype': itype,'nfetch':nfetch})
+
+        rlist = []
+
+        if result:
+            for r in result:
+                img = self.compose_image(r)
+                rlist.append(img)
+
+        return rlist
+
+    def get_album_imglist2(self,start=0, nfetch=20, itype=1):
+
+        sqls = "SELECT * FROM %s WHERE itype=$itype ORDER BY dtcreate DESC LIMIT $start,$nfetch " % TABLE_ALBUM_IMG
+
+        result = db.query(sqls, vars={"start": start, "nfetch": nfetch, 'itype': itype})
+
+        rlist = []
+
+        if result:
+            for r in result:
+                img = self.compose_image(r)
+                rlist.append(img)
+
+        return rlist
 
 
     def compose_category(self, r):

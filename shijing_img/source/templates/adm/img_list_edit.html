@@ -32,16 +32,38 @@ $def with(img_list,total,total_pages,npages,acode)
 
     <script>
 
-        album_data_url = "/p/adm/list_album?format=json";
+        album_data_url = "/p/adm/album/list?format=json";
 
 
-        function appendAlbumDataNode(data){
+        function appendAlbumDataNode1(data){
             selectNode = $$("#cms_album");
 
             for(i=0;i<data.rlist.length;i++){
                 album = data.rlist[i];
                 $if acode:
                     selected =  ('$acode'==album.code?'selected':'');
+                $else:
+                    selected= ""
+                optionNode = $$("<option value='"+album.code+"' " +selected +" >"+album.title+"</option>");
+                selectNode.append(optionNode);
+            }
+        }
+
+        function appendAlbumDataNode(data){
+            selectNode = $$("#cms_album");
+            newSelectNode = $$("#cms_album2");
+
+            emptyOptionNode = $$("<option value=''></option>");
+            newSelectNode.append(emptyOptionNode);
+
+            for(i=0;i<data.rlist.length;i++){
+                album = data.rlist[i];
+                newOptionNode = $$("<option value='"+album.code+"'>"+album.title+"</option>");
+                $if acode:
+                    selected =  ('$acode'==album.code?'selected':'');
+                    if('$acode' !=album.code){
+                        newSelectNode.append(newOptionNode);
+                    }
                 $else:
                     selected= ""
                 optionNode = $$("<option value='"+album.code+"' " +selected +" >"+album.title+"</option>");
@@ -56,8 +78,60 @@ $def with(img_list,total,total_pages,npages,acode)
 
         function changeAlbum(){
 
-            window.location.href = '/p/adm/list_imgs?acode='+ $$("#cms_album").val();
+            window.location.href = '/p/adm/img/list?acode='+ $$("#cms_album").val();
         }
+
+        var idset={}
+        function updateChoice(ckbox,iid){
+
+            if(ckbox.checked){
+                idset[iid]='1';
+            }else{
+                idset[iid]='0';
+            }
+        }
+
+        function idsetToIdlist(){
+            var idlist='';
+            for (key in idset){
+                if(idset[key]=='1')
+                    idlist+=key+',';
+            }
+            return idlist;
+        }
+
+        function moveToNewAlbum(){
+            var idlist= idsetToIdlist();
+            var nacode=$$('#cms_album2').val();
+            $$.ajax({
+              type: 'POST',
+              url: '/p/adm/img/move2newalbum',
+              data: {idlist:idlist,nacode:nacode},
+              error:function(){
+                  alert('Move error');
+              },
+              success: function(){
+                  window.location.href = '/p/adm/img/list?acode='+ $$("#cms_album").val();
+              }
+            });
+            //alert(idlist);
+        }
+
+        function deleteSelectedImages(){
+            var idlist= idsetToIdlist();
+            $$.ajax({
+              type: 'POST',
+              url: '/p/adm/img/delete',
+              data: {idlist:idlist},
+              error:function(){
+                  alert('Delete error');
+              },
+              success: function(){
+                  window.location.href = '/p/adm/img/list?acode='+ $$("#cms_album").val();
+              }
+            });
+        }
+
     </script>
 
 </head>
@@ -77,7 +151,9 @@ $def with(img_list,total,total_pages,npages,acode)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">照片列表</h3> <select id="cms_album" name="ac" onchange="changeAlbum()"> </select>
+                    <h3 class="page-header">照片列表</h3> <select id="cms_album" name="ac" onchange="changeAlbum()"> </select>&nbsp;| &nbsp;
+                    <a href="javascript:deleteSelectedImages()">删除选中的照片</a>&nbsp;|&nbsp;
+                    <a href="javascript:moveToNewAlbum()">移动照片</a> To <select id="cms_album2" name="nac"> </select>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -93,11 +169,13 @@ $def with(img_list,total,total_pages,npages,acode)
                         </div>
                         <div class="panel-body">
                             <a href="${service_config.img_url+ img.large}" target="_blank">
-                            <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" align="center"/>
+                            <img id='img_$img.oid' src="${service_config.img_url+ img.thumbnail}" width="160" height="107" align="center"/>
                             </a>
                         </div>
                         <div class="panel-footer" align="right">
-                             &nbsp;<a href="delete_img?id=$img.oid">Delete</a>
+                             <!--TODO if the pic has been used in articles, it shouldn't be deletable anymore-->
+                             <input id="ck_$img.oid" type="checkbox"  onchange="updateChoice(this,'$img.oid')" >
+                            <!--&nbsp;<a href="delete?id=img.oid">Delete</a>-->
                         </div>
                     </div>
                 </div>
@@ -120,7 +198,7 @@ $def with(img_list,total,total_pages,npages,acode)
                         $else:
                             $ css_class =''
 
-                        <li $:css_class><a href="/p/adm/list_imgs?np=$np&acode=$got_code">${np+1}</a></li>
+                        <li $:css_class><a href="/p/adm/img/list?np=$np&acode=$got_code">${np+1}</a></li>
                   </ul>
                 </div>
 

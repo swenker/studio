@@ -184,12 +184,11 @@ class ListAllForHomePage():
 
 class RandomPic():
     def GET(self):
-        start= random.randint(0, 10)
         nfetch=4
-        acode = 'hg'
+        #acode = 'hg'
 
-        plist,ptotal = cmsService.get_album_imglist(acode, start, nfetch)
-
+        # plist,ptotal = cmsService.get_album_imglist(acode, start, nfetch)
+        plist = cmsService.get_random_pic(nfetch)
         return serviceHelper.to_jsonstr(ListWrapper(plist,total_count=len(plist)))
 
 class AllGallery():
