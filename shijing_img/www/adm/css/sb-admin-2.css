@@ -17,11 +17,16 @@ body {
     min-height: 568px;
     background-color: #fff;
 }
+#page-wrapper2 {
+    padding: 0 15px;
+    min-height: 568px;
+    background-color: #fff;
+}
 
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 0 0 0 250px;
+        margin: 0 0 0 200px;
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
     }
@@ -127,7 +132,7 @@ body {
     .sidebar {
         z-index: 1;
         position: absolute;
-        width: 250px;
+        width: 200px;
         margin-top: 51px;
     }
 
