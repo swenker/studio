@@ -1015,7 +1015,7 @@ class CmsService:
 
     def create_siteuser_profile(self,siteuser_profile):
         sqls = "INSERT INTO %s( uid,address,birthday,remark)VALUES($uid,$address,$birthday,$remark)" %TABLE_SITE_USER_PROFILE
-        db.query(sqls,vars = {'uid':siteuser_profile.uid,'address':siteuser_profile.address,'birthday':siteuser_profile.remark})
+        db.query(sqls,vars = {'uid':siteuser_profile.uid,'address':siteuser_profile.address,'birthday':siteuser_profile.birthday,'remark':siteuser_profile.remark})
 
         oid = self.get_last_id(db)
         logger.info("user profile [%s] is created" % siteuser_profile.uid)

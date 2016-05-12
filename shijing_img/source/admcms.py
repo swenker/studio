@@ -415,7 +415,7 @@ class LoadFolder():
         #TODO using new thread? how to update web view?
         counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
-        return render.common("Uploaded %d,<a href='/p/u/listimgs/%d'> check it</a>" %(counter,orderid))
+        return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
 
 
 class ListOrders():

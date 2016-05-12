@@ -25,7 +25,8 @@ urls = (
         "/rpic","RandomPic",
         "/gallery", "AllGallery",
         "/yy", "Yuyue",
-        "/captcha","GenerateCaptch"
+        "/captcha","GenerateCaptch",
+        "/showcal/(\d+)","ShowCalendar"
 )
 
 app = web.application(urls, globals())
@@ -225,3 +226,11 @@ class GenerateCaptcha():
     def GET(self):
 
         return
+
+class ShowCalendar():
+    "Show the agenda of a given photographer"
+    def GET(self,pid):
+        params = web.input(year,month,day)
+
+        #return a date list and the view should be populated with this list
+        return ""

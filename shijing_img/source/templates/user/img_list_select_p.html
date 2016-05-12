@@ -43,7 +43,7 @@ $def with(total,order_id)
         function showList(){
             np+=1;
 
-            var data_url = "/p/u/listimgs2/2?np="+np;
+            var data_url = "/p/u/listimgs2/${order_id}?np="+np;
             $$.getJSON(data_url)
             .done(
                 function(data){ //Data is a json object
