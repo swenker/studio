@@ -198,7 +198,6 @@ class SiteUser:
 
 class SiteUserProfile:
     def __init__(self):
-        self.oid=None
         self.uid=None
         self.address=None
         self.birthday=None

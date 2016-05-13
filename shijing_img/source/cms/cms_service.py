@@ -989,6 +989,9 @@ class CmsService:
 
 
     def create_siteuser(self,siteuser):
+
+        if not siteuser:
+            return None
         sqls = "INSERT INTO %s( email,passwd ,nickname,mobile,dtcreate)VALUES($email,$passwd,$nickname,$mobile,$dtcreate)" %TABLE_SITE_USER
 
         t = db.transaction()
@@ -1056,14 +1059,17 @@ class CmsService:
 
 
     def list_siteuser(self,uid=None):
-        #print uid
+        user_list = []
+
         if uid:
-            sqls = "SELECT * FROM %s WHERE id=%d" %(TABLE_SITE_USER, uid)
+            user_list.append(self.get_siteuser(uid))
+            return user_list
         else:
-            sqls = "SELECT * FROM %s ORDER BY id DESC " %TABLE_SITE_USER
+            sqls = "SELECT * FROM %s a LEFT JOIN %s b ON a.id=b.uid ORDER BY id" %(TABLE_SITE_USER,TABLE_SITE_USER_PROFILE)
+
         result = db.query(sqls)
+
         if result:
-            user_list = []
             for r in result:
                 suser = SiteUser()
                 suser.oid = r['id']
@@ -1072,7 +1078,13 @@ class CmsService:
                 suser.nickname = r['nickname']
                 suser.status = r['status']
                 suser.dtcreate = r['dtcreate']
-                suser.up = self.get_siteuser_profile(suser.oid)
+
+                sup = SiteUserProfile()
+                sup.uid = r['id']
+                sup.address = r['address']
+                sup.birthday = r['birthday']
+                sup.remark = r['remark']
+                suser.up = sup
                 user_list.append(suser)
 
             return user_list

@@ -78,3 +78,8 @@ if __name__ =='__main__':
     # list_arguments(1,2,3) #workable
 
     dict_arguments(**{'a':1,'b':2})
+
+    from ConfigParser import ConfigParser
+    configParser = ConfigParser()
+    configParser.read('pwd.cfg')
+    # print configParser.get('deployer','azureuser')
