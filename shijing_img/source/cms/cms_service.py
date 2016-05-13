@@ -458,7 +458,7 @@ class CmsService:
             db.query(sqls, vars={'title': title, 'oid': oid} )
 
             logger.info("image [%d] is updated with title:%s" % (oid,title) )
-        except Exception, e:
+        except StandardError as e:
             logger.exception("failed to update img:%d" % oid, exc_info=e)
 
 
@@ -475,7 +475,7 @@ class CmsService:
 
             t.commit()
 
-        except Exception, e:
+        except StandardError as e:
             logger.error("failed to create images:%s" % e)
             t.rollback()
 
@@ -736,6 +736,7 @@ class CmsService:
                 mid = result[0]['mid']
             logger.info("order [%d] is created" % mid)
 
+            order.oid = mid
             return mid
 
         logger.info("order [%d] is updated" % order.oid)
@@ -953,8 +954,8 @@ class CmsService:
             web.sendmail(from_address,to_address,subject,message_body)
             logger.info("Mail sent to :"+to_address)
             return True
-        except StandardError,e:
-            logger.error("Failed to send notification email:"+subject)
+        except StandardError as e:
+            logger.error("Failed to send notification email:%s ,%s " %(subject,e))
             return False
 
     def create_preorder(self,preorder):
@@ -996,11 +997,11 @@ class CmsService:
 
         t = db.transaction()
 
+        mid = -1
         try:
             db.query(sqls,vars = {'email':siteuser.email,'passwd':md5(siteuser.passwd),'nickname':siteuser.nickname,'mobile':siteuser.mobile,'dtcreate':get_timenow()})
 
             result = db.query("select LAST_INSERT_ID() AS mid ")
-            mid = -1
             if result:
                 mid = result[0]['mid']
             logger.info("user [%s] is created" % siteuser.mobile)
@@ -1010,8 +1011,8 @@ class CmsService:
             self.create_siteuser_profile(sup)
 
             t.commit()
-        except BaseException,exception:
-            logger.error("Failed to create site user :"+exception.message)
+        except StandardError as error:
+            logger.error("Failed to create site user :%s " % error)
             t.rollback()
 
         return mid
@@ -1042,8 +1043,8 @@ class CmsService:
             logger.info("user:[%d] deleted" % uid)
 
             t.commit()
-        except BaseException,bexception:
-            logger.error("Failed to delete user:%d "+bexception.message %uid)
+        except StandardError as error:
+            logger.error("Failed to delete user:%d due to: %s "%(uid,error))
 
     def delete_siteuser_profile(self,uid):
         sqls = "DELETE FROM %s WHERE uid=$uid " % TABLE_SITE_USER_PROFILE
@@ -1099,8 +1100,8 @@ class CmsService:
             db.query(sqls,vars={'oid':oid,'status':status})
 
             logger.info("order [%d] status updated to %d" %(oid,status))
-        except BaseException,e:
-            logger.error("Failed to update order [%d] status to [%d],due to :%s" %(oid,status,e))
+        except StandardError as error:
+            logger.error("Failed to update order [%d] status to [%d],due to :%s" %(oid,status,error))
 
     def get_total_siteuser(self):
         sqls = "SELECT COUNT(*) as total FROM %s " % TABLE_SITE_USER

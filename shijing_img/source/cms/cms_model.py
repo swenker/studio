@@ -198,9 +198,10 @@ class SiteUser:
 
 class SiteUserProfile:
     def __init__(self):
-        self.uid=None
-        self.address=None
-        self.birthday=None
+        self.uid = None
+        self.address = None
+        self.birthday = None
+        self.remark = None
 
     def __repr__(self):
         return self.__str__()

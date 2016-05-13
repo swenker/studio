@@ -129,3 +129,7 @@ CREATE TABLE IF NOT EXISTS `site_preorder`(
  `status` TINYINT(1) DEFAULT 1,
  PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+--alter history
+--2016-0513 15:05:15
+alter table site_user modify mobile varchar(20) unique;
