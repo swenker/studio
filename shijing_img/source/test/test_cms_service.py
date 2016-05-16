@@ -13,9 +13,6 @@ from cms import aliyun_oss_handler
 cmsService = cms_service.cmsService
 
 
-def test_get_article_content(id):
-    return cmsService.get_article_content(id)
-
 
 class CmsServiceTestCase(unittest.TestCase):
     def setUp(self):
@@ -42,90 +39,78 @@ class CmsServiceTestCase(unittest.TestCase):
         article_content = ArticleContent("This content")
         article = ArticleEntity(article_meta, article_content)
 
-        cmsService.new_article(article)
+        article_id = cmsService.new_article(article)
+        self.assertTrue(article_id)
 
+        cmsService.delete_article(article_id,True)
 
+        self.assertFalse(cmsService.get_article(article_id))
+
+    #TODO add more cases,such as by code and so on
     def test_list_articles(self):
-        return cmsService.list_articles(0, 10)
+        self.assertEqual(2,len(cmsService.list_articles(0, 2)))
 
 
-    def test_get_article(self, id):
-        return cmsService.get_article(id)
+    def test_get_article(self):
+        article_id = 1
+        self.assertEqual(article_id,cmsService.get_article(article_id).article_meta.oid)
 
 
-    def test_get_article_meta(self, id):
-        return cmsService.get_article_meta(id)
+    def test_get_article_meta(self):
+        article_id = 1
+        self.assertEqual(article_id,cmsService.get_article_meta(article_id).oid)
 
 
-    def test_get_article_content(self, id):
-        return cmsService.get_article_content(id)
+    def test_get_article_content(self):
+        article_content_id = 1
+        self.assertEqual(article_content_id,cmsService.get_article_content(article_content_id).oid)
 
 
-    def test_save_album(self):
-        album = Album()
-        album.title = "Default"
-        cmsService.save_album(album)
-
-        album = Album()
-        album.title = "Private"
-        cmsService.save_album(album)
-
-
-    def test_create_img(self):
-        imglist = []
-        imglist.append(Image(title="sunset", aid=1, file="/2014/12/28/img.jpg"))
-        imglist.append(Image(title="Tree", aid=1, file="/2014/12/21/img.jpg"))
-        imglist.append(Image(title="Portrait", aid=1, file="/2014/12/25/img.jpg"))
-        imglist.append(Image(title="Cloud ", aid=1, file="/2014/12/29/img.jpg"))
-
-        cmsService.create_img(Image(title="Cloud ", aid=1, file="/2014/12/18/img.jpg"))
+    # def test_save_album(self):
+    #     album = Album()
+    #     album.title = "Default"
+    #     cmsService.save_album(album)
+    #
+    #     album = Album()
+    #     album.title = "Private"
+    #     cmsService.save_album(album)
+    #
+    #
+    # def test_create_img(self):
+    #     imglist = []
+    #     imglist.append(Image(title="sunset", aid=1, file="/2014/12/28/img.jpg"))
+    #     imglist.append(Image(title="Tree", aid=1, file="/2014/12/21/img.jpg"))
+    #     imglist.append(Image(title="Portrait", aid=1, file="/2014/12/25/img.jpg"))
+    #     imglist.append(Image(title="Cloud ", aid=1, file="/2014/12/29/img.jpg"))
+    #
+    #     cmsService.create_img(Image(title="Cloud ", aid=1, file="/2014/12/18/img.jpg"))
 
 
     def test_get_album_list(self):
-        return cmsService.get_album_list()
+        self.assertEqual(4,len(cmsService.get_album_list()))
 
 
     def test_get_album_imglist(self):
         return cmsService.get_album_imglist('ac')
 
 
-    def test_article_write(self):
-        self.test_new_article()
-
-
-    def test_article_get(self):
-        print self.test_list_articles()
-        print self.test_get_article(1)
-
-        print self.test_get_article_meta(1)
-        print test_get_article_content(tcs.test_get_article_meta(1).cid)
-        print test_get_article_content(5)
-
-
-    def test_album_write(self):
-        self.test_save_album()
-        self.test_create_img()
-
-
-    def test_album_get(self):
-        print self.test_get_album_list()
-        print self.test_get_album_imglist()
-
     def test_list_category(self):
-        print cmsService.get_category_list()
+        self.assertEqual(5,len(cmsService.get_category_list()))
 
-    def test_time_conversion(self):
-        aliyun_oss_handler.upload_file_to_oss(None,None)
 
-    def test_batch_image(self):
+    # def test_time_conversion(self):
+    #     aliyun_oss_handler.upload_file_to_oss(None,None)
+
+    def test_batch_load_imagefolder(self):
         folder = '/2015/05/26'
         aid =100
         orderid = 2015
         from cms import batch_image_handler
         batch_image_handler.load_local_folder(aid,folder,orderid)
+        cmsService.delete_order_img(2015)
 
-    def test_delete_preorder(self):
-         cmsService.delete_preorder(2)
+    # def test_delete_preorder(self):
+    #      cmsService.delete_preorder(2)
 
     def test_save_order(self):
         order = Order(1)
@@ -137,7 +122,9 @@ class CmsServiceTestCase(unittest.TestCase):
         order.venue = 'venue'
         order.dttake = '2015-08-22'
 
-        print cmsService.save_order(order)
+        cmsService.save_order(order)
+
+        self.assertTrue(order.oid)
 
         tmp_order = cmsService.load_order(order.oid)
         self.assertEqual(tmp_order.edit_limit,40)
@@ -174,8 +161,8 @@ class CmsServiceTestCase(unittest.TestCase):
 
         self.assertTrue(uid > 1)
 
+        #remove the test data
         cmsService.delete_siteuser(uid)
-
         self.assertFalse(cmsService.get_siteuser(uid))
 
 
@@ -184,11 +171,17 @@ class CmsServiceTestCase(unittest.TestCase):
         # print siteuser_list
         self.assertTrue(len(siteuser_list)>1)
 
+    #TODO more cases go here.
+
+    def test_delete_order_img(self):
+        cmsService.delete_order_img(2015)
 
 if __name__ == '__main__':
     # suite = unittest.TestLoader().loadTestsFromTestCase(CmsServiceTestCase)
     suite = unittest.TestSuite()
-    tests = ['test_list_siteuser','test_list_order']
+    tests = ['test_batch_load_imagefolder']
+    tests = ['test_delete_order_img']
+    tests = ['test_batch_load_imagefolder']
     for test in tests:
         suite.addTest(CmsServiceTestCase(test))
 

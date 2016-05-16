@@ -2,6 +2,7 @@ __author__ = 'wenju'
 
 import decimal
 import web
+import os
 
 from backend_service_helper import *
 from cms_model import *
@@ -499,23 +500,65 @@ class CmsService:
 
 
     def delete_img(self, oid):
-        sqls = "SELECT file FROM %s WHERE id=$oid" % TABLE_ALBUM_IMG
+        sqls = "SELECT file,itype FROM %s WHERE id=$oid" % TABLE_ALBUM_IMG
         result = db.query(sqls, vars={'oid': oid})
         img_path = None
+        itype=-1
         if result:
             r = result[0]
             img_path = r['file']
+            itype = r['itype']
+
         if img_path:
             # remove start / because oss does accept the start /
-            img_path = "raw" + img_path
+            img_path_raw = "raw" + img_path
+            # self.delete_image_file(img_path_raw)
 
-        delete_from_oss(img_path)
+            img_path_thumb = "thumb" + img_path
+            self.delete_image_file(img_path_thumb)
+
+            img_path_mid = "mid" + img_path
+            self.delete_image_file(img_path_mid)
+
+            img_path_lar = "lar" + img_path
+            self.delete_image_file(img_path_lar)
+
 
         sqls = "DELETE FROM %s WHERE id=$criteria" % TABLE_ALBUM_IMG
 
         db.query(sqls, vars={'criteria': oid})
 
+        #order
+        if itype == Image.IMG_TYPE_USER:
+            sqls = "DELETE FROM %s WHERE iid=$criteria" % TABLE_ORDER_IMG
+            db.query(sqls, vars={'criteria': oid})
+
+
         logger.info("image [%d] are deleted" % oid)
+
+    def delete_image_file(self,img_path):
+        try:
+            os.remove(config.img_save_path+'/'+img_path)
+            if config.img_store == 'oss':
+                delete_from_oss(img_path)
+            logger.debug("%s is deleted "%img_path)
+
+        except StandardError as se:
+            logger.error("Failed to remove file(%s):%s" % (img_path,str(se.args)))
+
+
+    def delete_order_img(self, order_id):
+
+        sqls = "SELECT iid FROM %s WHERE oid=$order_id" % TABLE_ORDER_IMG
+        result = db.query(sqls, vars={'order_id': order_id})
+
+        if result:
+            t = db.transaction()
+            for r in result:
+                image_id = r['iid']
+                self.delete_img(image_id)
+
+            t.commit()
 
 
    #TODO to optimize the in style

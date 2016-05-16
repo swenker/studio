@@ -43,7 +43,7 @@ class RecordStore():
 
         logger.info('total files:%d' % len(filenames))
 
-        #save
+        #TODO how to handle exception? cache single step? or let all break ?
         counter = 0
         for f in filenames:
             iid = cmsService.create_img(self.compose_image(relative_folder,f,aid))
@@ -64,7 +64,7 @@ class RecordStore():
 
             counter += 1
 
-        logger.info('done for(%s,%d):'%(relative_folder,counter))
+        logger.info('------------------------------done for(%s,%d:%d)---------------------------'%(relative_folder,len(filenames),counter))
         return counter
 
 
