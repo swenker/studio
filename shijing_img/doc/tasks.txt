@@ -1,10 +1,11 @@
 2016-05-12
 1.Add Calendar by photographer,it should be visible to all of the website visitors
+  the site user can make appointment from here.
 2.increase the size of check box?
-3.user can not be create via web UI bug
+3.user can not be create via web UI bug --fixed
 4.change order status
   the complete order should be closed and no more pictures can be seen?
-5.add unit tests
+5.add unit tests --done
 
 
 

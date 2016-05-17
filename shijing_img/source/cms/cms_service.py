@@ -1162,6 +1162,9 @@ class CmsService:
         if result:
             return result[0]['total']
 
+    def get_agenda(self,pid):
+        "Return photographer's agenda"
+        return []
 
 
 cmsService = CmsService()

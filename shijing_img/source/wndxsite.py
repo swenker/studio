@@ -1,8 +1,9 @@
 __author__ = 'wenjusun'
 
-import cgi
-import random
+from datetime import date
+import calendar
 import web
+
 
 from cms.cms_model import Image
 from cms import cms_service
@@ -26,6 +27,7 @@ urls = (
         "/gallery", "AllGallery",
         "/yy", "Yuyue",
         "/captcha","GenerateCaptch",
+        "/gcal","GenerateCalendar",
         "/showcal/(\d+)","ShowCalendar"
 )
 
@@ -226,8 +228,16 @@ class GenerateCaptcha():
     def GET(self):
 
         return
+class GenerateCalendar():
+    def GET(self):
+        today = date.today()
+        param = web.input(year=today.year,month=today.month)
+        year = param.year
+        month = param.month
+        return render.calendar(calendar.monthcalendar(year,month))
+    
 
-class ShowCalendar():
+class ShowAgenda():
     "Show the agenda of a given photographer"
     def GET(self,pid):
         params = web.input(year,month,day)

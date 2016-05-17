@@ -176,6 +176,10 @@ class CmsServiceTestCase(unittest.TestCase):
     def test_delete_order_img(self):
         cmsService.delete_order_img(2015)
 
+    def test_get_agenda(self):
+        cmsService.get_agenda('')
+
+
 if __name__ == '__main__':
     # suite = unittest.TestLoader().loadTestsFromTestCase(CmsServiceTestCase)
     suite = unittest.TestSuite()
