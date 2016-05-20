@@ -214,6 +214,9 @@ class SiteUserProfile:
 
 
 class Preorder():
+    PO_STATUS_OPEN=1
+    PO_STATUS_CLOSE=2
+
     def __init__(self,oid=None):
         self.oid = oid
         self.status = 1
@@ -225,6 +228,7 @@ class Preorder():
         self.age = 0
         self.dtcreate = None
         self.uid = None
+        self.pgid = 1
 
     def __repr__(self):
         return self.__str__()

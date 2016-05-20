@@ -259,6 +259,7 @@ class ServiceHelper():
         preorder.genre = params.genre
         preorder.mobile = params.mobile
         preorder.utitle = params.utitle
+        preorder.pgid = params.pgid
 
         return preorder
 

@@ -5,7 +5,7 @@ import calendar
 import web
 
 
-from cms.cms_model import Image
+from cms.cms_model import Image, Preorder
 from cms import cms_service
 from cms import service_config
 from wshelper import ServiceHelper
@@ -228,19 +228,28 @@ class GenerateCaptcha():
     def GET(self):
 
         return
+
 class GenerateCalendar():
+    "Month calendar"
     def GET(self):
         today = date.today()
         param = web.input(year=today.year,month=today.month)
         year = param.year
         month = param.month
         return render.calendar(calendar.monthcalendar(year,month))
-    
 
+#TODO how to reveal on the page view.
 class ShowAgenda():
     "Show the agenda of a given photographer"
-    def GET(self,pid):
-        params = web.input(year,month,day)
+    def GET(self,pgid):
+        today = date.today()
+        params = web.input(year=today.year,month=today.month)
+        year = params.year
+        month = params.month
 
-        #return a date list and the view should be populated with this list
+        if int(month)<10:
+            month='0'+month
+
+        polist = cmsService.list_preorder(int(pgid),Preorder.PO_STATUS_OPEN,'%s-%s'%(params.year,params.month))
+
         return ""

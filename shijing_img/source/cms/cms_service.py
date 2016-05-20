@@ -748,6 +748,7 @@ class CmsService:
         preorder.pdate = r['pdate']
         preorder.bdesc = r['bdesc']
         preorder.dtcreate = r['dtcreate']
+        preorder.pgid = r['pgid']
 
         return preorder
 
@@ -1002,20 +1003,48 @@ class CmsService:
             return False
 
     def create_preorder(self,preorder):
-        sqls = 'INSERT INTO '+TABLE_PREORDER+'(utitle,mobile,genre,age,bdesc,pdate)values($utitle,$mobile,$genre,$age,$bdesc,$pdate)'
+        sqls = 'INSERT INTO '+TABLE_PREORDER+'(utitle,mobile,genre,age,bdesc,pdate,pgid)values($utitle,$mobile,$genre,$age,$bdesc,$pdate,$pgid)'
 
-        db.query(sqls,vars = {'utitle':preorder.utitle,'mobile':preorder.mobile,'genre':preorder.genre,'age':preorder.age,'bdesc':preorder.bdesc,'pdate':preorder.pdate})
+        db.query(sqls,vars = {'utitle':preorder.utitle,'mobile':preorder.mobile,'genre':preorder.genre,'age':preorder.age,'bdesc':preorder.bdesc,'pdate':preorder.pdate,'pgid':preorder.pgid})
+
+        result = db.query("select LAST_INSERT_ID() AS mid ")
+        if result:
+            mid = result[0]['mid']
+            logger.info("preorder [%s] is created" % mid)
+            preorder.oid = mid
+
+            return mid
+
+
 
     def to_order(self,preorder):
         "convert a preorder to order"
 
 
-    def list_preorder(self,status):
+    def list_preorder(self,pgid,status,pdate=None):
         sqls = 'SELECT * FROM '+TABLE_PREORDER
-        if status:
-            sqls += " WHERE status=$status"
+        vars = None
+        if pgid or status:
+            sqls += " WHERE "
 
-        result = db.query(sqls, vars={'status': status})
+            if pgid and status:
+                sqls += " pgid=$pgid and status=$status "
+                vars={'pgid':pgid,'status': status}
+
+            elif status:
+                sqls += " status=$status "
+                vars={'status': status}
+            else:
+                sqls += " pgid=$pgid "
+                vars={'pgid':pgid}
+
+            if pdate:
+                sqls += " and pdate like '"+pdate+"%' "
+
+        elif pdate:
+            sqls += " pdate like '"+pdate+"%' "
+
+        result = db.query(sqls,vars)
 
         rlist = []
 
@@ -1025,6 +1054,7 @@ class CmsService:
                 rlist.append(preorder)
 
         return rlist
+
 
     def delete_preorder(self,oid):
         sqls = "DELETE FROM "+TABLE_PREORDER + " WHERE id=$id"

@@ -133,3 +133,16 @@ CREATE TABLE IF NOT EXISTS `site_preorder`(
 --alter history
 --2016-0513 15:05:15
 alter table site_user modify mobile varchar(20) unique;
+
+CREATE TABLE IF NOT EXISTS `site_photographer`(
+`id` INT(9) NOT NULL AUTO_INCREMENT,
+`dtcreate` TIMESTAMP NOT NULL DEFAULT 0,
+`email` varchar(60) not null,
+`passwd` varchar(64) not null,
+`nickname` varchar(50),
+`mobile` varchar(20) UNIQUE,
+`status` TINYINT(1) DEFAULT 1,
+PRIMARY KEY(`id`)
+) ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+alter table site_preorder add pgid INT DEFAULT 1;

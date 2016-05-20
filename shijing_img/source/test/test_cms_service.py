@@ -179,6 +179,48 @@ class CmsServiceTestCase(unittest.TestCase):
     def test_get_agenda(self):
         cmsService.get_agenda('')
 
+    def test_create_preorder(self):
+
+        po = Preorder()
+        po.age = 3
+        po.bdesc = "Baby girl"
+        po.genre = 0
+        po.mobile = '18601203570'
+        po.pdate = '2016-08-13'
+        po.utitle = "Alice"
+        po.status = 1
+
+        mid = cmsService.create_preorder(po)
+        self.assertTrue(mid)
+
+        cmsService.delete_preorder(mid)
+
+
+    def test_list_preorder_all(self):
+        polist = cmsService.list_preorder(None,None)
+
+        self.assertEqual(len(polist),3)
+
+        polist = cmsService.list_preorder(1,None)
+
+        self.assertEqual(len(polist),3)
+
+    def test_list_preorder_by_status(self):
+        polist = cmsService.list_preorder(None,1)
+
+        self.assertEqual(len(polist),2)
+
+        print polist
+
+    def test_list_preorder(self):
+        polist = cmsService.list_preorder(1,2)
+
+        self.assertEqual(len(polist),1)
+
+        polist = cmsService.list_preorder(2,status=None,pdate='2016-08')
+
+        self.assertEqual(len(polist),1)
+
 
 if __name__ == '__main__':
     # suite = unittest.TestLoader().loadTestsFromTestCase(CmsServiceTestCase)
@@ -186,6 +228,10 @@ if __name__ == '__main__':
     tests = ['test_batch_load_imagefolder']
     tests = ['test_delete_order_img']
     tests = ['test_batch_load_imagefolder']
+
+    tests = ['test_create_preorder']
+    tests = ['test_list_preorder_all','test_list_preorder_by_status','test_list_preorder']
+    tests = ['test_list_preorder']
     for test in tests:
         suite.addTest(CmsServiceTestCase(test))
 
