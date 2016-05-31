@@ -851,8 +851,10 @@ class CmsService:
     def list_orders_bystatus(self,status,uid=None):
         sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
 
-        if status
-        where_condition = 'WHERE status='+str(status)
+        if not status:
+            where_condition = 'WHERE status<100'
+        else:
+            where_condition = 'WHERE status='+str(status)
         if uid:
             where_condition += ' AND uid=' + str(uid)
         result = db.query((sqls % (TABLE_SITE_ORDER, where_condition)))
