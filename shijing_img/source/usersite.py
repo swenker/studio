@@ -198,17 +198,19 @@ class ListOrderImages2P():
     def GET(self, oid):
         i_oid = int(oid)
         rlist,total = cmsService.list_order_imgs_pagination(i_oid,start=0,offset=0)
-        return render.img_list_select_p(total,oid)
+        order = cmsService.load_order(i_oid)
+        return render.img_list_select_p(total,oid,order)
 
 
 class ListSelectedImages():
     def GET(self, oid):
         userinfo = serviceHelper.get_user_session(session)
         i_oid = int(oid)
+        order = cmsService.load_order(i_oid)
         if userinfo:
             if userinfo.is_order_owner(i_oid):
                 rlist = cmsService.list_selected_imgs(i_oid)
-                return render.img_select_result(oid, rlist, len(rlist))
+                return render.img_select_result(oid, rlist, len(rlist),order)
             else:
                 return render.common("Invalid request")
         else:

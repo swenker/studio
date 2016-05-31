@@ -1173,6 +1173,8 @@ class CmsService:
             db.query(sqls,vars={'oid':oid,'status':status})
 
             logger.info("order [%d] status updated to %d" %(oid,status))
+
+            return True
         except StandardError as error:
             logger.error("Failed to update order [%d] status to [%d],due to :%s" %(oid,status,error))
 

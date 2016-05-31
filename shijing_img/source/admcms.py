@@ -449,7 +449,7 @@ class ListSelectedImages():
 class ListPreorder():
     def GET(self):
         status = None
-        rlist = cmsService.list_preorder(status)
+        rlist = cmsService.list_preorder(1,status)
         return render.yuyue_list(rlist)
 
 
@@ -626,9 +626,21 @@ class ChangeOrderStatus():
     def GET(self):
         params = web.input()
         oid = int(params.oid)
+        order_id = int(oid)
+        order = cmsService.load_order(order_id)
+        return render.order_form_status(order)
+
+    def POST(self):
+        params = web.input()
+        oid = int(params.oid)
         status = int(params.status)
 
-        cmsService.update_order_status(oid,status)
+        result = cmsService.update_order_status(oid,status)
+
+        if result:
+            return web.seeother('/orders')
+        else:
+            return render.common("Failed")
 
 
 class GetOrderImageCover():

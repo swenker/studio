@@ -66,6 +66,10 @@ $def with(rlist,total)
                                              $ status = '待选片'
                                          $elif order.status==3:
                                              $ status = '已选片'
+                                         $elif order.status==5:
+                                             $ status = '已邮寄'
+                                         $elif order.status==7:
+                                             $ status = '已完成'
                                          <strong>$status</strong> <br/>
 
                             用户ID:<strong> $order.uid </strong>  <a href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a> &nbsp;
@@ -76,7 +80,7 @@ $def with(rlist,total)
 
                         </div>
                         <div class="panel-footer" align="right">
-                             <a  href="/p/adm/order/form?oid=$order.oid">状态管理</a>
+                             <a  href="/p/adm/order/status?oid=$order.oid">状态管理</a>
                              <a  href="/p/adm/order/form?oid=$order.oid">修改</a>
                              <a  href="/p/adm/order/delete?oid=$order.oid">删除</a>
                              <a  href="/p/adm/listimgs/$order.oid">所有照片</a>

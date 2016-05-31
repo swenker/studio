@@ -75,6 +75,10 @@ $def with(rlist,total)
                                              $ status = '待选片'
                                          $elif order.status==3:
                                              $ status = '已选片'
+                                         $elif order.status==5:
+                                             $ status = '已邮寄'
+                                         $elif order.status==7:
+                                             $ status = '已完成'
                                          <strong>$status</strong> <br/>
                                 拍摄地: $order.venue <br/>
                                 价  格: $order.price <br/>

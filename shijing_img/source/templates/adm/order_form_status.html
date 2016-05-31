@@ -1,0 +1,180 @@
+$def with(order)
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+            Order
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/jslib/jquery/jquery-ui-1.11.4.custom/jquery-ui.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+
+          //Jquery datepicker
+          $$(function() {
+                $$( "#dttake" ).datepicker();
+                $$( "#dttake" ).datepicker("option", "dateFormat","yy-mm-dd");
+          });
+
+
+
+          $if order:
+               $$(document).ready(function(){
+                   $$('#title').val('$order.title');
+                   $$('#uid').val('$order.uid');
+                   $$('#venue').val('$order.venue');
+                   $$('#dttake').val('$order.dttake');
+                   $$('#remark').val('$order.remark');
+                   $$('#total_limit').val('$order.total_limit');
+                   $$('#edit_limit').val('$order.edit_limit');
+                   $$('#price').val('$order.price');
+               });
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/adm/adm_nav.html");
+            </script>
+        </div>
+
+        <!-- Navigation ends here -->
+
+        <div id="page-wrapper">
+<!--            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">图文编辑</h3>
+                </div>
+            </div>
+-->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+
+
+                        <div class="panel-heading">
+                            订单信息
+                        </div>
+
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <form role="form" action="/p/adm/order/status" method="post">
+                                          $if order and order.oid:
+                                               <input type="hidden" name="oid" id="oid" value="$order.oid">
+
+                                        <div class="form-group  ">
+                                            <label>标题</label>
+                                            $order.title &nbsp;&nbsp;
+
+                                            <label>用户</label>
+                                            $order.uid &nbsp;&nbsp;
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <label>拍摄地点</label>
+                                            $order.venue
+                                            &nbsp;&nbsp;
+                                            <label>拍摄时间</label>
+                                            $order.dttake
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>价格</label>
+                                            $order.price &nbsp;&nbsp;
+                                            <label>总张数</label>
+                                            $order.total_limit
+                                            &nbsp;&nbsp;
+                                            <label>精修张数</label>
+                                            $order.edit_limit
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <label>备注</label>$order.remark &nbsp;&nbsp;
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label>当前状态</label>$order.status &nbsp;&nbsp;
+                                            <label>更新为</label>
+                                            <select id="status" name="status">
+                                                <option value="1">ORDER_SELECTING</option>
+                                                <option value="3">ORDER_SELECTED</option>
+                                                <option value="5">ORDER_DELIVERING</option>
+                                                <option value="7">ORDER_COMPLETED</option>
+                                                <option value="9">ORDER_CANCEL</option>
+                                            </select>
+
+                                        </div>
+
+                                        <button type="submit" class="btn btn-default">保存</button>
+
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <!-- The right side here has been deleted -->
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/adm/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/adm/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
