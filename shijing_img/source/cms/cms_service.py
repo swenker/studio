@@ -821,14 +821,14 @@ class CmsService:
             where_condition = 'WHERE uid=' + str(uid)
         result = db.query((sqls % (TABLE_SITE_ORDER, where_condition)))
 
-        rlist = []
 
         if result:
+            rlist = []
             for r in result:
                 order = self.compose_order(r)
                 rlist.append(order)
 
-        return rlist
+            return rlist
 
 
     def list_orders_uncompleted(self,uid=None):

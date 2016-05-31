@@ -110,10 +110,11 @@ class LoginService():
                 session.uinfo = UserInfo(user)
                 selecting_order=None
                 if orders:
+                    selecting_order = orders[0]
                     order_idlist = []
                     for od in orders:
                         order_idlist.append(od.oid)
-                        if od.status == cms_model.Order.ORDER_SELECTING:
+                        if od.status < cms_model.Order.ORDER_COMPLETED:
                             selecting_order=od
                     session.uinfo.order_idlist = order_idlist
                     session.uinfo.order = selecting_order
