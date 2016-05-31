@@ -420,13 +420,18 @@ class LoadFolder():
 
 class ListOrders():
     def GET(self):
-        params = web.input(uid = None)
-
+        params = web.input(uid = None,status=None,search=None)
+        rlist = None
         uid = None
-        if params.uid:
-            uid = int(params.uid)
-
-        rlist = cmsService.list_orders(uid)
+        status = None
+        if params.search:
+            if params.uid:
+                uid = int(params.uid)
+            if params.status:
+                status = int(params.status)
+            rlist = cmsService.list_orders_bystatus(status,uid)
+        else:
+            rlist = cmsService.list_orders_uncompleted()
 
         return render.order_list(rlist, len(rlist))
 

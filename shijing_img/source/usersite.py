@@ -103,7 +103,7 @@ class LoginService():
             if (reason == 'OK'):
                 user = stat
                 # orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING, user.oid)
-                orders = cmsService.list_orders(user.oid)
+                orders = cmsService.list_orders_uncompleted(user.oid)
 
                 session.uinfo = UserInfo(user)
                 selecting_order=None

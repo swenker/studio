@@ -45,7 +45,20 @@ $def with(rlist,total)
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="page-header">订单列表&nbsp;  Create Order</h4>
+                    <h4 class="page-header">订单列表&nbsp;
+                    <form action="" method="post">
+                        客户:<input type="text" name="uid" size="10" maxlength="10">
+                        状态:<select id="status" name="status">
+                            <option value="">All</option>
+                            <option value="1">ORDER_SELECTING</option>
+                            <option value="3">ORDER_SELECTED</option>
+                            <option value="5">ORDER_DELIVERING</option>
+                            <option value="7">ORDER_COMPLETED</option>
+                            <option value="9">ORDER_CANCEL</option>
+                        </select>
+                        <input type="submit" name="search" value="search">
+                    </form>
+                    </h4>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

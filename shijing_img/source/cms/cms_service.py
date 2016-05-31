@@ -831,9 +831,27 @@ class CmsService:
         return rlist
 
 
+    def list_orders_uncompleted(self,uid=None):
+        sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
+
+        where_condition = 'WHERE status < '+str(Order.ORDER_COMPLETED)
+        if uid:
+            where_condition += ' AND uid=' + str(uid)
+        result = db.query((sqls % (TABLE_SITE_ORDER, where_condition)))
+
+
+        if result:
+            rlist = []
+            for r in result:
+                order = self.compose_order(r)
+                rlist.append(order)
+
+            return rlist
+
     def list_orders_bystatus(self,status,uid=None):
         sqls = 'SELECT * FROM %s %s ORDER BY dtcreate desc '
 
+        if status
         where_condition = 'WHERE status='+str(status)
         if uid:
             where_condition += ' AND uid=' + str(uid)
