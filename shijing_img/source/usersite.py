@@ -98,12 +98,14 @@ class LoginService():
         mobile = params.mobile
         passwd = params.passwd
 
+
+        #TODO list all or uncomplete
         if mobile and passwd:
             stat, reason = cmsService.site_user_login(mobile, passwd)
             if (reason == 'OK'):
                 user = stat
                 # orders = cmsService.list_orders_bystatus(cms_model.Order.ORDER_SELECTING, user.oid)
-                orders = cmsService.list_orders_uncompleted(user.oid)
+                orders = cmsService.list_orders(user.oid)
 
                 session.uinfo = UserInfo(user)
                 selecting_order=None
@@ -212,7 +214,7 @@ class ListSelectedImages():
                 rlist = cmsService.list_selected_imgs(i_oid)
                 return render.img_select_result(oid, rlist, len(rlist),order)
             else:
-                return render.common("Invalid request")
+                return render.common("AppERROR:Invalid request")
         else:
             return render.common("<a href='/p/u/login'>please login</a>")
 

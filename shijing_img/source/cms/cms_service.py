@@ -1159,7 +1159,7 @@ class CmsService:
             user_list.append(self.get_siteuser(uid))
             return user_list
         else:
-            sqls = "SELECT * FROM %s a LEFT JOIN %s b ON a.id=b.uid ORDER BY id" %(TABLE_SITE_USER,TABLE_SITE_USER_PROFILE)
+            sqls = "SELECT * FROM %s a LEFT JOIN %s b ON a.id=b.uid ORDER BY id desc " %(TABLE_SITE_USER,TABLE_SITE_USER_PROFILE)
 
         result = db.query(sqls)
 
