@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>手动加载照片</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/adm/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <!--<link href="/adm/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">-->
+
+        <!-- Custom CSS -->
+        <link href="/adm/css/sb-admin-2.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <!--top right will be affected by this css-->
+        <link href="/adm/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- jQuery /home/sunwj/work/studio/shijing_img/js/jquery -->
+        <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+
+            <!-- Navigation -->
+
+        <div id="admnav">
+            <script>
+                $$("#admnav").load("/adm/adm_nav.html");
+            </script>
+        </div>
+
+
+            <!-- Navigation ends here -->
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header">Load 图片</h3>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div id="dropzone">
+                            <form action=""    method="post"   enctype="multipart/form-data">
+                                zip格式，比如05.zip 里面有 05/img01.jpg, 05/img02.jpg
+                               （相对）目录(以‘/’开始,比如/2015/10/15):<input type="text" name="folder" size="30">
+                               订单编号:<input type="text" name="orderid" size="10">
+                                <input type="file" name="photozip">
+                                <button type="submit" value="upload">upload</button>
+                                <br/>
+                                将图片上传到/var/shijing/img/raw/[2016-10-12]......
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#page-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/adm/js/bootstrap.min.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="/adm/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/adm/js/sb-admin-2.js"></script>
+
+    </body>
+
+</html>

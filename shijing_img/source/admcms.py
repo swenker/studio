@@ -2,7 +2,7 @@
 
 __author__ = 'sunwj'
 
-
+from zipfile import ZipFile
 import cgi
 import web
 
@@ -46,6 +46,7 @@ urls = ("/adminsvc", "AdminService",
         "/order/delete","DeleteOrder",
         "/order/(\d+)","GetOrder",
         "/loadfolder","LoadFolder",
+        "/order/loadphoto","LoadOrderPhoto",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
@@ -81,7 +82,8 @@ app = web.application(urls, globals())
 
 render = web.template.render("templates/adm", globals=t_globals)
 
-cgi.maxlen = config.img_size_limit * 1024 * 1024
+#upload order photos?
+cgi.maxlen = config.img_size_limit * 1024 * 1024 *10
 
 cmsService = cms_service.cmsService
 
@@ -309,27 +311,6 @@ class UploadImage:
         except ValueError:
             return "File Limit is 1MB."
 
-    #Not used now
-    def POST1(self):
-        try:
-            image_data = web.input(file=[{}])
-
-            if image_data and 'file' in image_data:
-                #image_data['file']
-
-                imgmeta = cms_model.Image(image_data.aid)
-                imgmeta.aid = 1
-
-                # TODO title field
-                imglist = serviceHelper.store_list(image_data)
-
-                cmsService.create_imglist(imgmeta.aid,imglist)
-
-            return render.common("OK")
-
-        except ValueError:
-            return "File Limit is 1MB."
-
 class DeleteImages():
     "idlist=id separated by ,"
     def POST(self):
@@ -416,6 +397,59 @@ class LoadFolder():
         counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
         return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
+
+
+class LoadOrderPhoto():
+    def GET(self):
+        return render.load_order_photo()
+
+    def POST(self):
+        # try:
+            photo_data = web.input(photozip={})
+            if photo_data and 'photozip' in photo_data:
+
+                folder = photo_data.folder
+                orderid = int(photo_data.orderid)
+
+                print "----" +str(orderid)
+
+                zipname = photo_data.photozip.filename.replace('\\', '\\')
+
+                print "----" +zipname
+
+                base_store_path = config.img_save_path
+                raw_relative_dir="/raw"+folder
+                raw_full_store_dir = "%s%s" % (base_store_path, raw_relative_dir)
+
+                import os
+                if not os.path.exists(raw_full_store_dir):
+                    try:
+                        os.makedirs(raw_full_store_dir)
+                    except OSError:
+                        pass
+
+                #Save zip to temp file
+                tmp_zip_file = "/tmp/"+zipname
+                tmp_zip_fout = open(tmp_zip_file,'w')
+                tmp_zip_fout.write(photo_data.photozip.file.read())
+                tmp_zip_fout.close()
+
+                photo_zip = ZipFile(tmp_zip_file,'r')
+                photo_zip.extractall(raw_full_store_dir)
+                photo_zip.close()
+
+                #TODO using new thread? how to update web view?
+                counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
+
+                return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
+            else:
+                return render.common("Uploaded nothing" )
+
+        # except StandardError as se:
+        #     print se
+        #     return render.common("Failed:%s " %se.message)
+
+
 
 
 class ListOrders():
