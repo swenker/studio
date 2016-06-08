@@ -404,18 +404,16 @@ class LoadOrderPhoto():
         return render.load_order_photo()
 
     def POST(self):
-        # try:
-            photo_data = web.input(photozip={})
-            if photo_data and 'photozip' in photo_data:
+        try:
+            params = web.input(photozip={})
+            if params and 'photozip' in params:
 
-                folder = photo_data.folder
-                orderid = int(photo_data.orderid)
+                folder = params.folder
+                orderid = int(params.orderid)
+                zipname = params.photozip.filename.replace('\\', '\\')
 
-                print "----" +str(orderid)
-
-                zipname = photo_data.photozip.filename.replace('\\', '\\')
-
-                print "----" +zipname
+                #print "----" +str(orderid)
+                #print "----" +zipname
 
                 base_store_path = config.img_save_path
                 raw_relative_dir="/raw"+folder
@@ -431,7 +429,7 @@ class LoadOrderPhoto():
                 #Save zip to temp file
                 tmp_zip_file = "/tmp/"+zipname
                 tmp_zip_fout = open(tmp_zip_file,'w')
-                tmp_zip_fout.write(photo_data.photozip.file.read())
+                tmp_zip_fout.write(params.photozip.file.read())
                 tmp_zip_fout.close()
 
                 photo_zip = ZipFile(tmp_zip_file,'r')
@@ -445,9 +443,9 @@ class LoadOrderPhoto():
             else:
                 return render.common("Uploaded nothing" )
 
-        # except StandardError as se:
-        #     print se
-        #     return render.common("Failed:%s " %se.message)
+        except StandardError as se:
+            print se
+            return render.common("Failed:%s " %se.message)
 
 
 

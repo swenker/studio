@@ -4,6 +4,8 @@ from httplib import *
 import time
 import json
 
+import threading
+
 def test_http():
     httpcon = HTTPSConnection('motocare-sdc200cn.blurdev.com')
 
@@ -72,6 +74,19 @@ def dict_arguments(**params):
     # print alist
     print params
 
+def test_config_parser():
+    from ConfigParser import ConfigParser
+    configParser = ConfigParser()
+    configParser.read('pwd.cfg')
+    # print configParser.get('deployer','azureuser')
+
+
+class MyBatchHandler(threading.Thread):
+    def run(self):
+        print "--------------"
+
+
+
 
 if __name__ =='__main__':
     # test_python()
@@ -79,7 +94,7 @@ if __name__ =='__main__':
 
     dict_arguments(**{'a':1,'b':2})
 
-    from ConfigParser import ConfigParser
-    configParser = ConfigParser()
-    configParser.read('pwd.cfg')
-    # print configParser.get('deployer','azureuser')
+    mythread = MyBatchHandler()
+    mythread.start()
+
+

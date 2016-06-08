@@ -46,3 +46,6 @@ implementation rules:
 log info are recorded in service layer instead of controller [action?]
 
 zip -9 abc.zip *.JPG
+
+one question:
+what to do if the system was broken when processing order images?
