@@ -1,5 +1,8 @@
 __author__ = 'wenjusun'
 
+import threading
+import time
+import Queue
 import glob
 from service_config import config
 import cms_service
@@ -14,6 +17,26 @@ from image_processor import ImageProcessor
 
 cmsService = cms_service.cmsService
 logger = config.getlogger('batch_process')
+
+
+job_queue = Queue.Queue()
+
+class PhotoJob():
+    def __init__(self,order_id,relative_folder,album_id):
+        self.album_id = album_id
+        self.order_id = order_id
+        self.relative_folder = relative_folder
+
+
+
+class OrderPhotoProcessor(threading.Thread):
+    def run(self):
+        while not job_queue.empty():
+            job = job_queue.get_nowait()
+            print "got job:"+job.order_id
+            time.sleep(60)
+            # load_local_folder(job.album_id,job.relative_folder,job.order_id)
+
 
 
 class LocalFileScanner():
