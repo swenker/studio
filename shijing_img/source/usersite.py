@@ -153,6 +153,11 @@ class UpdateChoice():
         status = int(params.status)
         # cmsService.update_user_choice(iid,oid,status)
         cmsService.update_user_choice(iid, status)
+
+        userinfo = serviceHelper.get_user_session(session)
+        mobile = userinfo.user.mobile
+
+        logger.info("[UpdateStatus]%s %d %d " %(mobile,status,iid))
         return "{'result':'OK'}"
 
 

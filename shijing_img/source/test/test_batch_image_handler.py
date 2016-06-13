@@ -37,7 +37,7 @@ class TestBatchImageHandler(unittest.TestCase):
         print
         print "sender started."
         opp = OrderPhotoProcessor()
-
+        opp.setDaemon(True)
         opp.start()
         print "consumer started."
 

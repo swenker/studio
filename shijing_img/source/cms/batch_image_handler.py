@@ -31,12 +31,13 @@ class PhotoJob():
 
 class OrderPhotoProcessor(threading.Thread):
     def run(self):
-        while not job_queue.empty():
-            job = job_queue.get_nowait()
-            print "got job:"+job.order_id
-            time.sleep(60)
+        while True:
+            while not job_queue.empty():
+                job = job_queue.get_nowait()
+                print "got job:"+job.order_id
+                time.sleep(60)
             # load_local_folder(job.album_id,job.relative_folder,job.order_id)
-
+            time.sleep(600)
 
 
 class LocalFileScanner():
