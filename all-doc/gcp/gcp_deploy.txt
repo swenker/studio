@@ -1,0 +1,70 @@
+gcp_deploy
+
+Legacy This can do some operation. delete a module.
+https://appengine.google.com/
+
+https://console.cloud.google.com/appengine/modules?project=efota-cds-dev
+
+
+
+Gcloud:
+https://cloud.google.com/sdk/gcloud/reference/preview/app/modules/delete
+
+gcloud --project efota-sup-dev preview app browse
+
+--upload files to GAE
+OTA:
+
+gcloud --verbosity info --project efota-sup-dev preview app deploy app_efota_dev.yaml
+
+gcloud deployment-manager deployments create my-first-deployment --config vm.yaml
+
+
+部署到GAE之前，是否需要手工创建compute instance？
+
+Container Engine
+Compute Engine --> VM instances
+
+App Engine -> instances?
+  
+https://efota-cds-dev.appspot.com/cds/pingapp/1/ping
+  
+  
+GAE flexible has an compute engine vm instance but 
+
+gcloud --project efota-cds-dev preview app modules delete rollups --version 1
+
+ERROR: (gcloud.preview.app.modules.delete) Error Response: [400] Cannot delete the final version of a service (module). Please del
+ete the whole service (module) in order to delete this version.  
+
+gcloud --project efota-cds-dev preview app modules list  
+
+
+
+---------------
+C:\ZZZZZ\tools\google\google-cloud-sdk\bin\dev_appserver.py applocal.yaml
+SERVER_SOFTWARE='Google App Engine'
+
+cloudSQL instance:
+1.create instance
+2.create uesr
+3.assign ip4 address
+4.
+set SETTINGS_MODE=prod
+
+manage.py dbshell --settings=upgrades.settings.gaedev_efota
+manage.py syncdb --settings=upgrades.settings.gaedev_efota
+ 
+
+super user:wenjusun/weblogic
+
+oauth-id
+
+set HTTP_PROXY=http://10.37.143.233:8080
+set HTTPS_PROXY=http://10.37.143.233:8080
+
+call back url.
+https://efota-sup-dev.appspot.com/oauth2callback
+https://efota-sup-dev.appspot.com/complete/google-oauth2/
+
+datastore 不需要手动创建entity

@@ -1,3 +1,9 @@
+2016-06-02
+1.Upload compressed photo directly via web UI
+2.change pwd for user
+3.optimize?
+
+
 2016-05-12
 1.Add Calendar by photographer,it should be visible to all of the website visitors
   the site user can make appointment from here.
@@ -5,6 +11,7 @@
 3.user can not be create via web UI bug --fixed
 4.change order status
   the complete order should be closed and no more pictures can be seen?
+  --done
 5.add unit tests --done
 记录更丰富的日志信息，分析选片log，看看用户选片的行为
 

@@ -1,0 +1,3 @@
+将文本中的照片列表对应的照片文件copy到目标位置
+
+java PhotoTool F:\work\xiaoxiao F:\work\selected-photo simglist_5.txt

@@ -1,0 +1,6 @@
+java -cp image.jar DefaultImageProcessor F:\photo\xr\edited F:\photo\xr\05 600
+
+http://yinyushijing.cn/p/u/listimgs/1
+
+
+164’≈’’∆¨ 600£¨∫ƒ ±4∑÷÷”
