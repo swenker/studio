@@ -151,13 +151,14 @@ class UpdateChoice():
         params = web.input()
         # oid = int(params.oid)
         status = int(params.status)
+        iid = int(iid)
         # cmsService.update_user_choice(iid,oid,status)
         cmsService.update_user_choice(iid, status)
 
         userinfo = serviceHelper.get_user_session(session)
         mobile = userinfo.user.mobile
 
-        logger.info("[UpdateStatus]%s %d %d " %(mobile,status,iid))
+        logger.info("[UpdatePhotoChoice] %s-%d-%d " %(mobile,status,iid))
         return "{'result':'OK'}"
 
 
