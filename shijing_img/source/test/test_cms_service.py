@@ -222,6 +222,12 @@ class CmsServiceTestCase(unittest.TestCase):
         self.assertEqual(len(polist),1)
 
 
+    def test_list_orders_byuser(self):
+        uid = 1
+        print cmsService.list_orders(uid)
+
+
+
 if __name__ == '__main__':
     # suite = unittest.TestLoader().loadTestsFromTestCase(CmsServiceTestCase)
     suite = unittest.TestSuite()
@@ -232,6 +238,8 @@ if __name__ == '__main__':
     tests = ['test_create_preorder']
     tests = ['test_list_preorder_all','test_list_preorder_by_status','test_list_preorder']
     tests = ['test_list_preorder']
+
+    tests = ['test_list_orders_byuser']
     for test in tests:
         suite.addTest(CmsServiceTestCase(test))
 

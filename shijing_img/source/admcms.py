@@ -451,17 +451,23 @@ class LoadOrderPhoto():
 
 
 class ListOrders():
-    def GET(self):
-        params = web.input(uid = None,status=None,search=None)
-        rlist = None
+    def POST(self):
+        params = web.input(uid = None,status=None)
         uid = None
         status = None
-        if params.search:
-            if params.uid:
-                uid = int(params.uid)
-            if params.status:
-                status = int(params.status)
-            rlist = cmsService.list_orders_bystatus(status,uid)
+        if params.uid:
+            uid = int(params.uid)
+        if params.status:
+            status = int(params.status)
+        rlist = cmsService.list_orders_bystatus(status,uid)
+
+        return render.order_list(rlist, len(rlist))
+
+    def GET(self):
+        params = web.input(uid = None)
+        if params.uid:
+            uid = int(params.uid)
+            rlist = cmsService.list_orders(uid)
         else:
             rlist = cmsService.list_orders_uncompleted()
 

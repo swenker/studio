@@ -46,15 +46,15 @@ $def with(rlist,total)
             <div class="row">
                 <div class="col-lg-12">
                     <h4 class="page-header">订单列表&nbsp;
-                    <form action="" method="get">
+                    <form action="/p/adm/orders" method="POST">
                         客户:<input type="text" name="uid" size="10" maxlength="10">
                         状态:<select id="status" name="status">
                             <option value="">All</option>
-                            <option value="1">ORDER_SELECTING</option>
-                            <option value="3">ORDER_SELECTED</option>
-                            <option value="5">ORDER_DELIVERING</option>
-                            <option value="7">ORDER_COMPLETED</option>
-                            <option value="9">ORDER_CANCEL</option>
+                            <option value="1">待选片</option>
+                            <option value="3">已选片</option>
+                            <option value="5">派送中</option>
+                            <option value="7">订单完成</option>
+                            <option value="9">订单取消</option>
                         </select>
                         <input type="submit" name="search" value="search">
                     </form>
@@ -88,7 +88,7 @@ $def with(rlist,total)
                             用户ID:<strong> $order.uid </strong>  <a href="/p/adm/siteuser/list?uid=${order.uid}">用户信息</a> &nbsp;
                                                 <a href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
                             价  格: $order.price <br/>
-                            拍摄地: </strong>$order.venue</strong> <br/>
+                            拍摄地: <strong>$order.venue</strong> <br/>
                             总张数: $order.total_limit&nbsp;&nbsp;精  修: $order.edit_limit
 
                         </div>
