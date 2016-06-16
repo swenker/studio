@@ -223,8 +223,8 @@ class CmsServiceTestCase(unittest.TestCase):
 
 
     def test_list_orders_byuser(self):
-        uid = 1
-        print cmsService.list_orders(uid)
+        uid = 110
+        print len(cmsService.list_orders(uid))
 
 
 

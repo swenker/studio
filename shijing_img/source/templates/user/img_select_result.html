@@ -54,6 +54,35 @@ $def with(order_id,rlist,total,order)
             $$("#dialog").dialog('close');
         }
 
+        SELECTED_LIMIT=10
+        selected_counter=0
+
+        function updateChoice(ckbox,iid){
+            istatus=0;
+            if(ckbox.checked){
+                istatus = 2;
+                selected_counter++;
+
+                if(selected_counter >= SELECTED_LIMIT)
+                    alert('exceeds.');
+            }else{
+                istatus = 1;
+                selected_counter--;
+            }
+
+            data_url = '/p/u/upc/'+iid+'?status='+istatus
+            $$.getJSON(data_url)
+            .done(
+                function(data){
+
+                })
+                .fail(
+                function(jqxhr,textStatus,error){
+                    var err = textStatus + "," + error;
+                    console.log( "Request Failed:" + err );
+                }
+                );
+        }
 
     </script>
 </head>

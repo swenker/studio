@@ -159,7 +159,7 @@ class UpdateChoice():
         mobile = userinfo.user.mobile
 
         logger.info("[UpdatePhotoChoice] %s-%d-%d " %(mobile,status,iid))
-        return "{'result':'OK'}"
+        return '{"result":"OK"}'
 
 
 class ListOrders():
@@ -246,4 +246,5 @@ class GetUserInfo():
     def GET(self):
         userinfo = serviceHelper.get_user_session(session)
         if userinfo:
-            return "{'user':'"+userinfo.mobilef+"'}"
+            # return "{'user':'"+userinfo.mobilef+"'}"
+            return '{"user":'+userinfo.mobilef+'"}'
