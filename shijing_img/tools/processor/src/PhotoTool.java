@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 /**
  * Created by wenjusun on 10/18/2015.
  */
-public class PhotoTool {
+public class PhotoIOHandler {
 
     public static void main(String args[]) {
         if (args.length<3) {

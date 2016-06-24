@@ -16,6 +16,7 @@ from wshelper import ListWrapper
 
 urls = (
         "/home", "HomePage",
+        "/test", "TestPage",
         "/portfolio", "Portfolio",
         "/ga/(\d+)", "GetArticle",
         "/la", "ListArticles",
@@ -70,6 +71,9 @@ class HomePage():
 
         return cmsService.list_articles(start, nfetch,ctcode,query_in_title=None,status=str(1))
 
+class TestPage():
+    def GET(self):
+        return "Hello"
 
 class Portfolio():
     def GET(self):
