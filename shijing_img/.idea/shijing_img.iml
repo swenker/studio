@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/source/sessions" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 2.7.11rc1 (C:\Python27\python.exe)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
