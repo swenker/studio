@@ -78,7 +78,7 @@ class UserInfo():
         self.order_idlist = None
 
     def is_order_owner(self, oid):
-        #logger.info(("=========%d====================&s========", oid, self.order_idlist))
+        logger.debug(("=========%d====================&s========", oid, self.order_idlist))
         if self.order_idlist:
             return self.order_idlist.count(oid) == 1
 
@@ -108,19 +108,23 @@ class LoginService():
                 orders = cmsService.list_orders(user.oid)
 
                 session.uinfo = UserInfo(user)
-                selecting_order=None
                 if orders:
-                    selecting_order = orders[0]
                     order_idlist = []
                     for od in orders:
                         order_idlist.append(od.oid)
-                        if od.status < cms_model.Order.ORDER_COMPLETED:
-                            selecting_order=od
-                    session.uinfo.order_idlist = order_idlist
-                    session.uinfo.order = selecting_order
+                        session.uinfo.order_idlist = order_idlist
 
-                    #return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
-                    return web.seeother('/listimgs2p/' + str(session.uinfo.order.oid))
+                    if len(orders) >1:
+                        return web.seeother('/orders')
+                    else:
+                        selecting_order = orders[0]
+                        for od in orders:
+                            if od.status < cms_model.Order.ORDER_COMPLETED:
+                                selecting_order=od
+                        session.uinfo.order = selecting_order
+
+                        #return web.seeother('/listimgs/' + str(session.uinfo.order.oid))
+                        return web.seeother('/listimgs2p/' + str(session.uinfo.order.oid))
                 else:
                     return web.seeother('/orders')
             else:
@@ -217,6 +221,8 @@ class ListSelectedImages():
         i_oid = int(oid)
         order = cmsService.load_order(i_oid)
         if userinfo:
+            # print i_oid
+
             if userinfo.is_order_owner(i_oid):
                 rlist = cmsService.list_selected_imgs(i_oid)
                 return render.img_select_result(oid, rlist, len(rlist),order)

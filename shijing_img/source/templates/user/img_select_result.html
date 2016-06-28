@@ -108,7 +108,7 @@ $def with(order_id,rlist,total,order)
                 <div class="col-lg-12">
                     <h3 class="page-header">选中的照片：共$total 张</h3>
                     $if order.status==1:
-                        <a class="btn active" href="/p/u/listimgs2p/${order_id}">继续选片</a> &nbsp;
+                        <a class="btn active" href="/p/u/listimgs2p/${order_id}">返回继续选片</a> &nbsp;
                     $else:
                         <a class="btn active" href="/p/u/listimgs2p/${order_id}">查看所有照片</a> &nbsp;
                     <!--<a class="btn active" href="/p/u/order/confirm_select/${order_id}" onclick="return confirm('选完了？')">结束选片 </a>-->
