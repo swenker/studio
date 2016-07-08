@@ -20,26 +20,22 @@ class RequestSenderThread(threading.Thread):
 
     def run(self):
         i = 0
-        while(i<10):
-            pj = PhotoJob('11'+str(i),'/2015/'+str(i)+'/20',1)
-            job_queue.put_nowait(pj)
+        while(i<3):
+            pj = PhotoJob(int('11'+str(i)),'/2015/'+str(i)+'/20',1)
+            submit_job(pj)
 
             i+=1
-            time.sleep(1)
-            #print "----------------"+str(i)
+            time.sleep(10)
 
 
 
 class TestBatchImageHandler(unittest.TestCase):
     def test_send_handle_order_photo(self):
-        rst = RequestSenderThread(11,'/11/22/33')
+        rst = RequestSenderThread(11,'/2011/12/13')
         rst.start()
         print
         print "sender started."
-        opp = OrderPhotoProcessor()
-        opp.setDaemon(True)
-        opp.start()
-        print "consumer started."
+
 
 
 if __name__ == '__main__':
@@ -50,6 +46,8 @@ if __name__ == '__main__':
         suite.addTest(TestBatchImageHandler(test))
 
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+    time.sleep(30)
 
 
 

@@ -1,3 +1,5 @@
+$def with(oid)
+
 <!DOCTYPE html>
 <html>
 
@@ -62,9 +64,9 @@
                             <form action=""    method="post"   enctype="multipart/form-data">
                                 zip格式，比如05.zip 里面有 05/img01.jpg, 05/img02.jpg
                                 <br>
-                               （相对）目录(以‘/’开始,比如/2015/10/15):
+                               （相对）目录(以‘/’开始,比如/2015/10):
                                 <input type="text" name="folder" size="30">
-                               订单编号:<input type="text" name="orderid" size="10">
+                               订单编号:<input type="text" id="orderid" name="orderid" size="10">
                                 <input type="file" name="photozip" >
                                 <button type="submit" value="upload">upload</button>
                                 <br/>
@@ -91,6 +93,11 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="/adm/js/sb-admin-2.js"></script>
+
+        $if oid:
+            <script>
+                $$('#orderid').val('$oid');
+            </script>
 
     </body>
 

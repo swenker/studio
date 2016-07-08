@@ -2,6 +2,7 @@
 
 __author__ = 'sunwj'
 
+import Queue
 from zipfile import ZipFile
 import cgi
 import web
@@ -11,6 +12,7 @@ from cms import cms_service
 from cms import service_config
 from cms import batch_image_handler
 from cms import cms_utils
+
 
 from wshelper import ServiceHelper
 from wshelper import ListWrapper
@@ -47,6 +49,7 @@ urls = ("/adminsvc", "AdminService",
         "/order/(\d+)","GetOrder",
         "/loadfolder","LoadFolder",
         "/order/loadphoto","LoadOrderPhoto",
+        "/order/jobstatus/(\d+)","GetOrderJobStatus",
         "/signout", "Signout",
         "/listimgs/(\d+)", "ListOrderImages",
         "/okimgs/(\d+)", "ListSelectedImages",
@@ -91,8 +94,7 @@ serviceHelper = ServiceHelper()
 adm_session = serviceHelper.init_adm_session(web, app)
 web.config.session_parameters['timeout'] = 8000
 
-logger = config.getlogger()
-logger.info('admincms initialized')
+logger = config.getlogger("admcms")
 
 _EVERY_PAGE = config.nevery_page
 
@@ -109,6 +111,16 @@ def my_unloadhook():
 app.add_processor(web.loadhook(my_loadhook))
 app.add_processor(web.unloadhook(my_unloadhook))
 
+
+""" -----------------Thread----------------------------  """
+
+
+#job_queue = Queue.Queue(5)
+# batch_image_handler.start_worker_thread(job_queue)
+#mythread = batch_image_handler.OrderPhotoProcessor(job_queue)
+#mythread.start()
+
+logger.info('admincms initialized')
 
 class LoginService():
     "Admin login handler"
@@ -393,15 +405,19 @@ class LoadFolder():
 
         orderid = int(params.orderid)
 
-        #TODO using new thread? how to update web view?
         counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
         #web.seeother('/listimgs/'+str(orderid))
         return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
 
+"New implementation:asynchronization"
 
 class LoadOrderPhoto():
     def GET(self):
-        return render.load_order_photo()
+        params = web.input()
+        oid = 0
+        if params.oid:
+            oid = int(params.oid)
+        return render.load_order_photo(oid)
 
     def POST(self):
         try:
@@ -436,19 +452,31 @@ class LoadOrderPhoto():
                 photo_zip.extractall(raw_full_store_dir)
                 photo_zip.close()
 
+                logger.info("%s uploaded" %tmp_zip_file)
                 #TODO using new thread? how to update web view?
-                counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
+                # counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
+
+                photo_job = batch_image_handler.PhotoJob(orderid,folder,cms_service.album_map.get('oa').oid)
+
+                batch_image_handler.submit_job(photo_job,job_queue)
+                counter = 0
 
                 return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
             else:
                 return render.common("Uploaded nothing" )
 
         except StandardError as se:
-            print se
-            return render.common("Failed:%s " %se.message)
+            logger.exception(se)
+            return render.common("Failed:%s " %se)
 
+class GetOrderJobStatus():
+    def GET(self,oid):
+        order_id = int(oid)
 
-
+        if batch_image_handler.completed_tasks.has_key(order_id):
+            return batch_image_handler.completed_tasks.get(order_id)
+        else:
+            return 'NO'
 
 class ListOrders():
     def POST(self):
@@ -574,9 +602,10 @@ class NewSiteUserHandler():
         try:
             uid = cmsService.create_siteuser(siteuser)
             cmsService.update_porder_status(poid,uid,2)
-            return "{\"status\":\"OK\"}"
+            return '{"status":"OK"}'
         except BaseException,e:
             return e
+
 #TODO this needs to be optimized
 class CreateSiteUserHandler():
     def GET(self):
@@ -593,7 +622,7 @@ class CreateSiteUserHandler():
 
         try:
             uid = cmsService.create_siteuser(siteuser)
-            return "{\"status\":\"OK\"}"
+            return '{"status":"OK"}'
         except BaseException,e:
             return e
 

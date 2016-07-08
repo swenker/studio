@@ -16,10 +16,11 @@ from image_processor import ImageProcessor
 """
 
 cmsService = cms_service.cmsService
-logger = config.getlogger('batch_process')
+logger = config.getlogger('batch_image_handler')
 
 
-job_queue = Queue.Queue()
+completed_tasks={}
+
 
 class PhotoJob():
     def __init__(self,order_id,relative_folder,album_id):
@@ -27,18 +28,56 @@ class PhotoJob():
         self.order_id = order_id
         self.relative_folder = relative_folder
 
+    def __str__(self):
+        return "PhotoJob:albumId[%d],orderId[%d],relative_folder[%s]" % (self.album_id,self.order_id,self.relative_folder)
 
+def submit_job(job,job_queue):
+    job_queue.put(job)
+    logger.info("%d Enqueue new Job: JobID:%d,queue size:%d" %(id(job_queue),job.order_id,job_queue.qsize()))
+
+def handle_photos(job_queue):
+    while True:
+        if not job_queue.empty():
+            job = job_queue.get_nowait()
+            logger.info("------------got job:%d" %job.order_id)
+
+            counter = 1
+            # counter = load_local_folder(job.album_id,job.relative_folder,job.order_id)
+            print "=============================================I am a task========================="
+            completed_tasks[job.order_id]='{"OK":%d}' %counter
+            job_queue.task_done()
+        else:
+            logger.info("the queue is empty. will sleep 1 minute:%d..." %(job_queue.qsize()))
+            time.sleep(20)
+
+def start_worker_thread(job_queue):
+    worker_thread = threading.Thread(target=handle_photos,args=(job_queue,))
+    worker_thread.setDaemon(True)
+    worker_thread.start()
 
 class OrderPhotoProcessor(threading.Thread):
+
+    def __init__(self,job_queue):
+        super(OrderPhotoProcessor,self).__init__()
+        self.job_queue = job_queue
+
     def run(self):
         while True:
-            while not job_queue.empty():
-                job = job_queue.get_nowait()
-                print "got job:"+job.order_id
-                time.sleep(60)
-            # load_local_folder(job.album_id,job.relative_folder,job.order_id)
-            time.sleep(600)
+            # logger.debug(self.job_queue.qsize())
 
+            if not self.job_queue.empty():
+                logger.info("-------------------will get job from queue......")
+                job = self.job_queue.get_nowait()
+                logger.info("------------got job:%d" %job.order_id)
+
+                counter = 1
+                # counter = load_local_folder(job.album_id,job.relative_folder,job.order_id)
+                print "=============================================I am a task========================="
+                completed_tasks[job.order_id]='{"OK":%d}' %counter
+                self.job_queue.task_done()
+            else:
+                logger.info("%d the queue is empty. will sleep 1 minute:%d..." %(id(self.job_queue),self.job_queue.qsize()))
+                time.sleep(20)
 
 class LocalFileScanner():
     def __init__(self):
@@ -105,3 +144,6 @@ class RecordStore():
 def load_local_folder(aid,relative_folder,orderid):
     recordStore = RecordStore(LocalFileScanner())
     return recordStore.process(aid,relative_folder,orderid)
+
+
+logger.info("......................Initialized...............................")
