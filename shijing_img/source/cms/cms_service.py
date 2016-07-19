@@ -444,7 +444,7 @@ class CmsService:
             mid = -1
             if result:
                 mid = result[0]['mid']
-            logger.info("image [%d] is created" % mid)
+            logger.debug("image [%d] is created" % mid)
             return mid
 
         except Exception, e:

@@ -26,6 +26,7 @@ $def with(oid)
 
         <!-- jQuery /home/sunwj/work/studio/shijing_img/js/jquery -->
         <script language="JavaScript" src="/jslib/jquery/jquery-1.11.3.min.js"></script>
+        <script language="JavaScript" src="/jslib/jquery/jquery.form.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -61,20 +62,24 @@ $def with(oid)
                     <div class="col-lg-12">
 
                         <div id="dropzone">
-                            <form action=""    method="post"   enctype="multipart/form-data">
+                            <form id="photo_upload_form" action="/p/adm/order/loadphoto"    method="post"   enctype="multipart/form-data" onsubmit="return submitForm()">
                                 zip格式，比如05.zip 里面有 05/img01.jpg, 05/img02.jpg
                                 <br>
                                （相对）目录(以‘/’开始,比如/2015/10):
                                 <input type="text" name="folder" size="30">
                                订单编号:<input type="text" id="orderid" name="orderid" size="10">
                                 <input type="file" name="photozip" >
-                                <button type="submit" value="upload">upload</button>
+                                <button id="submit_photo" type="submit" value="upload" >upload</button>
                                 <br/>
                                 将图片上传到/var/shijing/img/raw/[2015/10/15]......
 
                             </form>
+                        </div>
+
+                        <div id="callback_block">
 
                         </div>
+
                     </div>
                 </div>
                 <!-- /.row -->
@@ -99,6 +104,69 @@ $def with(oid)
                 $$('#orderid').val('$oid');
             </script>
 
+        <script>
+            refreshTimer=0;
+            job_id=0;
+            function showStatusBlock(data){
+                $$('#dropzone').hide()
+                $$("#callback_block").show();
+                span='<span>'+data+'</span>';
+                $$("#callback_block").empty();
+                $$("#callback_block").append(span);
+            }
+
+            function refreshStatus(){
+                $$.ajax({
+                  url: "/p/adm/order/jobstatus/"+job_id,
+                  cache: false,
+                  success: function(data){
+                      if(data){
+                          job_result=$$.parseJSON(data);
+                          if(job_result.status == 9 ){
+                              showStatusBlock('照片上传完成:'+job_result.reason);
+                              clearInterval(refreshTimer);
+                          }
+                          else{
+                              showStatusBlock('照片处理中，请耐心等待......:'+job_result.status);
+                          }
+                      }
+                      else{
+                          showStatusBlock('照片处理中，请耐心等待......');
+                      }
+                  },
+                  error: function(data){
+                      console.log('cancel timer:'+data);
+                      clearInterval(refreshTimer);
+                  }
+                });
+            }
+
+            function disable_button(){
+                $$('#submit_photo').attr('disabled','true');
+            }
+
+            function submitForm(){
+                $$('#photo_upload_form').ajaxSubmit({
+                    success:function(data){
+                            job_id=data;
+                            showStatusBlock('照片处理中，请耐心等待......');
+                            refreshTimer = setInterval(refreshStatus,30000);
+                            console.log("Timer set.");
+                    },
+                    error: function(data){
+                           showStatusBlock('发生异常情况：'+data);
+                    }
+
+                  }
+                );
+
+                disable_button();
+
+
+                return false;
+            }
+
+        </script>
     </body>
 
 </html>

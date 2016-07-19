@@ -146,3 +146,15 @@ PRIMARY KEY(`id`)
 ) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
 alter table site_preorder add pgid INT DEFAULT 1;
+
+CREATE TABLE `shijing_jobs`(
+`id` INT(9) NOT NULL AUTO_INCREMENT,
+`job_name` VARCHAR(30),
+`job_data` VARCHAR(1000),
+`job_status` TINYINT(1) DEFAULT 1,
+`dtcreate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`dtcomplete` TIMESTAMP,
+`dtupdate` TIMESTAMP,
+`job_result` VARCHAR(100),
+PRIMARY KEY(`id`)
+)ENGINE=Innodb DEFAULT CHARSET=utf8;

@@ -8,8 +8,9 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
 
 from cms.batch_image_handler import *
+from cms.cms_model import *
 
-
+job_service = JobService()
 
 class RequestSenderThread(threading.Thread):
 
@@ -22,7 +23,8 @@ class RequestSenderThread(threading.Thread):
         i = 0
         while(i<3):
             pj = PhotoJob(int('11'+str(i)),'/2015/'+str(i)+'/20',1)
-            submit_job(pj)
+
+            job_service.submit_job(Job("TestTasks",pj))
 
             i+=1
             time.sleep(10)
@@ -32,10 +34,21 @@ class RequestSenderThread(threading.Thread):
 class TestBatchImageHandler(unittest.TestCase):
     def test_send_handle_order_photo(self):
         rst = RequestSenderThread(11,'/2011/12/13')
-        rst.start()
+        # rst.start()
         print
         print "sender started."
 
+
+def test_json():
+    photo_job = PhotoJob(1,'/abc/d',1)
+    job = Job('New Job',photo_job)
+
+    print photo_job
+
+    photo_job2 = PhotoJob(**json.loads(job.jobdata))
+    print( type(photo_job2))
+    print( photo_job2.order_id)
+    print( photo_job2.relative_folder)
 
 
 if __name__ == '__main__':
@@ -46,6 +59,8 @@ if __name__ == '__main__':
         suite.addTest(TestBatchImageHandler(test))
 
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+    job_service.start_worker_thread()
 
     time.sleep(30)
 

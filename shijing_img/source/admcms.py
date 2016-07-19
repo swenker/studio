@@ -2,7 +2,6 @@
 
 __author__ = 'sunwj'
 
-import Queue
 from zipfile import ZipFile
 import cgi
 import web
@@ -114,11 +113,8 @@ app.add_processor(web.unloadhook(my_unloadhook))
 
 """ -----------------Thread----------------------------  """
 
+job_service = batch_image_handler.JobService()
 
-#job_queue = Queue.Queue(5)
-# batch_image_handler.start_worker_thread(job_queue)
-#mythread = batch_image_handler.OrderPhotoProcessor(job_queue)
-#mythread.start()
 
 logger.info('admincms initialized')
 
@@ -456,12 +452,13 @@ class LoadOrderPhoto():
                 #TODO using new thread? how to update web view?
                 # counter = batch_image_handler.load_local_folder(cms_service.album_map.get('oa').oid,folder,orderid)
 
-                photo_job = batch_image_handler.PhotoJob(orderid,folder,cms_service.album_map.get('oa').oid)
+                photo_job = cms_model.PhotoJob(orderid,folder,cms_service.album_map.get('oa').oid)
 
-                batch_image_handler.submit_job(photo_job,job_queue)
-                counter = 0
+                job_id = job_service.submit_job(cms_model.Job("PhotoJob",photo_job))
 
-                return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
+                return job_id
+
+                # return render.common("Uploaded %d,<a href='/p/adm/listimgs/%d'> check it</a>" %(counter,orderid))
             else:
                 return render.common("Uploaded nothing" )
 
@@ -470,13 +467,11 @@ class LoadOrderPhoto():
             return render.common("Failed:%s " %se)
 
 class GetOrderJobStatus():
-    def GET(self,oid):
-        order_id = int(oid)
+    def GET(self,job_id):
+        job_id = int(job_id)
 
-        if batch_image_handler.completed_tasks.has_key(order_id):
-            return batch_image_handler.completed_tasks.get(order_id)
-        else:
-            return 'NO'
+        return job_service.get_job_status(job_id)
+
 
 class ListOrders():
     def POST(self):

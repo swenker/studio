@@ -239,6 +239,34 @@ class Preorder():
     def jsonable(self):
         return self.__dict__
 
+class Job():
+    def __init__(self,name,jobtask):
+        self.name = name
+        self.jobdata = jobtask.to_jsonstr()
+        self.status = 1  #init
+        self.oid = 0
+
+
+class PhotoJob():
+    def __init__(self,order_id,relative_folder,album_id):
+        self.album_id = album_id
+        self.order_id = order_id
+        self.relative_folder = relative_folder
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return self.__dict__.__str__()
+
+    def jsonable(self):
+        return self.__dict__
+
+    def to_jsonstr(self):
+        return json.dumps(self.__dict__, cls=ComplexEncoder)
+
+
+
 
 class ComplexEncoder(json.JSONEncoder):
     def default(self, obj):
