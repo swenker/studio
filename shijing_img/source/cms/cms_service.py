@@ -124,7 +124,6 @@ class CmsService:
             sqls = "UPDATE %s SET title=$title,subtitle=$subtitle,author=$author,source=$source,dtupdate=$dtupdate,dtpub=$dtpub,cover=$cover,brief=$brief,ctid=$ctid WHERE id=$oid" \
                    % TABLE_ARTICLE_META
 
-            # logger.debug(sqls)
             db.query(sqls,
                      vars={'title': article_meta.title, 'subtitle': article_meta.subtitle,
                            'author': article_meta.author, 'source': article_meta.source,
@@ -224,7 +223,6 @@ class CmsService:
         if result:
             total = result[0]['total']
 
-        # logger.debug(sqls)
         if query_in_title:
             result = db.query(sqls, vars={'keywords': query_in_title, 'start': start, 'nfetch': nfetch})
 
@@ -236,7 +234,6 @@ class CmsService:
         if result:
             for r in result:
                 article_meta = self.compose_article_meta(r)
-                #print article_meta
                 rlist.append(article_meta)
 
         return rlist, total

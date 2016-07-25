@@ -1,3 +1,8 @@
+2016-07-20
+1.optimize web UI for end user: selection can be made on the image
+2.add more articles to website
+3.refactor code? or ....
+
 2016-06-02
 1.Upload compressed photo directly via web UI
 2.change pwd for user

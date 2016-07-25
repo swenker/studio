@@ -63,9 +63,9 @@ $def with(oid)
 
                         <div id="dropzone">
                             <form id="photo_upload_form" action="/p/adm/order/loadphoto"    method="post"   enctype="multipart/form-data" onsubmit="return submitForm()">
-                                zip格式，比如05.zip 里面有 05/img01.jpg, 05/img02.jpg
+                                zip格式，比如05.zip 里面有 img01.jpg, img02.jpg,目前不能从文件夹开始压缩，
                                 <br>
-                               （相对）目录(以‘/’开始,比如/2015/10):
+                               （相对）目录(以‘/’开始,比如/2015/10/001):
                                 <input type="text" name="folder" size="30">
                                订单编号:<input type="text" id="orderid" name="orderid" size="10">
                                 <input type="file" name="photozip" >

@@ -53,7 +53,7 @@ cmsService = cms_service.cmsService
 serviceHelper = ServiceHelper()
 session = serviceHelper.init_user_session(web, app)
 
-logger = config.getlogger()
+logger = config.getlogger(loggername="UserSite")
 logger.info('usersite initialized')
 
 
@@ -78,7 +78,7 @@ class UserInfo():
         self.order_idlist = None
 
     def is_order_owner(self, oid):
-        logger.debug(("=========%d====================&s========", oid, self.order_idlist))
+        # logger.debug(("=========orderid:%d====================%s========" %(oid, self.order_idlist)))
         if self.order_idlist:
             return self.order_idlist.count(oid) == 1
 

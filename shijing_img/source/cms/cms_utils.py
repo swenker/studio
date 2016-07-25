@@ -39,7 +39,7 @@ def decrypt(encrypted_msg,end):
 
     decoded = DecodeAES(cipher, base64_decoded)
 
-    #print padding+";"+decoded
+    print padding+";"+decoded
     return decoded
 
 def daystr(daytime):

@@ -9,7 +9,7 @@ $if order.status>1:
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -41,6 +41,9 @@ $if order.status>1:
     <![endif]-->
 
     <script language="JavaScript">
+        var screenWidth = window.screen.width;
+        var imgWidth=screenWidth-40;
+
         var img_srv_url = '${service_config.img_url}';
         var np=-1;
 
@@ -112,8 +115,8 @@ $if order.status>1:
 
         function showImage(url){
             $$("#img_viewer").attr("src","${service_config.img_url}" +url);
-            $$("#img_viewer").attr("width","340");
-            $$("#dialog").dialog({width:380,
+            $$("#img_viewer").attr("width",imgWidth);
+            $$("#dialog").dialog({width:screenWidth,
                 show: {
                 effect: "blind",
                 duration: 200
@@ -170,7 +173,7 @@ $if order.status>1:
 <body>
 
     <div id="dialog" title="" style="display:none">
-      <img id="img_viewer" src="" width="0" onclick="hideImage()">
+      <img id="img_viewer" src="" width="0" border="1" onclick="hideImage()">
     </div>
 
     <div id="wrapper">

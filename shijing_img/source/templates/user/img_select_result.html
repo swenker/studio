@@ -34,17 +34,20 @@ $def with(order_id,rlist,total,order)
     <![endif]-->
 
     <script>
+        var screenWidth = window.screen.width;
+        var imgWidth=screenWidth-40;
+
         function showImage(url){
             $$("#img_viewer").attr("src","${service_config.img_url}" +url);
-            $$("#img_viewer").attr("width","350");
-            $$("#dialog").dialog({width:390,
+            $$("#img_viewer").attr("width",imgWidth);
+            $$("#dialog").dialog({width:screenWidth,
                 show: {
                 effect: "blind",
-                duration: 300
+                duration: 200
                 },
                 hide: {
                 effect: "fade",
-                duration: 300
+                duration: 200
                 }
             });
             $$(".ui-dialog-titlebar").hide();
