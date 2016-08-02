@@ -48,3 +48,4 @@ get-azurevm gss01-gss-s-mmi -service gss-s-mmi |get-azureendpoint
 vm  无法重装，只能删除，重新创建。
 get-azurevm ws01-stm-d-mmi -service stm-d-mmi|get-azureendpoint
 start-azurevm ws01-stm-d-mmi -service stm-d-mmi -StayProvisioned
+get-azurevm salt01-d-mmi -service stm-d-mmi|get-azureendpoint
