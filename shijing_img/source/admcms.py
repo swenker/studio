@@ -320,6 +320,13 @@ class UploadImage:
             return "File Limit is 1MB."
 
 class DeleteImages():
+    def GET(self):
+        iid = int(web.input().iid)
+        order_id = web.input().oid
+        cmsService.delete_img(iid)
+
+        return web.seeother('/listimgs/'+str(order_id))
+
     "idlist=id separated by ,"
     def POST(self):
         idlist = web.input().idlist
@@ -421,6 +428,9 @@ class LoadOrderPhoto():
             if params and 'photozip' in params:
 
                 folder = params.folder
+                if not folder.startswith('/'):
+                    folder='/'+folder
+
                 orderid = int(params.orderid)
                 zipname = params.photozip.filename.replace('\\', '\\')
 

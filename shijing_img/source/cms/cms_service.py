@@ -721,6 +721,7 @@ class CmsService:
         order.status = r['status']
         order.venue = r['venue']
         order.dttake = r['dttake']
+        order.total = r['total']
 
         return order
 
@@ -864,6 +865,10 @@ class CmsService:
                 rlist.append(order)
 
         return rlist
+
+    def update_order_img_counter(self,order_id,counter):
+        sqls = "UPDATE %s SET total=$total WHERE id=$id" % TABLE_SITE_ORDER
+        db.query(sqls,vars={'total':counter,'id':order_id})
 
 
     def add_order_img(self, iid, orderid):

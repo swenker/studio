@@ -82,7 +82,7 @@ class JobService():
         except StandardError as error:
             t.rollback()
 
-        logger.info("submitted job:%s,%d" % (job.name,job_id) )
+        logger.info("submitted job:name=%s,jobid=%d" % (job.name,job_id) )
         return job_id
 
     def handle_jobs(self):
@@ -106,7 +106,7 @@ class JobService():
                         job_result = '{"status":9,"reason":"%d processed"}' % counter
                         db.query(sqls,vars={'dtc':get_timenow(),'status':9,'job_id':job_id,'job_result':job_result})
 
-                        logger.info("Job completed:%d -- counter:%d " %(job_id,counter))
+                        logger.info("Job(id=%d) completed: -- counter:%d " %(job_id,counter))
 
                     finally:
                         sqls = "UPDATE %s SET dtupdate=$dtc WHERE id=$job_id " %TABLE_JOB
@@ -185,6 +185,7 @@ class RecordStore():
                 upload_file_to_oss('img'+thumb_relative,config.img_save_path+thumb_relative)
 
             counter += 1
+        cmsService.update_order_img_counter(orderid,counter)
 
         logger.info('------------------------------done for(%s,%d:%d)---------------------------'%(relative_folder,len(filenames),counter))
         return counter

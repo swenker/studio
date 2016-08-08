@@ -166,6 +166,7 @@ class Order:
         self.status = 1
         self.venue = ''
         self.dttake = ''
+        self.total = 0
 
     def __repr__(self):
         return self.__str__()

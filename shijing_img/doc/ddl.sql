@@ -158,3 +158,5 @@ CREATE TABLE `shijing_jobs`(
 `job_result` VARCHAR(100),
 PRIMARY KEY(`id`)
 )ENGINE=Innodb DEFAULT CHARSET=utf8;
+
+alter TABLE `site_order` add total INT DEFAULT 0;

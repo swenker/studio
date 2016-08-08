@@ -77,6 +77,7 @@ $def with(rlist,total)
                             订单状态:
                                          $if order.status==1:
                                              $ status = '待选片'
+                                             <a href="/p/adm/order/loadphoto?oid=${order.oid}">上传照片</a>
                                          $elif order.status==3:
                                              $ status = '已选片'
                                          $elif order.status==5:
@@ -89,7 +90,7 @@ $def with(rlist,total)
                                                 <a href="/p/adm/orders?uid=${order.uid}">查订单</a><br/>
                             价  格: $order.price <br/>
                             拍摄地: <strong>$order.venue</strong> <br/>
-                            总张数: $order.total_limit&nbsp;&nbsp;精  修: $order.edit_limit
+                            已  传: $order.total 张&nbsp;&nbsp;精  修: $order.edit_limit
 
                         </div>
                         <div class="panel-footer" align="right">
