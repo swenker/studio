@@ -562,7 +562,7 @@ class HandleOrderForm():
 
 
     def POST(self):
-        params = web.input(oid=None,dtcomplete=None)
+        params = web.input(oid=None)
 
         order = serviceHelper.compose_order(params)
         oid = cmsService.save_order(order)

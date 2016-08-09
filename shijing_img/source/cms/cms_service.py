@@ -716,7 +716,6 @@ class CmsService:
         order.price = r['price']
         order.dtcreate = r['dtcreate']
         order.dtupdate = r['dtupdate']
-        order.dtcomplete = r['dtcomplete']
         order.remark = r['remark']
         order.status = r['status']
         order.venue = r['venue']
@@ -1190,9 +1189,11 @@ class CmsService:
             if not oid or oid<1:
                 logger.warn("Invalid order id "+str(oid))
 
-            sqls = "UPDATE %s SET status=$status WHERE id=$oid" % TABLE_SITE_ORDER
+            vars={'oid':oid,'status':status,'dtupdate':get_timenow()}
 
-            db.query(sqls,vars={'oid':oid,'status':status})
+            sqls = "UPDATE %s SET status=$status,dtupdate=$dtupdate WHERE id=$oid" % TABLE_SITE_ORDER
+
+            db.query(sqls,vars)
 
             logger.info("order [%d] status updated to %d" %(oid,status))
 

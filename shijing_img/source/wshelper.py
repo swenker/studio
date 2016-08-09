@@ -273,7 +273,6 @@ class ServiceHelper():
         order.total_limit = int(params.total_limit)
         order.edit_limit = int(params.edit_limit)
         order.price = params.price
-        order.dtcomplete = params.dtcomplete
         order.remark = params.remark
         order.venue = params.venue
         order.dttake = params.dttake

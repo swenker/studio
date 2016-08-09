@@ -158,7 +158,6 @@ class Order:
         self.remark = ''
         self.dtcreate = None
         self.dtupdate = None
-        self.dtcomplete = None
         self.uid = uid
         self.total_limit = 120
         self.edit_limit = 30
