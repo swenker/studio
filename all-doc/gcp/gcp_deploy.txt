@@ -68,3 +68,6 @@ https://efota-sup-dev.appspot.com/oauth2callback
 https://efota-sup-dev.appspot.com/complete/google-oauth2/
 
 datastore 不需要手动创建entity
+
+mvn appgengine:update -Denv=dev
+
