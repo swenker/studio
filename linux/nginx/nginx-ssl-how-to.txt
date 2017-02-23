@@ -1,0 +1,8 @@
+openssl s_client -connect bug2go-storage.blurdev.com:443 -showcerts
+openssl s_client -connect b2gadm-qa.blurdev.com:443 -showcerts
+openssl s_client -connect s002.blurdev.com:443 -showcerts
+--the above commands can only work on linux.
+
+cat intermediate >> public.
+#cat  thawte-blurdev-2014.crt(public) Thawte-ww-CA.crt(intermediate) >> all_bundle.crt this is the new crt can be used by nginx.
+https://search.thawte.com/support/ssl-digital-certificates/index?page=content&id=SO26579#links
