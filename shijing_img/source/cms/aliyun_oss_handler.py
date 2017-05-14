@@ -4,11 +4,7 @@ from oss import oss_api
 import service_config
 import time
 
-bucket_name = "simage"
-#oss_host="oss-cn-beijing.aliyuncs.com"
-oss_host="oss-cn-beijing-internal.aliyuncs.com"
-appid="MKD6WfLZOSq03lKl"
-appkey="brNGbHQjtKE1SQ4mDuPuPEO4nc0lJB"
+#the part has been moved due to security reasons.
 
 config = service_config.config
 
