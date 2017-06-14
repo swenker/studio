@@ -31,8 +31,8 @@ decimal.getcontext().prec = 2
 config = service_config.config
 logger = config.getlogger()
 
-#web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
-db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=cms_utils.decrypt(config.passwd,config.passwd_padding))
+db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
+# db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=cms_utils.decrypt(config.passwd,config.passwd_padding))
 db.printing=config.web_debug
 
 album_map = {}

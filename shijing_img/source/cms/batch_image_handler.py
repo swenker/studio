@@ -21,7 +21,8 @@ from backend_service_helper import *
 cmsService = cms_service.cmsService
 logger = config.getlogger('batch_image_handler')
 
-db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=cms_utils.decrypt(config.passwd,config.passwd_padding))
+db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=config.passwd, charset="UTF-8")
+# db = web.database(dbn=config.dbn, db=config.db, host=config.host, user=config.user, passwd=cms_utils.decrypt(config.passwd,config.passwd_padding))
 db.printing=config.web_debug
 
 TABLE_JOB="shijing_jobs"

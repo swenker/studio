@@ -3,17 +3,21 @@
 2.download uwsgi
 make
 
+install aliyunoss
+
 download webpy
+python setup.py install
 
 download mysql_python
+wget http://downloads.sourceforge.net/project/mysql-python/mysql-python-test/1.2.4b4/MySQL-python-1.2.4b4.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmysql-python%2F&ts=1429772815&use_mirror=superb-dca2
 
 download PIL
 wget http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+python setup.py install
 
 3.install pip?
-
- wget http://downloads.sourceforge.net/project/mysql-python/mysql-python-test/1.2.4b4/MySQL-python-1.2.4b4.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmysql-python%2F&ts=1429772815&use_mirror=superb-dca2
-
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
 
 No module named Crypto.Cipher
 sudo pip install pycrypto
@@ -40,3 +44,38 @@ Application initialization:
   /var/shijing/
 
 2.
+
+   14  sudo yum install nginx
+   16  sudo yum install nginx
+   22  sudo yum install nginx
+   41  less install.sh
+   45  sudo yum install python-devel
+   86  sudo python setup.py install
+  192  sudo python setup.py install
+  207  sudo python setup.py install
+  225  sudo python setup.py install
+  229  sudo yum install mysql-devel
+  230  sudo python setup.py install
+  246  sudo yum install mysql
+  249  sudo yum install mysql-server
+  253  /usr/bin/mysql_secure_installation
+  255  /usr/bin/mysql_secure_installation
+  287  sudo yum install freetype-devel libjpeg-devel libpng-devel
+  294  sudo python setup.py uninstall
+  296  sudo python setup.py install
+  302  sudo yum install zlib-devel
+  305  sudo yum install lcms-devel
+  311  sudo python setup.py install
+  313  sudo yum install python-pip
+  317  sudo pip uninstall PIL
+  330  sudo python setup.py  install
+  375  sudo pip uninstall PIL
+  376  sudo pip install PIL
+  377  sudo pip uninstall PIL
+  412  sudo python setup.py install
+  413  sudo python setup.py installsudo python setup.py install
+  674  sudo pip install pycrypto
+  897  pip install django
+  898  sudo pip install django
+  915  sudo python setup.py install
+  933  history|grep install

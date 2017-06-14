@@ -4,6 +4,7 @@ import logging.config
 from ConfigParser import ConfigParser
 import os.path
 
+import config_private
 
 class ServiceConfig():
     # _instance =
@@ -30,12 +31,15 @@ class ServiceConfig():
         configparser.read(confpath + "/cms.cfg")
         self.configparser = configparser
 
-        self.dbn = configparser.get('db', 'dbn', 'mysql')
-        self.host = configparser.get('db', 'host', 'localhost')
-        self.db = configparser.get('db', 'db')
-        self.user = configparser.get('db', 'user')
-        self.passwd = configparser.get('db', 'passwd')
-        self.passwd_padding = int(configparser.get('db', 'passwd.padding'))
+        self.dbn = config_private.private_config.db_dbn
+        self.host = config_private.private_config.db_host
+        self.db = config_private.private_config.db_db
+        self.user = config_private.private_config.db_user
+
+        #self.passwd = configparser.get('db', 'passwd')
+        self.passwd = config_private.private_config.db_user_passwd
+
+        # self.passwd_padding = int(configparser.get('db', 'passwd.padding'))
 
         self.web_debug=configparser.getboolean('web','debug')
         self.web_base = configparser.get("web", "web_base")
