@@ -1,0 +1,98 @@
+确定版本：
+jdk8最新，
+zk 最新
+hadoop 3.2.0--后证明不行，2.7.7最合适
+hbase-2.1.4
+准备免密：
+jrdp : curl -O http://x:8080/dl/jrdp.tgz && tar -xzf jrdp.tgz
+
+上传文件：
+1.JDK -
+2.hdfs - 
+3.zk -
+4.HBase -
+
+安装配置：
+1.安装配置JDK
+2.安装配置hdfs
+确定5个IP，其中两个NN,HA
+初始化data目录(3.0叫workers)
+hdfs-site.xml
+core-site.xml
+slaves
+
+在namenode上执行：
+bin/hdfs zkfc -formatZK
+sbin/start-dfs.sh  
+bin/hdfs namenode -format [两个nn节点都需要执行，另外目录也需要创建]
+如果stand by failed to start，在failed的节点上执行：
+hdfs namenode -bootstrapStandby
+hadoop-daemon.sh start namenode
+
+sbin/stop-dfs.sh 
+sbin/start-dfs.sh 
+
+
+3.安装配置zk
+  -create zoo.cfg
+  - add server list 
+    server.1=10.220.49.27:2888:3888
+    server.2=10.220.49.33:2888:3888
+    server.3=10.220.49.34:2888:3888
+  - create myid to dataDir
+  - heapsize conf/java.env
+  - sh /export/soft/zookeeper-3.4.13/bin/zkServer.sh start
+  
+  pssh -h etl_5k_hbase_zk.list 'sh /export/soft/zookeeper-3.4.13/bin/zkServer.sh stop'
+  pssh -h etl_5k_hbase_zk.list 'cd /export/soft/zookeeper-3.4.13 && sh bin/zkServer.sh start'
+4.安装配置HBase
+hbase-site.xml
+hbase-env.sh
+regionservers
+
+5.配置环境变量
+6.日志的路径
+
+启动：
+1.启动zk --done
+
+2.启动hdfs
+3.启动HBase
+start-hbase.sh启动出错：
+启动master报错：
+2019-04-23 20:34:57,761 ERROR [main] regionserver.HRegionServer: Failed construction RegionServer
+java.lang.NoClassDefFoundError: org/apache/htrace/SamplerBuilder
+/export/soft/hbase-2.1.4/lib/client-facing-thirdparty/htrace-core4-4.2.0-incubating.jar
+/export/soft/hbase-2.1.4/lib/htrace-core4-4.2.0-incubating.jar
+需要3.x的jar
+cp /export/soft/hadoop-3.2.0/share/hadoop/yarn/timelineservice/lib/htrace-core-3.1.0-incubating.jar  /export/soft/hbase-2.1.4/lib/
+
+what's the usage of this one?
+
+stop regionserver bin/hbase-daemon.sh stop regionserver RegionServer
+
+之后，启动又报错：
+java.lang.IllegalStateException: The procedure WAL relies on the ability to hsync for proper operation during component failures, 
+
+最后，查看hbase/lib目录下的hadoop jar都是2.77，所以换成2.77，即可。
+但是启动之后，又出：
+java.io.IOException: File /hbase/.tmp/hbase.version could only be replicated to 0 nodes instead of minReplication (=1).  There are 0 datanode(s) running and no node(s) are excluded in this operation.
+--这个经查，是datanode不正常，虽然进程已启动。stop dfs，删除数据，启动。正常。
+验证测试：
+
+hbase.client.keyvalue.maxsize
+
+server.1=10.220.49.27:2888:3888
+server.2=10.220.49.33:2888:3888
+server.3=10.220.49.34:2888:3888
+
+bin/hbase shell -Dhbase.zookeeper.quorum=10.220.49.27:2181,10.220.49.33:2181,10.220.49.44:2181
+create 'table1' 'cf_name1'
+
+ /export/data/hadoop/logs/*
+
+10.220.49.27	ZK,NN,Master	
+10.220.49.33	ZK,DN,region	
+10.220.49.34	DN,region	
+10.220.49.42	DN,region	
+10.220.49.44	ZK,NN,region	
